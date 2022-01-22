@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climb extends SubsystemBase {
     //defines both Talons and Solenoids
     private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.Talon);
-    
+    private final DoubleSolenoid secondClimb = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.secondForward, Constants.secondReverse);
     private final DoubleSolenoid climb = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.forward, Constants.reverse);
 
     //Pushes the piston out
     public void extendArm(){
         climb.set(Value.kForward);
+        secondClimb.set(Value.kForward);
+
     }
     
     //Brings the piston in
