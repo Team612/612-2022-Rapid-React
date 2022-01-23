@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.RunClimb;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
