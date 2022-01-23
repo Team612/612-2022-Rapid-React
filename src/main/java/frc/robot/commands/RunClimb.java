@@ -1,8 +1,7 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
-import frc.robot.Constants;
-import frc.robot.controls.ControlMap;
+
 /** An example command that uses an example subsystem. */
 public class RunClimb extends CommandBase {
     private final Climb m_climb;

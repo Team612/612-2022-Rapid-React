@@ -5,13 +5,12 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
-import frc.robot.Constants;
 import frc.robot.controls.ControlMap;
 
 public class Pivot extends CommandBase {
   /** Creates a new Pivot. */
   private final Climb m_pivot;
-  private double mValue = ControlMap.gunner.getRawAxis(4);
+  private double mValue;
     // Use addRequirements() here to declare subsystem dependencies.
 
     //Constructor
@@ -29,6 +28,7 @@ public class Pivot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    mValue = ControlMap.gunner.getRawAxis(4);
     m_pivot.pivot(mValue);
   }
 
