@@ -20,6 +20,8 @@ public final class Constants {
     public static PneumaticHub pcm = new PneumaticHub();
     public static int forward = 2;
     public static int reverse = 3;
+    public static int secondForward = 4;
+    public static int secondReverse = 5;
     public static int setMotorSpeed = 1;
     public static int swings = 0;
 }
