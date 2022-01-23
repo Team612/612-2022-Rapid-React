@@ -3,14 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.RunClimb;
-import frc.robot.controls.ControlMap;
-import frc.robot.subsystems.*;
+import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,14 +19,17 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Climb m_climb = new Climb();
+  private ExampleSubsystem m_sub = new ExampleSubsystem();
+  private final ExampleCommand m_example = new ExampleCommand(m_sub);
 
-  private final RunClimb m_autoCommand = new RunClimb(m_climb);
+  private final Drivetrain m_drivetrain = new Drivetrain();
+  private final DefaultDrive m_defaultdrive = new DefaultDrive(m_drivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    configureDefaultCommands();
   }
 
   /**
@@ -36,8 +38,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+
+
   private void configureButtonBindings() {
-    ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
+  }
+
+  private void configureDefaultCommands(){
+    m_drivetrain.setDefaultCommand(m_defaultdrive);
   }
 
   /**
@@ -47,6 +54,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    //return m_chooser.getSelected();
+    return m_example;
   }
 }
