@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -17,11 +15,10 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
  */
 public final class Constants {
     public static int Talon = 1;
-    public static PneumaticHub pcm = new PneumaticHub();
     public static int forward = 2;
     public static int reverse = 3;
     public static int secondForward = 4;
-    public static int secondReverse = 5;
+    public static int secondReverse = 1;
     public static int setMotorSpeed = 1;
     public static int swings = 0;
 }
