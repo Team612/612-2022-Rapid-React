@@ -4,13 +4,18 @@
 
 package frc.robot;
 
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.RunClimb;
+import frc.robot.commands.ExtendArm;
+import frc.robot.commands.Pivot;
+import frc.robot.commands.RetractArm;
 import frc.robot.controls.ControlMap;
+import frc.robot.commands.PartialExtend;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,8 +26,8 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Climb m_climb = new Climb();
-
-  private final RunClimb m_autoCommand = new RunClimb(m_climb);
+  
+  private final Pivot m_autoCommand = new Pivot(m_climb);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -37,7 +42,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
+    //ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
+    ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
+    //SequentialCommandGroup(new ExtendArm(m_climb));
+    
+  }
+
+  private Command ParallelCommandGroup(Pivot pivot, RetractArm retractArm) {
+    return null;
   }
 
   /**
