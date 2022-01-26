@@ -12,33 +12,43 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  private final Servo one = new Servo(1);
-  private final Servo two = new Servo(1);
-  private final Servo three = new Servo(1);
-  private final Servo four = new Servo(1);
-  private final Servo five = new Servo(2);
+  private final Servo topLeft = new Servo(1);
+  private final Servo topRight = new Servo(1);
+  private final Servo bottomLeft = new Servo(1);
+  private final Servo bottomRight = new Servo(1);
+  private final Servo wrist = new Servo(2);
   private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon);
 
   
-  public Intake() {
+  public Intake() { 
     
   }
-  public static void ServoOpen(Servo one, Servo two) {
+  public void TopServoOpen() {
     //opens the claw servo
-    one.setAngle(90);
-    two.setAngle(90);
+    topLeft.setAngle(90);
+    topRight.setAngle(90);
+  }
+  public void BottomServoOpen() {
+    //opens the claw servo
+    bottomLeft.setAngle(90);
+    bottomRight.setAngle(90);
   }
   
-  public static void ServoClose(Servo one, Servo two) {
+  public void TopServoClose() {
     //closes the claw servo
-    one.setAngle(270);
-    two.setAngle(270);
+    topLeft.setAngle(270);
+    topRight.setAngle(-270);
   }
-  public static void TalonFlex() {
-    //moves the claw on a fixed point
-    .joystick();
+  public void BottomServoClose() {
+    //closes the claw servo
+    bottomLeft.setAngle(270);
+    bottomRight.setAngle(-270);
   }
 
+  public void TalonFlex(double speed) {
+    //moves on a fixed point
+    shoulder.set(speed);
+  }
   public static void Wrist() {
     //dynamically moves the wrist for the second claw
     
