@@ -43,8 +43,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
-    ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
+    //ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
     //SequentialCommandGroup(new ExtendArm(m_climb));
+    ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
+    ControlMap.x.whenPressed(new ExtendArm(m_climb).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
+    ControlMap.a.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
     
   }
 
