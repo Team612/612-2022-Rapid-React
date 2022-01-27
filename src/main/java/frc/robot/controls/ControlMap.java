@@ -18,7 +18,7 @@ public static double pivotValue;
 
 public static final JoystickButton a = new JoystickButton(gunner, 0);
 public static final JoystickButton b = new JoystickButton(gunner, 1);
-
+public static final JoystickButton x = new JoystickButton(gunner, 2);
 
     
 }
