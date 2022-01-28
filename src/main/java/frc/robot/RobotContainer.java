@@ -5,17 +5,14 @@
 package frc.robot;
 
 import java.util.ResourceBundle.Control;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExtendArm;
-import frc.robot.commands.Pivot;
-import frc.robot.commands.RetractArm;
 import frc.robot.controls.ControlMap;
-import frc.robot.commands.PartialExtend;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,12 +39,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
-    //ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)).andThen(new ExtendArm(m_climb)).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
-    //SequentialCommandGroup(new ExtendArm(m_climb));
-    ControlMap.b.whenPressed(new ExtendArm(m_climb).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
-    ControlMap.x.whenPressed(new ExtendArm(m_climb).andThen(ParallelCommandGroup(new Pivot(m_climb), new RetractArm(m_climb))));
-    ControlMap.a.whenPressed(new ExtendArm(m_climb).andThen(new RetractArm(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
+    ControlMap.midToHigh.whenPressed(new ServoOpen(m_climb).andThen(new ExtendArm(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
+    ControlMap.highToTraversal.whenPressed(new ServoOpen(m_climb).andThen(new ExtendArm(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)));
+    ControlMap.groundToMid.whenPressed(new ExtendArm(m_climb).andThen(new ServoOpen(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
     
   }
 

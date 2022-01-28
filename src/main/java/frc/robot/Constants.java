@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import java.math.*;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -15,10 +17,20 @@ package frc.robot;
  */
 public final class Constants {
     public static int Talon = 1;
-    public static int forward = 2;
-    public static int reverse = 3;
-    public static int secondForward = 4;
-    public static int secondReverse = 1;
+    public static int PCM_2 = 1;
+    public static int[] firstSolenoid = {4, 5};
+    public static int[] secondSolenoid = {6, 7};
+    public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
+    //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
+    public static int forward = 4;
+    public static int reverse = 5;
+    public static int secondForward = 6;
+    public static int secondReverse = 7;
     public static int setMotorSpeed = 1;
     public static int swings = 0;
+    public static int Servos = 0;
+    public static double height = 15.375;
+    public static double length = 2.0;
+    public static double ticks = 2048*Math.atan(height/length)/360;
 }
+
