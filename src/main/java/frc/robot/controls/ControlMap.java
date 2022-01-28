@@ -19,7 +19,6 @@ public static double pivotValue;
 public static final JoystickButton groundToMid = new JoystickButton(gunner, 0);
 public static final JoystickButton midToHigh = new JoystickButton(gunner, 1);
 public static final JoystickButton highToTraversal = new JoystickButton(gunner, 2);
-public static final JoystickButton retractTwo = new JoystickButton(gunner, 3);
 
 
     
