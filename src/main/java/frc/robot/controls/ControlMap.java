@@ -13,7 +13,6 @@ public class ControlMap {
 public static XboxController driver = new XboxController(1);
 public static XboxController gunner = new XboxController(0);
 
-public static double pivotValue;
  
 
 public static final JoystickButton groundToMid = new JoystickButton(gunner, 0);
