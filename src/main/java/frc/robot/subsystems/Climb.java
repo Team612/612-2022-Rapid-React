@@ -28,22 +28,6 @@ public class Climb extends SubsystemBase {
 
     }
 
-    public void extendFirst(){
-        climb.set(Value.kForward);
-    }
-
-    public void retractFirst(){
-        climb.set(Value.kReverse);
-    }
-
-    public void extendSecond(){
-        secondClimb.set(Value.kForward);
-
-    }
-    public void retractSecond(){
-        secondClimb.set(Value.kReverse);
-
-    }
     //partial extention
     public void partialExtention(){
         climb.set(Value.kForward);
