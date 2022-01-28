@@ -20,7 +20,7 @@ public class Talon extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.TalonFlex(ControlMap.joystick.getRawAxis(0));
+    m_intake.TalonFlex(ControlMap.talonJoystick.getRawAxis(0));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

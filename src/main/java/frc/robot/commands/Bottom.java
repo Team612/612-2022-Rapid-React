@@ -4,16 +4,14 @@
 
 package frc.robot.commands;
 
-import java.util.ResourceBundle.Control;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Intake;
 
-public class Top extends CommandBase {
-  /** Creates a new ServoOpenAndClose. */
+public class Bottom extends CommandBase {
+  /** Creates a new Bottom. */
   public final Intake m_intake;
-  public Top(Intake intake) {
+  public Bottom(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     addRequirements(intake);
@@ -22,7 +20,7 @@ public class Top extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.TopServoOpen();
+    m_intake.BottomServoOpen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +30,7 @@ public class Top extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.TopServoClose();
+    m_intake.BottomServoClose();
   }
 
   // Returns true when the command should end.

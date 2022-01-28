@@ -19,39 +19,38 @@ public class Intake extends SubsystemBase {
   private final Servo wrist = new Servo(2);
   private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon);
 
-  
-  public Intake() { 
-    
-  }
+  public Intake() {}
   public void TopServoOpen() {
-    //opens the claw servo
+    //opens the top claw
     topLeft.setAngle(90);
     topRight.setAngle(90);
   }
   public void BottomServoOpen() {
-    //opens the claw servo
+    //opens the bottom claw
     bottomLeft.setAngle(90);
     bottomRight.setAngle(90);
   }
-  
   public void TopServoClose() {
-    //closes the claw servo
+    //closes the top claw
     topLeft.setAngle(270);
     topRight.setAngle(-270);
   }
   public void BottomServoClose() {
-    //closes the claw servo
+    //closes the bottom claw
     bottomLeft.setAngle(270);
     bottomRight.setAngle(-270);
   }
-
   public void TalonFlex(double speed) {
     //moves on a fixed point
     shoulder.set(speed);
   }
-  public static void Wrist() {
+  public void WristOpen() {
     //dynamically moves the wrist for the second claw
-    
+    wrist.setAngle(120);
+  }
+  public void WristClose() {
+    //dynamically moves the wrist for the second claw
+    wrist.setAngle(0);
   }
 
   

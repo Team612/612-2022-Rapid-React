@@ -6,7 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Bottom;
 import frc.robot.commands.RunClimb;
+import frc.robot.commands.Top;
+import frc.robot.commands.Wrist;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +27,7 @@ public class RobotContainer {
 
   private final RunClimb m_autoCommand = new RunClimb(m_climb);
 
+  private final Intake m_intake = new Intake();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -36,10 +40,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+   
   private void configureButtonBindings() {
     ControlMap.a.toggleWhenPressed(new StartEndCommand(m_climb::extendArm, m_climb::retractArm, m_climb));
+    ControlMap.X.toggleWhenPressed(new Bottom(m_intake));
+    ControlMap.Y.toggleWhenPressed(new Top(m_intake));
+    ControlMap.B.toggleWhenPressed(new Wrist(m_intake));
   }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

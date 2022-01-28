@@ -15,13 +15,12 @@ public class ControlMap {
     public static XboxController gunner = new XboxController(0);
 
     public static double pivotValue;
- 
 
     public static final JoystickButton X = new JoystickButton(gunner, 0);
-
-    public static Joystick joystick = new Joystick(0);
-
     public static final JoystickButton Y = new JoystickButton(gunner, 0);
+    public static final JoystickButton B = new JoystickButton(gunner, 0);
+    public static final JoystickButton a = new JoystickButton(gunner, 0);
 
-    
+    public static Joystick talonJoystick = new Joystick(0);
+    public static Joystick wristJoystick = new Joystick(1);
 }
