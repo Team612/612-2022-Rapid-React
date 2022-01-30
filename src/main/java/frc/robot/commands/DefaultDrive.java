@@ -25,7 +25,6 @@ public class DefaultDrive extends CommandBase {
   @Override
   public void execute() {
     m_drivetrain.driveMecanum(-ControlMap.driver.getRawAxis(1), ControlMap.driver.getRawAxis(0), ControlMap.driver.getRawAxis(4));
-    //m_drivetrain.driveMecanum( ControlMap.driver.getRawAxis(4), ControlMap.driver.getRawAxis(0),-ControlMap.driver.getRawAxis(1));
   }
 
   // Called once the command ends or is interrupted.
