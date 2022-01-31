@@ -20,7 +20,7 @@ public class Climb extends SubsystemBase {
     private Servo Servo2 = new Servo(Constants.Servos);
     private final DoubleSolenoid secondClimb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[0], Constants.firstSolenoid[1]);
     private final DoubleSolenoid climb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[0], Constants.secondSolenoid[1]);
-    private final WPI_TalonFX pivotMotor2 = new WPI_TalonFX(0, "roboRIO");
+    private final WPI_TalonFX pivotMotor2 = new WPI_TalonFX(0, "rio");
     //Pushes the piston out
     public void extendArm(){
         climb.set(Value.kForward);
