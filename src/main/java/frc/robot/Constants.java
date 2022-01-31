@@ -30,7 +30,8 @@ public final class Constants {
     public static int swings = 0;
     public static int Servos = 0;
     public static double height = 15.375;
-    public static double length = 2.0;
-    public static double ticks = 2048*Math.atan(height/length)/360;
+    public static double length = 24.0;
+    public static double pi = Math.PI;
+    public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
 }
 
