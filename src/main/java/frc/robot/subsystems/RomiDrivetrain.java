@@ -3,12 +3,15 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.sensors.RomiGyro;
 
 public class RomiDrivetrain extends SubsystemBase {
   private static final double kCountsPerRevolution = 1440.0;
@@ -21,10 +24,12 @@ public class RomiDrivetrain extends SubsystemBase {
   private final Encoder m_rightEncoder = new Encoder(6, 7);
 
   private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
+  private final RomiGyro m_gyro;
+  private final IntegralOdometry m_integral;
 
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
-
+  private final DifferentialDriveOdometry m_odometry;
 
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
@@ -32,9 +37,13 @@ public class RomiDrivetrain extends SubsystemBase {
     m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
-
+    m_gyro  = new RomiGyro();
+    m_integral = new IntegralOdometry(m_gyro.getRotation2d(), new Pose2d());
     // Invert right side since motor is flipped
     m_rightMotor.setInverted(true);
+    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+
+
   }
 
 
@@ -66,11 +75,17 @@ public class RomiDrivetrain extends SubsystemBase {
 
   public double getAccelZ(){
     return accelerometer.getZ();
+
   }
 
   @Override
   public void periodic() {
+    //m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
     // This method will be called once per scheduler run
+
+    double velocity = Math.floor(m_integral.getVelocity(WPIUtilJNI.now() * 1.0e-6, getAccelX()) * 1000) / 1000;
+
+    System.out.println("Velocity: " + velocity);
   }
 
   @Override
