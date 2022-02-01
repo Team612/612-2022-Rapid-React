@@ -5,6 +5,7 @@
 package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -39,6 +40,9 @@ public final class Constants {
     public static final double kV_Angular = 0;
     public static final double kA_Angular = 0;
 
+    public static int[] secondSolenoid = {0, 1};
+    public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
+    public static int PCM_2 = 0;
     //Converting chassis velocity into individual wheel velocities
     public static final MecanumDriveKinematics kDriveKinematics =
         new MecanumDriveKinematics(

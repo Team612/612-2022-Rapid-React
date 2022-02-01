@@ -6,8 +6,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.kForward1;
+import frc.robot.commands.kReverse1;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.changeSolenoid;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.controls.ControlMap;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,6 +23,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private ExampleSubsystem m_sub = new ExampleSubsystem();
+  private final ExampleCommand m_example = new ExampleCommand(m_sub);
+  private final changeSolenoid m_solenoid = new changeSolenoid();
 
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final DefaultDrive m_defaultdrive = new DefaultDrive(m_drivetrain);
@@ -37,9 +46,22 @@ public class RobotContainer {
 
 
   private void configureButtonBindings() {
+    ControlMap.extend.whenPressed(new kForward1(m_solenoid));
+    ControlMap.retract.whenPressed(new kReverse1(m_solenoid));
   }
 
   private void configureDefaultCommands(){
     m_drivetrain.setDefaultCommand(m_defaultdrive);
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+    //return m_chooser.getSelected();
+    return m_example;
   }
 }
