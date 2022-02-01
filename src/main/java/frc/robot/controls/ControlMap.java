@@ -4,6 +4,7 @@
 
 package frc.robot.controls;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class ControlMap{
     
@@ -14,5 +15,9 @@ public class ControlMap{
     //Controller objects
     public static Joystick driver = new Joystick(DRIVER_PORT);
     public static Joystick gunner = new Joystick(GUNNER_PORT);
+    
+    //buttons
+    public static JoystickButton extend = new JoystickButton(gunner, 0);
+    public static JoystickButton retract = new JoystickButton(gunner, 1);
 
 }
