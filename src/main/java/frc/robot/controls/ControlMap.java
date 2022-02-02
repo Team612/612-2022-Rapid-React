@@ -6,7 +6,6 @@ package frc.robot.controls;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap{
-    
     //driver ports
     public static int DRIVER_PORT = 0;
     public static int GUNNER_PORT = 1;
@@ -14,5 +13,4 @@ public class ControlMap{
     //Controller objects
     public static Joystick driver = new Joystick(DRIVER_PORT);
     public static Joystick gunner = new Joystick(GUNNER_PORT);
-
 }
