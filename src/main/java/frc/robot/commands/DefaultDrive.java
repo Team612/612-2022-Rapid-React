@@ -3,38 +3,35 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climb;
 import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Drivetrain;
 
-public class Pivot extends CommandBase {
-  /** Creates a new Pivot. */
-  private final Climb m_pivot;
-  private double mValue;
+public class DefaultDrive extends CommandBase {
+  /** Creates a new DefaultDrive. */
+  public Drivetrain m_drivetrain;
+  public DefaultDrive(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-
-    //Constructor
-    public Pivot(Climb pivot){
-        m_pivot = pivot;
-        addRequirements(pivot);
+    m_drivetrain = drivetrain;
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mValue = ControlMap.gunner.getRawAxis(4);
-    m_pivot.pivot(mValue);
+    m_drivetrain.driveMecanum(-ControlMap.driver.getRawAxis(1), ControlMap.driver.getRawAxis(0), ControlMap.driver.getRawAxis(4));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drivetrain.driveMecanum(0, 0, 0);
+  }
 
   // Returns true when the command should end.
   @Override

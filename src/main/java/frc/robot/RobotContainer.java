@@ -32,6 +32,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    configureDefaultCommands();
   }
 
   /**
@@ -47,6 +48,11 @@ public class RobotContainer {
     ControlMap.Y.toggleWhenPressed(new Top(m_intake));
     ControlMap.B.toggleWhenPressed(new Wrist(m_intake));
   }
+
+  private void configureDefaultCommands(){
+    m_drivetrain.setDefaultCommand(m_defaultdrive);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
