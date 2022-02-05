@@ -50,7 +50,7 @@ public class IntegralOdometry{
         double dt = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
         getAccel = getAccel - (-0.01835947409720002);
-        
+        //bruh
         accumulated_velocity += getAccel * dt;    
         
         return accumulated_velocity;
