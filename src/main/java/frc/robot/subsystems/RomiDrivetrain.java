@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.sensors.RomiGyro;
 
 public class RomiDrivetrain extends SubsystemBase {
@@ -25,12 +29,13 @@ public class RomiDrivetrain extends SubsystemBase {
 
   private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
   private final RomiGyro m_gyro;
-  private final IntegralOdometry m_integral;
+  private final IntegralOdometry m_integral_odometry;
 
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final DifferentialDriveOdometry m_odometry;
 
+  private final DifferentialDriveKinematics m_kinematics;
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
@@ -38,10 +43,12 @@ public class RomiDrivetrain extends SubsystemBase {
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
     m_gyro  = new RomiGyro();
-    m_integral = new IntegralOdometry(m_gyro.getRotation2d(), new Pose2d());
+    m_integral_odometry = new IntegralOdometry(m_gyro.getRotation2d(), new Pose2d());
     // Invert right side since motor is flipped
     m_rightMotor.setInverted(true);
     m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+
+    m_kinematics = new DifferentialDriveKinematics(Constants.kTrackwidth);
 
 
   }
@@ -50,7 +57,6 @@ public class RomiDrivetrain extends SubsystemBase {
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
   }
-
 
   public void resetEncoders() {
     m_leftEncoder.reset();
@@ -80,12 +86,9 @@ public class RomiDrivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    // This method will be called once per scheduler run
-
-    double velocity = Math.floor(m_integral.getVelocity(WPIUtilJNI.now() * 1.0e-6, getAccelX()) * 1000) / 1000;
-
-    System.out.println("Velocity: " + velocity);
+    System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
+    //double velocityX = Math.floor(m_integral_odometry.getChassisVelocityWithTime(getAccelX()) * 100000)/100000;
+    //System.out.println(velocityX);
   }
 
   @Override
