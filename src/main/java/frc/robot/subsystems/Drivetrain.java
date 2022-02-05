@@ -121,9 +121,6 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public MecanumDriveWheelSpeeds getCurrentWheelSpeeds(){
-    System.out.println("position: " +       spark_fl.getEncoder().getPosition());
-    System.out.println("velocity: " +       spark_fl.getEncoder().getVelocity());
-
     return new MecanumDriveWheelSpeeds(
       spark_fl.getEncoder().getVelocity(),
       spark_fr.getEncoder().getVelocity(),
