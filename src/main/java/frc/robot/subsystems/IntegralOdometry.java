@@ -3,19 +3,16 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-/** Add your docs here. */
-
-import javax.lang.model.util.ElementScanner6;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.Encoder;
+
+import java.util.ArrayList;
 
 public class IntegralOdometry{
-    private BuiltInAccelerometer m_accelerometer;
     private Pose2d m_currentPosition;
     private double m_previousTime = -1;
 
@@ -23,6 +20,8 @@ public class IntegralOdometry{
     private Rotation2d m_previousAngle;
 
     private double accumulated_velocity;
+    private double calib_accum_vel;
+
 
     public IntegralOdometry(Rotation2d gyroAngle, Pose2d initialPosition){
         m_currentPosition = initialPosition;
@@ -38,22 +37,41 @@ public class IntegralOdometry{
 
     public Pose2d getPoseMeters(){
         return m_currentPosition;
+    } 
+    
+    private boolean isMoving(Encoder leftEncoder, Encoder rightEncoder){
+        if(leftEncoder.getDistance() > 0 || rightEncoder.getDistance() > 0 ){
+            return true;
+        }
+        return false;
     }
 
-    public double getVelocity(double currentTime, double getAccelX){
+    public double getChassisVelocity(double currentTime, double getAccel){
         double dt = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
-        double threshold = 0.02;
-        boolean ismoving = getAccelX > threshold ? true : false;
-        if (ismoving) {
-            accumulated_velocity += (getAccelX * 9.81)*dt;
-        }
-        else {
-            accumulated_velocity = 0;
-        }
-
-        getAccelX  = getAccelX >= 0.02 ? getAccelX : 0.0;
+        getAccel = getAccel - (-0.01835947409720002);
+        //bruh
+        accumulated_velocity += getAccel * dt;    
+        
         return accumulated_velocity;
+    }
+
+    public double getChassisVelocityWithTime(double getAccel){
+        return  getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, getAccel);
+    }
+
+    private double calibrateAccelerometer(double currentTime, double sample_time, double Accel){
+        double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
+        m_previousTime = currentTime;
+        double number_of_samples = 1.0/(sample_time);
+        if(currentTime < sample_time){
+            calib_accum_vel += Accel * dt;
+        }
+        return calib_accum_vel * number_of_samples;
+    }
+
+    public double calibrateAccelerometerWithTime(double sample_time, double Accel){
+        return calibrateAccelerometer(WPIUtilJNI.now() * 1.0e-6, sample_time, Accel);
     }
 
     public Pose2d getPosition(double currentTime, Rotation2d currentAngle, double getVelX){
