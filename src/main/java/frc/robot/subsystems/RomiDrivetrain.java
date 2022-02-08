@@ -4,22 +4,18 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sensors.RomiGyro;
 
 public class RomiDrivetrain extends SubsystemBase {
-  private static final double kCountsPerRevolution = 1440.0;
-  private static final double kWheelDiameterInch = 2.75591; // 70 mm
 
   private final Spark m_leftMotor = new Spark(0);
   private final Spark m_rightMotor = new Spark(1);
@@ -35,12 +31,11 @@ public class RomiDrivetrain extends SubsystemBase {
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final DifferentialDriveOdometry m_odometry;
 
-  private final DifferentialDriveKinematics m_kinematics;
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
-    m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
-    m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
+    m_leftEncoder.setDistancePerPulse(Constants.encoder_ratio);
+    m_rightEncoder.setDistancePerPulse(Constants.encoder_ratio);
     resetEncoders();
     m_gyro  = new RomiGyro();
     m_integral_odometry = new IntegralOdometry(m_gyro.getRotation2d(), new Pose2d());
@@ -48,7 +43,6 @@ public class RomiDrivetrain extends SubsystemBase {
     m_rightMotor.setInverted(true);
     m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
 
-    m_kinematics = new DifferentialDriveKinematics(Constants.kTrackwidth);
 
 
   }
@@ -63,12 +57,29 @@ public class RomiDrivetrain extends SubsystemBase {
     m_rightEncoder.reset();
   }
 
+  public double getGyroAngle(){
+    return Math.abs(m_gyro.getRate() * 1000) / 1000;
+  }
+
   public double getLeftDistanceInch() {
     return m_leftEncoder.getDistance();
   }
 
   public double getRightDistanceInch() {
     return m_rightEncoder.getDistance();
+  }
+
+  public double getLeftEncoderRate(){
+    return m_leftEncoder.getRate();
+  }
+
+  public double getRightEncoderRate(){
+    return m_rightEncoder.getRate();
+  }
+
+  //getting average inch distance
+  public double getAverageEncoderRate(){
+    return (getLeftEncoderRate() + getRightEncoderRate()) / 2.0;
   }
 
   public double getAccelX(){
@@ -79,16 +90,22 @@ public class RomiDrivetrain extends SubsystemBase {
     return accelerometer.getY();
   }
 
-  public double getAccelZ(){
+  public double getAccelZ(){ 
     return accelerometer.getZ();
 
   }
 
+
   @Override
   public void periodic() {
-    System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
-    //double velocityX = Math.floor(m_integral_odometry.getChassisVelocityWithTime(getAccelX()) * 100000)/100000;
-    //System.out.println(velocityX);
+    double velocityX = Math.floor(m_integral_odometry.getChassisVelocityWithTime(getAccelX(),getAverageEncoderRate()) * 100000)/100000;
+    var test = m_integral_odometry.getWheelVelocity(velocityX, getGyroAngle());
+
+    System.out.println("left_velocity: " + test.leftMetersPerSecond  + " left_encoder: " + m_leftEncoder.getRate());
+    //m_integral_odometry.getPositionWithTime(m_gyro.getRotation2d(), test.leftMetersPerSecond);
+
+    //System.out.println(m_integral_odometry.getPoseMeters().getX());;
+    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
   }
 
   @Override
