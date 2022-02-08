@@ -3,37 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class TrajectoryOne {
+public class FollowTrajectory {
     Drivetrain m_drivetrain;
-    public Command generateTrajectory(Drivetrain drivetrain){
-        TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxVelocityMetersPerSecond, Constants.maxAccelerationMetersPerSecondSq)
-        .setKinematics(Constants.kDriveKinematics);
-    
-        Trajectory testTrajectory = TrajectoryGenerator.generateTrajectory(
-          new Pose2d(0, 0, new Rotation2d(0)), 
-          List.of(new Translation2d(2,0)),
-          new Pose2d(2,0, new Rotation2d(0)), 
-          config);
-        
+    public Command generateTrajectory(Drivetrain drivetrain, Trajectory m_traj){
          MecanumControllerCommand mecanumControllerCommand =
           new MecanumControllerCommand(
-            testTrajectory,
+            m_traj,
             drivetrain::getPose,
             Constants.kFeedforward,
             Constants.kDriveKinematics,
@@ -56,10 +41,11 @@ public class TrajectoryOne {
 
             //setting up sequence of commands
             //resetting the drivetrain odometry
-            return new InstantCommand(() -> drivetrain.resetOdometry(testTrajectory.getInitialPose()), drivetrain)
+            return new InstantCommand(() -> drivetrain.resetOdometry(m_traj.getInitialPose()), drivetrain)
               //run the actual MecanumControllor
               .andThen(mecanumControllerCommand)
               //Make sure that the robot stops
               .andThen(new InstantCommand (() -> drivetrain.mecanumVolts(new MecanumDriveMotorVoltages(0,0,0,0)), drivetrain));
       }
+
 }

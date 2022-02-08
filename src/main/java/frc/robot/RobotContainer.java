@@ -3,18 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Trajectories.TrajectoryCreation;
 import frc.robot.commands.DefaultDrive;
-import frc.robot.commands.TrajectoryOne;
+import frc.robot.commands.FollowTrajectory;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -22,9 +26,13 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final DefaultDrive m_defaultdrive = new DefaultDrive(m_drivetrain);
-  private final TrajectoryOne m_traj_one = new TrajectoryOne();
+  private final FollowTrajectory m_follower = new FollowTrajectory();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -32,11 +40,12 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    m_chooser.addOption("Mecanum Trajectory", m_traj_one.generateTrajectory(m_drivetrain));
+    m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
+    m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
     SmartDashboard.putData(m_chooser);
   }
 
-  private void configureDefaultCommands(){
+  private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_defaultdrive);
   }
 
@@ -46,7 +55,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous    
-    return m_traj_one.generateTrajectory(m_drivetrain);
+    // An ExampleCommand will run in autonomous
+    return m_chooser.getSelected();
   }
 }
