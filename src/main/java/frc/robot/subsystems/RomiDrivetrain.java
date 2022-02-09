@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
@@ -20,6 +18,7 @@ import frc.robot.sensors.RomiGyro;
 public class RomiDrivetrain extends SubsystemBase {
   private static final double kCountsPerRevolution = 1440.0;
   private static final double kWheelDiameterInch = 2.75591; // 70 mm
+
 
   private final Spark m_leftMotor = new Spark(0);
   private final Spark m_rightMotor = new Spark(1);
@@ -35,7 +34,8 @@ public class RomiDrivetrain extends SubsystemBase {
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final DifferentialDriveOdometry m_odometry;
 
-  private final DifferentialDriveKinematics m_kinematics;
+  public static DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.kTrackwidth);
+
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
@@ -86,9 +86,13 @@ public class RomiDrivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
-    //double velocityX = Math.floor(m_integral_odometry.getChassisVelocityWithTime(getAccelX()) * 100000)/100000;
-    //System.out.println(velocityX);
+    //First find the calibration value over an interval of 10 seconds
+    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
+
+    //Next thing would be finding the chassis velocity
+    System.out.println("Time: " + WPIUtilJNI.now() * 1.0e-6);
+    System.out.println("Veloctiy: " + m_integral_odometry.getChassisVelocityWithTime(getAccelX(), m_leftEncoder, m_rightEncoder));
+
   }
 
   @Override

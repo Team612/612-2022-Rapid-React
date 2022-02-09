@@ -10,8 +10,6 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.Encoder;
 
-import java.util.ArrayList;
-
 public class IntegralOdometry{
     private Pose2d m_currentPosition;
     private double m_previousTime = -1;
@@ -22,12 +20,15 @@ public class IntegralOdometry{
     private double accumulated_velocity;
     private double calib_accum_vel;
 
-
     public IntegralOdometry(Rotation2d gyroAngle, Pose2d initialPosition){
         m_currentPosition = initialPosition;
         m_gyroOffset = m_currentPosition.getRotation().minus(gyroAngle);
         m_previousAngle = initialPosition.getRotation();
     }
+
+    /**
+     * Resets the position of the robot
+     */
 
     public void resetPosition(Pose2d currentPosition, Rotation2d gyroAngle){
         m_currentPosition = currentPosition;
@@ -35,31 +36,15 @@ public class IntegralOdometry{
         m_gyroOffset = currentPosition.getRotation().minus(gyroAngle);
     }
 
+
+    /**
+     * Returns position in meters of the robot
+     */
     public Pose2d getPoseMeters(){
         return m_currentPosition;
     } 
+
     
-    private boolean isMoving(Encoder leftEncoder, Encoder rightEncoder){
-        if(leftEncoder.getDistance() > 0 || rightEncoder.getDistance() > 0 ){
-            return true;
-        }
-        return false;
-    }
-
-    public double getChassisVelocity(double currentTime, double getAccel){
-        double dt = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
-        m_previousTime = currentTime;
-        getAccel = getAccel - (-0.01835947409720002);
-        //bruh
-        accumulated_velocity += getAccel * dt;    
-        
-        return accumulated_velocity;
-    }
-
-    public double getChassisVelocityWithTime(double getAccel){
-        return  getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, getAccel);
-    }
-
     private double calibrateAccelerometer(double currentTime, double sample_time, double Accel){
         double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
@@ -70,8 +55,42 @@ public class IntegralOdometry{
         return calib_accum_vel * number_of_samples;
     }
 
+    /**
+     * Calibrates the Accelerometer over time by sampling data from the IMU and then finding the average from that
+     */
     public double calibrateAccelerometerWithTime(double sample_time, double Accel){
         return calibrateAccelerometer(WPIUtilJNI.now() * 1.0e-6, sample_time, Accel);
+    }
+
+
+    /**
+     * Checks if the robot is moving by looking at the wheel speeds.
+     */
+    private boolean moving(Encoder leftEncoder, Encoder rightEncoder){
+        if(Math.abs(Math.floor(leftEncoder.getRate() * 1000) / 1000) > 0 || Math.abs(Math.floor(rightEncoder.getRate() * 1000) / 1000) > 0){
+             return true;
+        }
+        else return false;
+    }
+
+    private double getChassisVelocity(double currentTime, double acceleration, Encoder leftEncoder, Encoder rightEncoder){
+        double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
+        m_previousTime = currentTime;
+        
+        if(moving(leftEncoder, rightEncoder)){
+            accumulated_velocity += (acceleration + 0.004700970386299997) * 9.81 * dt; //replace zero with the offset
+        }
+        else{
+            accumulated_velocity = 0;
+        }
+        return accumulated_velocity;
+    }
+
+    /**
+     * Find the chassis velocity over time via integrating the x component of the given acceleration
+     */
+    public double getChassisVelocityWithTime(double acceleration, Encoder leftEncoder, Encoder rightEncoder){
+        return getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, acceleration, leftEncoder, rightEncoder);
     }
 
     public Pose2d getPosition(double currentTime, Rotation2d currentAngle, double getVelX){
@@ -95,6 +114,9 @@ public class IntegralOdometry{
         return m_currentPosition;
     }
 
+    /**
+     * gets the position based off of wheel velocities.
+     */
     public Pose2d getPositionWithTime(Rotation2d gyroAngle, double getVelX){
         return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, getVelX);
     }
