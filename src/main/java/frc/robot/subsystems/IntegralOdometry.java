@@ -48,11 +48,15 @@ public class IntegralOdometry{
     private double calibrateAccelerometer(double currentTime, double sample_time, double Accel){
         double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
-        double number_of_samples = 1.0/(sample_time);
+        
+        double number_of_samples = (sample_time);
         if(currentTime < sample_time){
             calib_accum_vel += Accel * dt;
+            return 0.0;
         }
-        return calib_accum_vel * number_of_samples;
+        else{
+            return calib_accum_vel / number_of_samples;
+        }
     }
 
     /**
@@ -78,7 +82,7 @@ public class IntegralOdometry{
         m_previousTime = currentTime;
         
         if(moving(leftEncoder, rightEncoder)){
-            accumulated_velocity += (acceleration + 0.004700970386299997) * 9.81 * dt; //replace zero with the offset
+            accumulated_velocity += (acceleration + 0.01553210465649999 ) * 9.81 * dt; //replace zero with the offset
         }
         else{
             accumulated_velocity = 0;

@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -35,6 +34,7 @@ public class RomiDrivetrain extends SubsystemBase {
   private final DifferentialDriveOdometry m_odometry;
 
   public static DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.kTrackwidth);
+
 
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
@@ -81,18 +81,28 @@ public class RomiDrivetrain extends SubsystemBase {
 
   public double getAccelZ(){
     return accelerometer.getZ();
+  }
 
+  public Encoder getEncoderLeft(){
+    return m_leftEncoder;
+  }
+
+  public Encoder getEncoderRight(){
+    return m_rightEncoder;
+  }
+
+  public IntegralOdometry getIntegral(){
+    return m_integral_odometry;
   }
 
   @Override
   public void periodic() {
     //First find the calibration value over an interval of 10 seconds
-    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
+    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(20, getAccelX()));
 
     //Next thing would be finding the chassis velocity
-    System.out.println("Time: " + WPIUtilJNI.now() * 1.0e-6);
-    System.out.println("Veloctiy: " + m_integral_odometry.getChassisVelocityWithTime(getAccelX(), m_leftEncoder, m_rightEncoder));
-
+    //System.out.println("Time: " + WPIUtilJNI.now() * 1.0e-6);
+    //System.out.println("Veloctiy: " + m_integral_odometry.getChassisVelocityWithTime(getAccelX(), m_leftEncoder, m_rightEncoder));
   }
 
   @Override
