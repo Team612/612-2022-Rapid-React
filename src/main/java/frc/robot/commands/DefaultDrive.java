@@ -19,12 +19,16 @@ public class DefaultDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_drivetrain.driveMecanum(-ControlMap.driver.getRawAxis(1), ControlMap.driver.getRawAxis(0), ControlMap.driver.getRawAxis(4));
+    //m_drivetrain.driveMecanum(0, ControlMap.driver.getRawAxis(0),0);
+    //m_drivetrain.driveMecanum(0.5, -0.5, -0.5, 0.5);
+
     //m_drivetrain.driveMecanum( ControlMap.driver.getRawAxis(4), ControlMap.driver.getRawAxis(0),-ControlMap.driver.getRawAxis(1));
   }
 

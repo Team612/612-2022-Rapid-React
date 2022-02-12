@@ -31,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
   public final MotorControllerGroup m_leftMotor = new MotorControllerGroup(spark_fl, spark_bl);
   public final MotorControllerGroup m_rightMotor = new MotorControllerGroup(spark_fr, spark_br);
 
-  private final double DEADZONE = 0.01;
+  private final double DEADZONE = 0.1;
 
   private MecanumDrive drivetrain;
   public double vel = Constants.kEncoderDistancePerPulse / 60;
@@ -39,6 +39,8 @@ public class Drivetrain extends SubsystemBase {
   private final AHRS navx = new AHRS(I2C.Port.kMXP);
   MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
   private Field2d m_field = new Field2d();
+
+
 
   public Drivetrain() {
     SmartDashboard.putData("Field", m_field);
@@ -88,7 +90,6 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
-      //navx.getVelocityX();
   }
  
   public void simulationPeriodic(){
