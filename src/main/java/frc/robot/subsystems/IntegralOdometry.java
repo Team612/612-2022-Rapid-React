@@ -5,22 +5,26 @@
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.Encoder;
+import frc.robot.sensors.RomiGyro;
 
 public class IntegralOdometry{
     private Pose2d m_currentPosition;
     private double m_previousTime = -1;
-
     private Rotation2d m_gyroOffset;
     private Rotation2d m_previousAngle;
+
+    private final DifferentialDriveKinematics m_kinematics;
 
     private double accumulated_velocity;
     private double calib_accum_vel;
 
-    public IntegralOdometry(Rotation2d gyroAngle, Pose2d initialPosition){
+    public IntegralOdometry(DifferentialDriveKinematics kinematics, Rotation2d gyroAngle, Pose2d initialPosition){
+        m_kinematics = kinematics;
         m_currentPosition = initialPosition;
         m_gyroOffset = m_currentPosition.getRotation().minus(gyroAngle);
         m_previousAngle = initialPosition.getRotation();
@@ -29,7 +33,6 @@ public class IntegralOdometry{
     /**
      * Resets the position of the robot
      */
-
     public void resetPosition(Pose2d currentPosition, Rotation2d gyroAngle){
         m_currentPosition = currentPosition;
         m_previousAngle = currentPosition.getRotation();
@@ -82,12 +85,12 @@ public class IntegralOdometry{
         m_previousTime = currentTime;
         
         if(moving(leftEncoder, rightEncoder)){
-            accumulated_velocity += (acceleration + 0.01553210465649999 ) * 9.81 * dt; //replace zero with the offset
+            accumulated_velocity += (9.81 * (acceleration + 0.0175441691727)) *dt; //replace zero with the offset
         }
         else{
             accumulated_velocity = 0;
         }
-        return accumulated_velocity;
+        return accumulated_velocity * 39.36;
     }
 
     /**
@@ -97,16 +100,23 @@ public class IntegralOdometry{
         return getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, acceleration, leftEncoder, rightEncoder);
     }
 
-    public Pose2d getPosition(double currentTime, Rotation2d currentAngle, double getVelX){
+    
+    public double[] toWheelSpeeds(double ChassisSpeedX, double trackwidth, RomiGyro gyro){
+        return new double[] 
+        {ChassisSpeedX - trackwidth / 2 * gyro.getRate(), 
+        ChassisSpeedX + trackwidth / 2 * gyro.getRate()};
+    }
+
+    private Pose2d getPosition(double currentTime, Rotation2d currentAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
         double delta_t = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
 
         var angle = currentAngle.plus(m_gyroOffset);
-        Translation2d accel_vector = new Translation2d(getVelX, 0);
+        var chassisState = m_kinematics.toChassisSpeeds(wheelSpeeds);
         var newPose = 
             m_currentPosition.exp(
                 new Twist2d(
-                    accel_vector.getX() * delta_t,
+                    chassisState.vxMetersPerSecond * delta_t,
                     0, //must set to 0 for non holonomic drivetrains
                     angle.minus(m_previousAngle).getRadians()
                 )
@@ -121,7 +131,7 @@ public class IntegralOdometry{
     /**
      * gets the position based off of wheel velocities.
      */
-    public Pose2d getPositionWithTime(Rotation2d gyroAngle, double getVelX){
-        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, getVelX);
+    public Pose2d getPositionWithTime(Rotation2d gyroAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, wheelSpeeds);
     }
 }
