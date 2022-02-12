@@ -40,12 +40,22 @@ public class GetValues extends CommandBase {
             m_drivetrain.getIntegral().toWheelSpeeds(m_drivetrain.getIntegral().getChassisVelocityWithTime(m_drivetrain.getAccelX(), m_drivetrain.getEncoderLeft(), m_drivetrain.getEncoderRight()), 0.141, m_drivetrain.getGyro())[0], //make method better
             m_drivetrain.getIntegral().toWheelSpeeds(m_drivetrain.getIntegral().getChassisVelocityWithTime(m_drivetrain.getAccelX(), m_drivetrain.getEncoderLeft(), m_drivetrain.getEncoderRight()), 0.141, m_drivetrain.getGyro())[1], //make method better
         });*/
-    m_vector_values.put(WPIUtilJNI.now() * 1.0e-6,
+    /*m_vector_values.put(WPIUtilJNI.now() * 1.0e-6,
         new Double[]{
           m_drivetrain.getChassisVelocityX(),
           m_drivetrain.getAccelX(),
           m_drivetrain.getWheelSpeeds()[0],
           m_drivetrain.getWheelSpeeds()[1],
+        }
+    );*/
+    m_vector_values.put(WPIUtilJNI.now() * 1.0e-6,
+        new Double[]{
+          m_drivetrain.getChassisVelocityX(),
+          m_drivetrain.getChassisVelocityWithEncoder(),
+          m_drivetrain.getWheelSpeeds()[0],
+          m_drivetrain.getWheelSpeeds()[1],
+          m_drivetrain.getEncoderLeft().getRate(),
+          m_drivetrain.getEncoderRight().getRate()
         }
     );
 
@@ -62,28 +72,41 @@ public class GetValues extends CommandBase {
       }
  
       myWriter.append("\n");
-      myWriter.append("****VELOCITY***** \n"); 
+      myWriter.append("****Chassis Velocity IMU***** \n"); 
       for(double key: m_vector_values.keySet()){
         myWriter.append(m_vector_values.get(key)[0] + " \n");
       }
  
       myWriter.append("\n");
-      myWriter.append("****ACCELERATION**** \n");
+      myWriter.append("****Chassis Velocity Encoder**** \n");
       for(double key: m_vector_values.keySet()){
         myWriter.append(m_vector_values.get(key)[1] + " \n");
       }
  
       myWriter.append("\n");
-      myWriter.append("****WHEEL VELOCITIES LEFT WHEEL VELOCITY**** \n");
+      myWriter.append("****LEFT Wheel Speed IMU**** \n");
       for(double key: m_vector_values.keySet()){
         myWriter.append(m_vector_values.get(key)[2] + " \n");
       }
   
       myWriter.append("\n");
-      myWriter.append("****WHEEL VELOCITIES RIGHT WHEEL VELOCITY**** \n");
+      myWriter.append("****Right Wheel Speed IMU**** \n");
       for(double key: m_vector_values.keySet()){
         myWriter.append(m_vector_values.get(key)[3] + " \n");
       }
+
+      myWriter.append("\n");
+      myWriter.append("****Left Wheel Speed ENCODER**** \n");
+      for(double key: m_vector_values.keySet()){
+        myWriter.append(m_vector_values.get(key)[4] + " \n");
+      }
+
+      myWriter.append("\n");
+      myWriter.append("****Right Wheel Speed ENCODER**** \n");
+      for(double key: m_vector_values.keySet()){
+        myWriter.append(m_vector_values.get(key)[5] + " \n");
+      }
+
       myWriter.flush();
       myWriter.close();
     } 

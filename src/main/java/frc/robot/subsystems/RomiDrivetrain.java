@@ -50,7 +50,7 @@ public class RomiDrivetrain extends SubsystemBase {
     // Invert right side since motor is flipped
     m_rightMotor.setInverted(true);
   }
-
+ 
 
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
@@ -102,7 +102,7 @@ public class RomiDrivetrain extends SubsystemBase {
   }
 
   public double[] getWheelSpeeds(){
-    return new double[] {m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[0],  -(m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[1])};
+    return new double[] {m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[0],  (m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[1])};
   }
 
   public double avgWheelSpeed(){
@@ -124,13 +124,8 @@ public class RomiDrivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println(" chassis velocity: " + getChassisVelocityX() + " Chassis velocity with Encoder: " + getChassisVelocityWithEncoder());
-    //System.out.println();
-    m_integral_odometry.getPositionWithTime(m_gyro.getRotation2d(), new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate()));
-    //m_integral_odometry.getPositionWithTime(m_gyro.getRotation2d(), new DifferentialDriveWheelSpeeds(-getWheelSpeeds()[0], getWheelSpeeds()[1]));
-    
-    //System.out.println(-getWheelSpeeds()[0] + " " + getWheelSpeeds()[1] + " " + (m_leftEncoder.getRate() + "  " + m_rightEncoder.getRate()));
-    System.out.println(m_integral_odometry.getPoseMeters().getX());
+    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
+    //System.out.println( m_integral_odometry.getPositionWithTime(m_gyro.getRotation2d(), new DifferentialDriveWheelSpeeds(getWheelSpeeds()[0], getWheelSpeeds()[1])).getX());
   }
 
   @Override

@@ -85,12 +85,12 @@ public class IntegralOdometry{
         m_previousTime = currentTime;
         
         if(moving(leftEncoder, rightEncoder)){
-            accumulated_velocity += (9.81 * (acceleration + 0.0175441691727)) *dt; //replace zero with the offset
+            accumulated_velocity += (9.81 * (acceleration + 0.020660381519000008)) *dt; //replace zero with the offset
         }
         else{
             accumulated_velocity = 0;
         }
-        return accumulated_velocity * 39.36;
+        return -(accumulated_velocity * 39.36);
     }
 
     /**
@@ -122,9 +122,7 @@ public class IntegralOdometry{
                 )
             );
         m_previousAngle = angle;
-
         m_currentPosition = new Pose2d(newPose.getTranslation(), angle);
-
         return m_currentPosition;
     }
 
