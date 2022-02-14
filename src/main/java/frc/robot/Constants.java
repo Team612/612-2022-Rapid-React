@@ -32,6 +32,11 @@ public final class Constants {
     //Distance between centers of front and back wheels on robot
     public static final double kWheelBase = 0.676275; 
 
+    /**
+     * 27 1/4 inches = 0.69125
+     * 33 = 0.8382
+     */
+
     public static final double kEncoderCPR = 1; 
     public static final double kGearReduction = 16;
     
@@ -73,7 +78,7 @@ public final class Constants {
     
     //trajectory constraints
     public static final int kMaxVelocityMetersPerSecond = 3;
-    public static final int maxAccelerationMetersPerSecondSq = 3;
+    public static final int maxAccelerationMetersPerSecondSq = 1;
     public static final double kMaxAngularVelocity = Math.PI;
     public static final double kMaxAngularAcceleration = Math.PI;
 

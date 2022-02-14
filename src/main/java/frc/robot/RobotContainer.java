@@ -27,7 +27,6 @@ public class RobotContainer {
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final DefaultDrive m_defaultdrive = new DefaultDrive(m_drivetrain);
   private final FollowTrajectory m_follower = new FollowTrajectory();
-
   private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
 
   /**
@@ -42,6 +41,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
     m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
+    m_chooser.addOption("New New Path", m_follower.generateTrajectory(m_drivetrain, m_trajectory.examplePath));
     SmartDashboard.putData(m_chooser);
   }
 
