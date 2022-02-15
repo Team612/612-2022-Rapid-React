@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.sensors.RomiGyro;
@@ -17,7 +16,6 @@ public class IntegralOdometry{
     private double m_previousTime = -1;
     private Rotation2d m_gyroOffset;
     private Rotation2d m_previousAngle;
-
     private final DifferentialDriveKinematics m_kinematics;
 
     private double accumulated_velocity;
@@ -38,14 +36,6 @@ public class IntegralOdometry{
         m_previousAngle = currentPosition.getRotation();
         m_gyroOffset = currentPosition.getRotation().minus(gyroAngle);
     }
-
-
-    /**
-     * Returns position in meters of the robot
-     */
-    public Pose2d getPoseMeters(){
-        return m_currentPosition;
-    } 
 
     
     private double calibrateAccelerometer(double currentTime, double sample_time, double Accel){
@@ -85,7 +75,7 @@ public class IntegralOdometry{
         m_previousTime = currentTime;
         
         if(moving(leftEncoder, rightEncoder)){
-            accumulated_velocity += (9.81 * (acceleration + 0.020660381519000008)) *dt; //replace zero with the offset
+            accumulated_velocity += (9.81 * (acceleration +0.009402043075699988)) *dt; //replace zero with the offset
         }
         else{
             accumulated_velocity = 0;
@@ -107,16 +97,15 @@ public class IntegralOdometry{
         ChassisSpeedX + trackwidth / 2 * gyro.getRate()};
     }
 
-    private Pose2d getPosition(double currentTime, Rotation2d currentAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+    private Pose2d getPosition(double currentTime, Rotation2d currentAngle, double chassis_speed){
         double delta_t = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
 
         var angle = currentAngle.plus(m_gyroOffset);
-        var chassisState = m_kinematics.toChassisSpeeds(wheelSpeeds);
         var newPose = 
             m_currentPosition.exp(
                 new Twist2d(
-                    chassisState.vxMetersPerSecond * delta_t,
+                    chassis_speed * delta_t,
                     0, //must set to 0 for non holonomic drivetrains
                     angle.minus(m_previousAngle).getRadians()
                 )
@@ -126,10 +115,33 @@ public class IntegralOdometry{
         return m_currentPosition;
     }
 
+    // private Pose2d getPosition(double currentTime, Rotation2d currentAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+    //     double delta_t = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
+    //     m_previousTime = currentTime;
+
+    //     var angle = currentAngle.plus(m_gyroOffset);
+    //     var chassisSpeed = m_kinematics.toChassisSpeeds(wheelSpeeds);
+    //     var newPose = 
+    //         m_currentPosition.exp(
+    //             new Twist2d(
+    //                 chassisSpeed.vxMetersPerSecond * delta_t,
+    //                 0, //must set to 0 for non holonomic drivetrains
+    //                 angle.minus(m_previousAngle).getRadians()
+    //             )
+    //         );
+    //     m_previousAngle = angle;
+    //     m_currentPosition = new Pose2d(newPose.getTranslation(), angle);
+    //     return m_currentPosition;
+    // }
+
     /**
      * gets the position based off of wheel velocities.
      */
-    public Pose2d getPositionWithTime(Rotation2d gyroAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
-        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, wheelSpeeds);
+    public Pose2d getPositionWithTime(Rotation2d gyroAngle, double chassis_speed){
+        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, chassis_speed);
     }
+
+    // public Pose2d getPositionWithTime(Rotation2d gyroAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+    //     return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, wheelSpeeds);
+    // }
 }
