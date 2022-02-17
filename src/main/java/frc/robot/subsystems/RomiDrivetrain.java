@@ -4,15 +4,11 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.sensors.RomiGyro;
 
 public class RomiDrivetrain extends SubsystemBase {
@@ -33,10 +29,6 @@ public class RomiDrivetrain extends SubsystemBase {
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
-  public static DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.kTrackwidth);
-
-  public static DifferentialDriveOdometry m_odometry;
-
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
@@ -44,11 +36,11 @@ public class RomiDrivetrain extends SubsystemBase {
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
     m_gyro = new RomiGyro();
-    m_integral_odometry = new IntegralOdometry(m_kinematics, m_gyro.getRotation2d(), new Pose2d());
-    m_integral_odometry2 = new IntegralOdometry(m_kinematics, m_gyro.getRotation2d(), new Pose2d());
+    m_integral_odometry = new IntegralOdometry( m_gyro.getRotation2d(), new Pose2d());
+    m_integral_odometry2 = new IntegralOdometry( m_gyro.getRotation2d(), new Pose2d());
+    
     // Invert right side since motor is flipped
     m_rightMotor.setInverted(true);
-    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d()); 
   }
 
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
@@ -96,30 +88,16 @@ public class RomiDrivetrain extends SubsystemBase {
     return m_gyro;
   }
 
-  public double[] getWheelSpeeds() {
-    return new double[] { m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[0],
-        (m_integral_odometry.toWheelSpeeds(getChassisVelocityX(), 0.141, m_gyro)[1]) };
-  }
 
   public double getChassisVelocityX() {
     return m_integral_odometry.getChassisVelocityWithTime(getAccelX(), m_leftEncoder, m_rightEncoder);
   }
-
-  public double getChassisVelocityWithEncoder() {
-    var bruh = m_kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate()));
-    return bruh.vxMetersPerSecond;
-  }
-
-  public DifferentialDriveWheelSpeeds EncoderVel() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
-  }
-
+ 
   @Override
   public void periodic() {
-    // System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
-    System.out.print(m_integral_odometry2.getPositionWithTime(m_gyro.getRotation2d(), getChassisVelocityX()).getX());
-    // m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    // System.out.print(" " + m_odometry.getPoseMeters().getX() + " \n");
+    //System.out.println(m_integral_odometry.calibrateAccelerometerWithTime(10, getAccelX()));
+    System.out.println(m_integral_odometry2.getPositionWithTime(m_gyro.getRotation2d(), getChassisVelocityX()).getX());
+    
   }
 
   @Override
