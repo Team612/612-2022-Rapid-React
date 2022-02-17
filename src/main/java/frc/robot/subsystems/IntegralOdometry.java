@@ -5,97 +5,143 @@
 package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.Encoder;
-
-import java.util.ArrayList;
+import frc.robot.sensors.RomiGyro;
 
 public class IntegralOdometry{
     private Pose2d m_currentPosition;
     private double m_previousTime = -1;
-
     private Rotation2d m_gyroOffset;
     private Rotation2d m_previousAngle;
+    private final DifferentialDriveKinematics m_kinematics;
 
     private double accumulated_velocity;
     private double calib_accum_vel;
 
-
-    public IntegralOdometry(Rotation2d gyroAngle, Pose2d initialPosition){
+    public IntegralOdometry(DifferentialDriveKinematics kinematics, Rotation2d gyroAngle, Pose2d initialPosition){
+        m_kinematics = kinematics;
         m_currentPosition = initialPosition;
         m_gyroOffset = m_currentPosition.getRotation().minus(gyroAngle);
         m_previousAngle = initialPosition.getRotation();
     }
 
+    /**
+     * Resets the position of the robot
+     */
     public void resetPosition(Pose2d currentPosition, Rotation2d gyroAngle){
         m_currentPosition = currentPosition;
         m_previousAngle = currentPosition.getRotation();
         m_gyroOffset = currentPosition.getRotation().minus(gyroAngle);
     }
 
-    public Pose2d getPoseMeters(){
-        return m_currentPosition;
-    } 
     
-    private boolean isMoving(Encoder leftEncoder, Encoder rightEncoder){
-        if(leftEncoder.getDistance() > 0 || rightEncoder.getDistance() > 0 ){
-            return true;
-        }
-        return false;
-    }
-
-    public double getChassisVelocity(double currentTime, double getAccel){
-        double dt = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
-        m_previousTime = currentTime;
-        getAccel = getAccel - (-0.01835947409720002);
-        //bruh
-        accumulated_velocity += getAccel * dt;    
-        
-        return accumulated_velocity;
-    }
-
-    public double getChassisVelocityWithTime(double getAccel){
-        return  getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, getAccel);
-    }
-
     private double calibrateAccelerometer(double currentTime, double sample_time, double Accel){
         double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
-        double number_of_samples = 1.0/(sample_time);
+        
+        double number_of_samples = (sample_time);
         if(currentTime < sample_time){
             calib_accum_vel += Accel * dt;
+            return 0.0;
         }
-        return calib_accum_vel * number_of_samples;
+        else{
+            return calib_accum_vel / number_of_samples;
+        }
     }
 
+    /**
+     * Calibrates the Accelerometer over time by sampling data from the IMU and then finding the average from that
+     */
     public double calibrateAccelerometerWithTime(double sample_time, double Accel){
         return calibrateAccelerometer(WPIUtilJNI.now() * 1.0e-6, sample_time, Accel);
     }
 
-    public Pose2d getPosition(double currentTime, Rotation2d currentAngle, double getVelX){
+
+    /**
+     * Checks if the robot is moving by looking at the wheel speeds.
+     */
+    private boolean moving(Encoder leftEncoder, Encoder rightEncoder){
+        if(Math.abs(Math.floor(leftEncoder.getRate() * 1000) / 1000) > 0 || Math.abs(Math.floor(rightEncoder.getRate() * 1000) / 1000) > 0){
+             return true;
+        }
+        else return false;
+    }
+
+    private double getChassisVelocity(double currentTime, double acceleration, Encoder leftEncoder, Encoder rightEncoder){
+        double dt = m_previousTime >= 0 ? currentTime - m_previousTime : 0.0;
+        m_previousTime = currentTime;
+        
+        if(moving(leftEncoder, rightEncoder)){
+            accumulated_velocity += (9.81 * (acceleration +0.009402043075699988)) *dt; //replace zero with the offset
+        }
+        else{
+            accumulated_velocity = 0;
+        }
+        return -(accumulated_velocity * 39.36);
+    }
+
+    /**
+     * Find the chassis velocity over time via integrating the x component of the given acceleration
+     */
+    public double getChassisVelocityWithTime(double acceleration, Encoder leftEncoder, Encoder rightEncoder){
+        return getChassisVelocity(WPIUtilJNI.now() * 1.0e-6, acceleration, leftEncoder, rightEncoder);
+    }
+
+    
+    public double[] toWheelSpeeds(double ChassisSpeedX, double trackwidth, RomiGyro gyro){
+        return new double[] 
+        {ChassisSpeedX - trackwidth / 2 * gyro.getRate(), 
+        ChassisSpeedX + trackwidth / 2 * gyro.getRate()};
+    }
+
+    private Pose2d getPosition(double currentTime, Rotation2d currentAngle, double chassis_speed){
         double delta_t = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
         m_previousTime = currentTime;
 
         var angle = currentAngle.plus(m_gyroOffset);
-        Translation2d accel_vector = new Translation2d(getVelX, 0);
         var newPose = 
             m_currentPosition.exp(
                 new Twist2d(
-                    accel_vector.getX() * delta_t,
+                    chassis_speed * delta_t,
                     0, //must set to 0 for non holonomic drivetrains
                     angle.minus(m_previousAngle).getRadians()
                 )
             );
         m_previousAngle = angle;
-
         m_currentPosition = new Pose2d(newPose.getTranslation(), angle);
-
         return m_currentPosition;
     }
 
-    public Pose2d getPositionWithTime(Rotation2d gyroAngle, double getVelX){
-        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, getVelX);
+    // private Pose2d getPosition(double currentTime, Rotation2d currentAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+    //     double delta_t = m_previousTime >= 0? currentTime - m_previousTime : 0.0;
+    //     m_previousTime = currentTime;
+
+    //     var angle = currentAngle.plus(m_gyroOffset);
+    //     var chassisSpeed = m_kinematics.toChassisSpeeds(wheelSpeeds);
+    //     var newPose = 
+    //         m_currentPosition.exp(
+    //             new Twist2d(
+    //                 chassisSpeed.vxMetersPerSecond * delta_t,
+    //                 0, //must set to 0 for non holonomic drivetrains
+    //                 angle.minus(m_previousAngle).getRadians()
+    //             )
+    //         );
+    //     m_previousAngle = angle;
+    //     m_currentPosition = new Pose2d(newPose.getTranslation(), angle);
+    //     return m_currentPosition;
+    // }
+
+    /**
+     * gets the position based off of wheel velocities.
+     */
+    public Pose2d getPositionWithTime(Rotation2d gyroAngle, double chassis_speed){
+        return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, chassis_speed);
     }
+
+    // public Pose2d getPositionWithTime(Rotation2d gyroAngle, DifferentialDriveWheelSpeeds wheelSpeeds){
+    //     return getPosition(WPIUtilJNI.now() * 1.0e-6, gyroAngle, wheelSpeeds);
+    // }
 }
