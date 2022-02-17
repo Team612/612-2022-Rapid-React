@@ -51,9 +51,6 @@ public class GetValues extends CommandBase {
     m_vector_values.put(WPIUtilJNI.now() * 1.0e-6,
         new Double[]{
           m_drivetrain.getChassisVelocityX(),
-          m_drivetrain.getChassisVelocityWithEncoder(),
-          m_drivetrain.getWheelSpeeds()[0],
-          m_drivetrain.getWheelSpeeds()[1],
           m_drivetrain.getEncoderLeft().getRate(),
           m_drivetrain.getEncoderRight().getRate()
         }
@@ -76,35 +73,17 @@ public class GetValues extends CommandBase {
       for(double key: m_vector_values.keySet()){
         myWriter.append(m_vector_values.get(key)[0] + " \n");
       }
- 
-      myWriter.append("\n");
-      myWriter.append("****Chassis Velocity Encoder**** \n");
-      for(double key: m_vector_values.keySet()){
-        myWriter.append(m_vector_values.get(key)[1] + " \n");
-      }
- 
-      myWriter.append("\n");
-      myWriter.append("****LEFT Wheel Speed IMU**** \n");
-      for(double key: m_vector_values.keySet()){
-        myWriter.append(m_vector_values.get(key)[2] + " \n");
-      }
   
-      myWriter.append("\n");
-      myWriter.append("****Right Wheel Speed IMU**** \n");
-      for(double key: m_vector_values.keySet()){
-        myWriter.append(m_vector_values.get(key)[3] + " \n");
-      }
-
       myWriter.append("\n");
       myWriter.append("****Left Wheel Speed ENCODER**** \n");
       for(double key: m_vector_values.keySet()){
-        myWriter.append(m_vector_values.get(key)[4] + " \n");
+        myWriter.append(m_vector_values.get(key)[1] + " \n");
       }
 
       myWriter.append("\n");
       myWriter.append("****Right Wheel Speed ENCODER**** \n");
       for(double key: m_vector_values.keySet()){
-        myWriter.append(m_vector_values.get(key)[5] + " \n");
+        myWriter.append(m_vector_values.get(key)[2] + " \n");
       }
 
       myWriter.flush();
