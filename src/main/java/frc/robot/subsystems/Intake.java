@@ -11,14 +11,15 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  private final Servo topLeft = new Servo(0);
-  private final Servo topRight = new Servo(1);
-  private final Servo bottomLeft = new Servo(2);
-  private final Servo bottomRight = new Servo(3);
-  private final Servo wrist = new Servo(4);
+  private final Servo topLeft = new Servo(Constants.topLeftChannel);
+  private final Servo topRight = new Servo(Constants.topRightChannel);
+  private final Servo bottomLeft = new Servo(Constants.bottomLeftChannel);
+  private final Servo bottomRight = new Servo(Constants.bottomRightChannel);
+  private final Servo wrist = new Servo(Constants.wristChannel);
   private final Talon arm = new Talon(Constants.Talon);
-  private final Ultrasonic echo = new Ultrasonic(0, 1);
-  private double DIST_THRESH = 10;
+  private final Ultrasonic topEcho = new Ultrasonic(Constants.echoTop[0], Constants.echoTop[1]);
+  private final Ultrasonic bottomEcho = new Ultrasonic(Constants.echoBottom[0], Constants.echoBottom[1]);
+  private double DIST_THRESH = Constants.distanceThresh;
 
   public Intake() {}
   public void TopServoOpen() {
@@ -54,12 +55,18 @@ public class Intake extends SubsystemBase {
     wrist.setAngle(0);
   }
 
-  public void closeByDefault() {
-    if (echo.getRangeInches() <= DIST_THRESH) {
-      BottomServoClose();
+  public void topCloseByDefault() {
+    if (topEcho.getRangeInches() <= DIST_THRESH) {
       TopServoClose();
     }
-    echo.setAutomaticMode(true);
+    topEcho.setAutomaticMode(true);
+  }
+
+  public void bottomCloseByDefault() {
+    if (bottomEcho.getRangeInches() <= DIST_THRESH) {
+      BottomServoClose();
+    }
+    bottomEcho.setAutomaticMode(true);
   }
   
   @Override
