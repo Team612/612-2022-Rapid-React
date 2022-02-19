@@ -4,6 +4,7 @@
 
 package frc.robot.controls;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class ControlMap{
     //driver ports
@@ -13,4 +14,10 @@ public class ControlMap{
     //Controller objects
     public static Joystick driver = new Joystick(DRIVER_PORT);
     public static Joystick gunner = new Joystick(GUNNER_PORT);
+
+    public static double pivotValue;
+
+    public static final JoystickButton X = new JoystickButton(gunner, 0);
+    public static final JoystickButton Y = new JoystickButton(gunner, 1);
+    public static final JoystickButton B = new JoystickButton(gunner, 2);
 }

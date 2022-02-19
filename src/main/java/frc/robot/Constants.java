@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public final static int Talon = 0;
     //Spark constants
     public final static int SPARK_FL = 1;
     public final static int SPARK_FR = 2;
