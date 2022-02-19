@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -84,4 +85,22 @@ public final class Constants {
     //Feedforward 
     public static final SimpleMotorFeedforward kFeedforward =
         new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
+    
+    //climb
+    public static int Talon = 3;
+    public static int PCM_2 = 1;
+    public static int[] firstSolenoid = {4, 5};
+    public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
+    //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
+    public static int forward = 4;
+    public static int reverse = 5;
+    public static int secondForward = 6;
+    public static int secondReverse = 7;
+    public static int setMotorSpeed = 1;
+    public static int swings = 0;
+    public static int Servos = 0;
+    public static double height = 15.375;
+    public static double length = 24.0;
+    public static double pi = Math.PI;
+    public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
 }
