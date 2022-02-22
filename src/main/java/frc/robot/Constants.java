@@ -17,7 +17,20 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //Talon Constants
     public final static int Talon = 0;
+    //Ultrasonic Constants
+    public final static int[] echoTop = {0, 1};
+    public final static int[] echoBottom = {2, 3};
+    //Distance Threshold
+    public final static int distanceThresh = 10;
+    //Servo constants
+    public final static int topLeftChannel = 0;
+    public final static int topRightChannel = 1;
+    public final static int bottomLeftChannel = 2;
+    public final static int bottomRightChannel = 3;
+    //Wrist Constants
+    public final static int wristChannel = 5;
     //Spark constants
     public final static int SPARK_FL = 1;
     public final static int SPARK_FR = 2;

@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class Top extends CommandBase {
-  /** Creates a new ServoOpenAndClose. */
-  public final Intake m_intake;
-  public Top(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class TopOpen extends CommandBase {
+  private final Intake m_intake;
+  /** Creates a new TopLeft. */
+  public TopOpen(Intake intake) {
     m_intake = intake;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
 
@@ -28,9 +28,7 @@ public class Top extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intake.TopServoClose();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

@@ -10,11 +10,13 @@ import frc.robot.Trajectories.TrajectoryCreation;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.FollowTrajectory;
 import frc.robot.commands.TalonFlex;
+import frc.robot.commands.TopClose;
+import frc.robot.commands.TopOpen;
+import frc.robot.commands.Wrist;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -34,6 +36,9 @@ public class RobotContainer {
   private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
   private final Intake m_intake = new Intake();
   private final TalonFlex m_talonFlex = new TalonFlex(m_intake);
+  private final Wrist m_wrist = new Wrist(m_intake);
+  private final TopOpen m_topOpen = new TopOpen(m_intake);
+  private final TopClose m_topClose = new TopClose(m_intake);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -49,14 +54,16 @@ public class RobotContainer {
     m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
     m_chooser.addOption("New New Path", m_follower.generateTrajectory(m_drivetrain, m_trajectory.examplePath));
     SmartDashboard.putData(m_chooser);
-    ControlMap.X.toggleWhenPressed(new StartEndCommand(m_intake::BottomServoOpen, m_intake::BottomServoClose, m_intake));
-    ControlMap.Y.toggleWhenPressed(new StartEndCommand(m_intake::TopServoOpen, m_intake::TopServoClose, m_intake));
-    ControlMap.B.toggleWhenPressed(new StartEndCommand(m_intake::WristOpen, m_intake::WristClose, m_intake));
+    //ControlMap.X.toggleWhenPressed(new StartEndCommand(m_intake::BottomServoOpen, m_intake::BottomServoClose, m_intake));
+    //ControlMap.Y.toggleWhenPressed(new StartEndCommand(m_intake::TopServoOpen, m_intake::TopServoClose, m_intake));
+    ControlMap.Y.whenPressed(m_topClose);
+    ControlMap.X.whenPressed(m_topOpen);
   }
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_defaultdrive);
     m_intake.setDefaultCommand(m_talonFlex);
+    m_intake.setDefaultCommand(m_wrist);
   }
 
   /**
