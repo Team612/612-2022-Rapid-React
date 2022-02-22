@@ -3,10 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import java.math.*;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -17,76 +16,22 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //Spark constants
-    public final static int SPARK_FL = 1;
-    public final static int SPARK_FR = 2;
-    public final static int SPARK_BL = 3;
-    public final static int SPARK_BR = 4;
-
-    //wheel diameter
-    public static final double kWheelDiameterMeters = 0.1524;
-    
-    //Distance between centers of right and left wheels on robot
-    public static final double kTrackWidth = 0.5969; 
-
-    //Distance between centers of front and back wheels on robot
-    public static final double kWheelBase = 0.676275; 
-
-    /**
-     * 27 1/4 inches = 0.69125
-     * 33 = 0.8382
-     */
-
-    public static final double kEncoderCPR = 1; 
-    public static final double kGearReduction = 16;
-    
-    //Finding Distance per pulse
-    public static final double kEncoderDistancePerPulse =
-        ((kWheelDiameterMeters * Math.PI)) / (kGearReduction);
- 
-    //Feedforward gains for system dynamics 
-    public static final double kS = 0.11104; 
-    public static final double kV = 4.1572;  
-    public static final double kA = 0.21354;
-    
-    //Angular gains
-    public static final double kV_Angular = 1; //
-    public static final double kA_Angular = 1; //
-
-    //position controllers
-
-    //have to tune manually
-    public static final double kPXController = .5;
-    public static final double kPYController = .5;
-    public static final double kPThetaController = .5; //TODO
-
-    
-    //Velocity controllers
-    public static final double kPFrontLeftVel = 3.8167; 
-    public static final double kPRearLeftVel = 3.8167;
-    public static final double kPFrontRightVel = 3.8167;
-    public static final double kPRearRightVel = 3.8167;
-
-    //Converting chassis velocity into individual wheel velocities
-    public static final MecanumDriveKinematics kDriveKinematics =
-        new MecanumDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
-    );
-    
-    //trajectory constraints
-    public static final int kMaxVelocityMetersPerSecond = 3;
-    public static final int maxAccelerationMetersPerSecondSq = 1;
-    public static final double kMaxAngularVelocity = Math.PI;
-    public static final double kMaxAngularAcceleration = Math.PI;
-
-    //angular constraints
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = 
-        new TrapezoidProfile.Constraints(kMaxAngularVelocity, kMaxAngularAcceleration);
-
-    //Feedforward 
-    public static final SimpleMotorFeedforward kFeedforward =
-        new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
+    public static int Talon = 1;
+    public static int PCM_2 = 1;
+    public static int[] firstSolenoid = {4, 5};
+    public static int[] secondSolenoid = {6, 7};
+    public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
+    //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
+    public static int forward = 4;
+    public static int reverse = 5;
+    public static int secondForward = 6;
+    public static int secondReverse = 7;
+    public static int setMotorSpeed = 1;
+    public static int swings = 0;
+    public static int Servos = 0;
+    public static double height = 15.375;
+    public static double length = 24.0;
+    public static double pi = Math.PI;
+    public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
 }
+
