@@ -7,14 +7,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Trajectories.TrajectoryCreation;
+import frc.robot.commands.BottomOpen;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.FollowTrajectory;
+import frc.robot.commands.Pivot;
 import frc.robot.commands.TalonFlex;
-import frc.robot.commands.TopClose;
+import frc.robot.commands.TopAutoClose;
+import frc.robot.commands.BottomAutoClose;
 import frc.robot.commands.TopOpen;
 import frc.robot.commands.Wrist;
 import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
+//import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -38,7 +43,11 @@ public class RobotContainer {
   private final TalonFlex m_talonFlex = new TalonFlex(m_intake);
   private final Wrist m_wrist = new Wrist(m_intake);
   private final TopOpen m_topOpen = new TopOpen(m_intake);
-  private final TopClose m_topClose = new TopClose(m_intake);
+  private final BottomOpen m_bottomOpen = new BottomOpen(m_intake);
+  private final TopAutoClose m_topAutoClose = new TopAutoClose(m_intake);
+  private final BottomAutoClose m_bottomAutoClose = new BottomAutoClose(m_intake);
+  private final Climb m_climb = new Climb();
+  private final Pivot m_pivot = new Pivot(m_climb);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,20 +59,22 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
-    m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
-    m_chooser.addOption("New New Path", m_follower.generateTrajectory(m_drivetrain, m_trajectory.examplePath));
+    //m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
+    //m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
+    //m_chooser.addOption("New New Path", m_follower.generateTrajectory(m_drivetrain, m_trajectory.examplePath));
     SmartDashboard.putData(m_chooser);
     //ControlMap.X.toggleWhenPressed(new StartEndCommand(m_intake::BottomServoOpen, m_intake::BottomServoClose, m_intake));
     //ControlMap.Y.toggleWhenPressed(new StartEndCommand(m_intake::TopServoOpen, m_intake::TopServoClose, m_intake));
-    ControlMap.Y.whenPressed(m_topClose);
     ControlMap.X.whenPressed(m_topOpen);
+    ControlMap.X.whenPressed(m_topAutoClose);
+    ControlMap.Y.whenPressed(m_bottomOpen);
+    ControlMap.Y.whenPressed(m_bottomAutoClose);
+    ControlMap.B.whenPressed(m_wrist);
   }
 
   private void configureDefaultCommands() {
-    m_drivetrain.setDefaultCommand(m_defaultdrive);
+    //m_drivetrain.setDefaultCommand(m_defaultdrive);
     m_intake.setDefaultCommand(m_talonFlex);
-    m_intake.setDefaultCommand(m_wrist);
   }
 
   /**

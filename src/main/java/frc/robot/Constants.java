@@ -18,7 +18,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
     //Talon Constants
-    public final static int Talon = 0;
+    public final static int Talon = 7;
     //Ultrasonic Constants
     public final static int[] echoTop = {0, 1};
     public final static int[] echoBottom = {2, 3};

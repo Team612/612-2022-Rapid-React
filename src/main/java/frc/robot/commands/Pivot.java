@@ -5,26 +5,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Climb;
 
-public class TopClose extends CommandBase {
-  /** Creates a new TopClose. */
-  private final Intake m_intake;
-  public TopClose(Intake intake) {
+public class Pivot extends CommandBase {
+  /** Creates a new Pivot. */
+  private final Climb m_climb;
+  public Pivot(Climb climb) {
+    m_climb = climb;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = intake;
-    addRequirements(intake);
+    addRequirements(climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_intake.TopServoClose();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_climb.setSpeed(ControlMap.gunner.getRawAxis(1));
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -18,6 +18,6 @@ public class ControlMap{
     public static double pivotValue;
 
     public static final JoystickButton X = new JoystickButton(gunner, 3);
-    public static final JoystickButton Y = new JoystickButton(gunner, 1);
+    public static final JoystickButton Y = new JoystickButton(gunner, 4);
     public static final JoystickButton B = new JoystickButton(gunner, 2);
 }

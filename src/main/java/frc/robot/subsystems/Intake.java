@@ -3,6 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -16,7 +19,7 @@ public class Intake extends SubsystemBase {
   private final Servo topRight = new Servo(Constants.topRightChannel);
   private final Servo bottomLeft = new Servo(Constants.bottomLeftChannel);
   private final Servo bottomRight = new Servo(Constants.bottomRightChannel);
-  private final Spark wrist = new Spark(Constants.wristChannel);
+  private final CANSparkMax wrist = new CANSparkMax(Constants.wristChannel, MotorType.kBrushless);
   private final Talon arm = new Talon(Constants.Talon);
   private final Ultrasonic topEcho = new Ultrasonic(Constants.echoTop[0], Constants.echoTop[1]);
   private final Ultrasonic bottomEcho = new Ultrasonic(Constants.echoBottom[0], Constants.echoBottom[1]);
@@ -47,27 +50,26 @@ public class Intake extends SubsystemBase {
     //moves on a fixed point
     arm.set(speed);
   }
-
   public void wristFlex(double speed) {
     wrist.set(speed);
   }
-
+  public double wristCheck() {
+    return wrist.getEncoder().getPosition();
+  }
   public void topCloseByDefault() {
     if (topEcho.getRangeInches() <= DIST_THRESH) {
       TopServoClose();
     }
     topEcho.setAutomaticMode(true);
   }
-
   public void bottomCloseByDefault() {
     if (bottomEcho.getRangeInches() <= DIST_THRESH) {
       BottomServoClose();
     }
     bottomEcho.setAutomaticMode(true);
   }
-  
-  public double getPos() {
-    return topLeft.getPosition();
+  public double servoCheck() {
+    return topLeft.getAngle();
   }
 
   @Override

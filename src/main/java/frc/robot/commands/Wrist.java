@@ -25,12 +25,12 @@ public class Wrist extends CommandBase {
   @Override
   public void execute() {
     m_intake.wristFlex(ControlMap.gunner.getRawAxis(1));
+    System.out.println(m_intake.wristCheck());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
