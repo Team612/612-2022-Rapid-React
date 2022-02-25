@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,8 +22,11 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.IMU.IntegralOdometry;
+
 
 public class Drivetrain extends SubsystemBase {
+
   public final CANSparkMax spark_fl = new CANSparkMax(Constants.SPARK_FL, MotorType.kBrushless);
   public final CANSparkMax spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
   public final CANSparkMax spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
@@ -31,6 +35,9 @@ public class Drivetrain extends SubsystemBase {
   public final MotorControllerGroup m_leftMotor = new MotorControllerGroup(spark_fl, spark_bl);
   public final MotorControllerGroup m_rightMotor = new MotorControllerGroup(spark_fr, spark_br);
 
+  private final IntegralOdometry m_integral_odometry1;
+  private final IntegralOdometry m_integral_odometry2;
+  
   private final double DEADZONE = 0.1;
 
   private MecanumDrive drivetrain;
@@ -41,10 +48,8 @@ public class Drivetrain extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
 
-
   public Drivetrain() {
     SmartDashboard.putData("Field", m_field);
-
     drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
     spark_fr.setInverted(true);
     spark_br.setInverted(true);
@@ -63,6 +68,10 @@ public class Drivetrain extends SubsystemBase {
     spark_fr.setIdleMode(IdleMode.kBrake);
     spark_bl.setIdleMode(IdleMode.kBrake);
     spark_br.setIdleMode(IdleMode.kBrake);
+
+    m_integral_odometry1 = new IntegralOdometry(navx.getRotation2d(), new Pose2d());
+    m_integral_odometry2 = new IntegralOdometry(navx.getRotation2d(), new Pose2d());
+
   }
 
   public void driveMecanum(double y, double x, double zRot){
@@ -78,10 +87,48 @@ public class Drivetrain extends SubsystemBase {
     spark_fr.set(fr);
     spark_br.set(br);
   }
+
+  public void calibrate(){
+    navx.calibrate();
+  }
+
+  public boolean isCalibrating(){
+    return navx.isCalibrating();
+  }
+
+  public double getRawAccelerationX(){
+    return navx.getRawAccelX();
+  } 
+
+  
+  public double getLinearAccelerationX(){
+    return navx.getWorldLinearAccelX();
+  } 
+
+  public double getChassisRawVelocityX() {
+    return m_integral_odometry1.getChassisVelocityXWithTime(navx.getRawAccelX(), spark_fl.getEncoder(), spark_fr.getEncoder());
+  }
+
+  public double getChassisLinearVelocityX() {
+    return m_integral_odometry1.getChassisVelocityXWithTime(navx.getWorldLinearAccelX(), spark_fl.getEncoder(), spark_fr.getEncoder());
+  }
+
+  public double getEncoderVelocityX(){
+    var chassisState = Constants.kDriveKinematics.toChassisSpeeds(
+      new MecanumDriveWheelSpeeds(
+        spark_fl.getEncoder().getVelocity(), 
+        spark_fr.getEncoder().getVelocity(), 
+        spark_bl.getEncoder().getVelocity(),
+        spark_br.getEncoder().getVelocity()
+      ));
+
+    return chassisState.vxMetersPerSecond;
+  }
   
   @Override
   public void periodic() {
     //update the odometry in the periodic block
+    
     m_odometry.update(navx.getRotation2d(), 
       new MecanumDriveWheelSpeeds(
         spark_fl.getEncoder().getVelocity(), 
@@ -90,6 +137,7 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
+    // System.out.println("IMU: " + getChassisRawVelocityX() + " Encoder: " + getEncoderVelocityX());
   }
  
   public void simulationPeriodic(){
