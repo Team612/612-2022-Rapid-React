@@ -13,7 +13,7 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.Constants  ;
+import frc.robot.Constants;
 
 /** Add your docs here. */
 public class TrajectoryCreation {
