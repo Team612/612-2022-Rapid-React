@@ -11,6 +11,7 @@ import frc.robot.Constants;
 public class AbsEncoder extends SubsystemBase {
 
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.BORE_ENCODER);
+  
 
 
   /** Creates a new AbsEncoder. */
@@ -21,7 +22,11 @@ public class AbsEncoder extends SubsystemBase {
   }
 
   public void getBoreEncoder() {
-    System.out.println("encoder val: " + boreEncoder.getDistance());
+    System.out.println("encoder dist: " + boreEncoder.getDistance());
+    /*
+    In 
+    */
+    System.out.println("encoder freq: " + boreEncoder.getFrequency());
   }
 
   @Override
