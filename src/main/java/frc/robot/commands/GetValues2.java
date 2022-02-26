@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,21 +17,17 @@ public class GetValues2 extends CommandBase {
   private Map<String, String[]> m_vector_values = Collections.synchronizedMap(new LinkedHashMap<String, String[]>());
   private Gson gson = new Gson();
   Runtime rt = Runtime.getRuntime();
-  private int exit_status = 1;
 
   public GetValues2(Drivetrain drivetrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrain = drivetrain;
     addRequirements(drivetrain);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_drivetrain.calibrate();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_drivetrain.driveMecanum(0.5, 0.5, 0.5, 0.5);
@@ -66,15 +61,7 @@ public class GetValues2 extends CommandBase {
 
     RioWriter.write(json);
     RioWriter.closeFile();
-    m_vector_values.clear();
-
-    // try{
-    //   Process test = rt.exec(new String[]{"C:\\Program Files\\Git\\git-bash.exe", "C:\\Users\\Srinvas\\Desktop\\GitHub\\612-2022-Rapid-React\\src\\main\\java\\frc\\robot\\commands\\ssh.sh"});
-    // }
-    // catch(IOException e){
-    //   e.printStackTrace();
-    // }
-    
+    m_vector_values.clear();  
   }
 
   // Returns true when the command should end.
