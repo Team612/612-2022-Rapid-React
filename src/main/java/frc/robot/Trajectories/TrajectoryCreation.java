@@ -13,7 +13,7 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.Constants  ;
+import frc.robot.Constants;
 
 /** Add your docs here. */
 public class TrajectoryCreation {
@@ -23,8 +23,8 @@ public class TrajectoryCreation {
     
     public Trajectory testTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)), 
-        List.of(new Translation2d(2,0)),
-        new Pose2d(4,0, new Rotation2d(0)), 
+        List.of(new Translation2d(1,0)),
+        new Pose2d(2,0, new Rotation2d(0)), 
         config);
 
     public Trajectory testTrajectory2 = TrajectoryGenerator.generateTrajectory(
