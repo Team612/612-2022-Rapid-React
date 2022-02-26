@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,29 +32,27 @@ public class GetValues2 extends CommandBase {
   @Override
   public void execute() {
     m_drivetrain.driveMecanum(0.5, 0.5, 0.5, 0.5);
-    m_vector_values.put(Double.toString(WPIUtilJNI.now() * 1.0e-6) ,
-    new String[]{
-      Double.toString(m_drivetrain.getChassisRawVelocityX()) ,
-      Double.toString(m_drivetrain.getChassisLinearVelocityX()) ,
-      Double.toString(m_drivetrain.getEncoderVelocityX()),
-      Double.toString(m_drivetrain.getRawAccelerationX()),
-      Double.toString(m_drivetrain.getLinearAccelerationX())
-      }
-    );
-          
+    m_vector_values.put(Double.toString(WPIUtilJNI.now() * 1.0e-6),
+        new String[] {
+            Double.toString(m_drivetrain.getChassisRawVelocityX()),
+            Double.toString(m_drivetrain.getChassisLinearVelocityX()),
+            Double.toString(m_drivetrain.getEncoderVelocityX()),
+            Double.toString(m_drivetrain.getRawAccelerationX()),
+            Double.toString(m_drivetrain.getLinearAccelerationX())
+        });
+
   }
 
-  
-/**
- * PROCEDURE:
- *  Add Data in the form of a hash map
- *  Convert hash map into json file
- *  Send json file to the Roborio
- *      Need to close file to make sure nothing else comes in
- *  clear the data in the hashmap 
- */
+  /**
+   * PROCEDURE:
+   * Add Data in the form of a hash map
+   * Convert hash map into json file
+   * Send json file to the Roborio
+   * Need to close file to make sure nothing else comes in
+   * clear the data in the hashmap
+   */
 
-  // Called once the command ends or is interrupted. 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     String json = gson.toJson(m_vector_values, m_vector_values.getClass());
@@ -61,7 +60,7 @@ public class GetValues2 extends CommandBase {
 
     RioWriter.write(json);
     RioWriter.closeFile();
-    m_vector_values.clear();  
+    m_vector_values.clear();
   }
 
   // Returns true when the command should end.
@@ -70,4 +69,3 @@ public class GetValues2 extends CommandBase {
     return false;
   }
 }
-
