@@ -19,7 +19,7 @@ public class TopOpen extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.TopServoOpen();
+    //m_intake.TopServoOpen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

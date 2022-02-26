@@ -10,6 +10,7 @@ import frc.robot.subsystems.Intake;
 
 public class Arm extends CommandBase {
   /** Creates a new TopClose. */
+  
   private final Intake m_intake;
   public Arm(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,7 +25,7 @@ public class Arm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.TalonFlex(ControlMap.gunner.getRawAxis(0));
+    m_intake.TalonFlex(0.5);
   }
 
   // Called once the command ends or is interrupted.
