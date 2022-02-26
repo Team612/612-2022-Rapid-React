@@ -27,8 +27,7 @@ public class EncoderMeasure extends CommandBase {
   @Override
   public void execute() {
 
-    System.out.println("Distance traveled: " + m_encoder.getBoreEncoder().getPositionOffset());
-
+    m_encoder.getBoreEncoder();
   }
 
   // Called once the command ends or is interrupted.
