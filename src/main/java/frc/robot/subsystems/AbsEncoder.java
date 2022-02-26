@@ -24,7 +24,14 @@ public class AbsEncoder extends SubsystemBase {
   public void getBoreEncoder() {
     System.out.println("encoder dist: " + boreEncoder.getDistance());
     /*
-    In 
+    With the rev logo facing towards the user:
+    clockwise is negative, counterclockwise is positive
+    distance of 1 indicates one full rotation. there is no upper bound
+    (i.e. if there's more than one rotation, the distance will return a value greater than 1)
+    therefore, should take mod of distance and 1.0
+    when rio is reset, it'll remove the whole number and do just the decimal
+
+    negative acts weird: if it's at -1.56 and resets, it'll return to 0.4.
     */
     System.out.println("encoder freq: " + boreEncoder.getFrequency());
   }
