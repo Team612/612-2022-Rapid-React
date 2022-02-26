@@ -16,11 +16,11 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.DeleteValues;
 import frc.robot.commands.FollowTrajectory;
 import frc.robot.commands.GetValues2;
-import frc.robot.subsystems.*;
 import java.util.ResourceBundle.Control;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -118,7 +118,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // return m_chooser.getSelected();
     return m_chooser.getSelected();
     // return m_autoCommand;
   }
