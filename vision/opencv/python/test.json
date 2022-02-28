@@ -1,0 +1,36 @@
+[
+    {
+        "type": "DisplayImage",
+        "window": "capture"
+    },
+    {
+        "type": "ConvertToHSV"
+    },
+    {
+        "type": "Threshold",
+        "min": [ 0, 0, 0],
+        "max": [ 255, 255, 255 ]
+    },
+    {
+        "type": "Morphology",
+        "operation": "open"
+    },
+    {
+        "type": "DisplayImage",
+        "window": "threshold"
+    },
+    {
+        "type": "FindContours"
+    },
+    {
+        "type": "SpeckleReject",
+        "minAllowedAreaPercent": 0
+    },
+    {
+        "type": "FindCircles"
+    },
+    {
+        "type": "DisplayCircles",
+        "window": "circles"
+    }
+]
