@@ -45,15 +45,14 @@ class FindCircles(Base):
             param2 = self.accuracy,
             minRadius = minRadius,
             maxRadius = maxRadius)
+            
+        if circles is None:
+            return None
+
         unmatchedContours = input.contours.copy()
         results = []
 
-        if not isinstance(circles, list):
-            circles = []
-
-        for x in range(len(circles)):
-            # Grab the current circle we are looking at
-            c = circles[x]
+        for c in circles[0,:]:
             # Find the center points of that circle
             x_center = c[0]
             y_center = c[1]
@@ -65,10 +64,10 @@ class FindCircles(Base):
                 # NOTE: This means that the centroid of the contour must be within the "allowable
                 # threshold"
                 # of the center of the circle
-                if abs(x_center - (mu.m10 / mu.m00)) <= self.allowableThreshold \
-                    and abs(y_center - (mu.m01 / mu.m00)) <= self.allowableThreshold:
+                if abs(x_center - (mu['m10'] / mu['m00'])) <= self.allowableThreshold \
+                    and abs(y_center - (mu['m01'] / mu['m00'])) <= self.allowableThreshold:
                     # If it is, then add it to the output array
-                    results.add(Circle(contour, (c[0], c[1]), c[2]))
+                    results.append(Circle(contour, (c[0], c[1]), c[2]))
                     unmatchedContours.remove(contour)
                     break
 
@@ -151,16 +150,22 @@ class DisplayCircles(Base):
         self.settings = settings
         self.window = settings.get('window', 'circles')
         self.enabled = settings.get('enabled', True)
-        cv.namedWindow(self.window)
+        if self.enabled:
+            cv.namedWindow(self.window)
     
     def run(self, input):
+        if input is None:
+            return None
+
         if self.enabled:
             canvas = np.zeros((input.img.shape[0], input.img.shape[1], 3), dtype=np.uint8)
-            color = (255, 0, 0)
-
-            cvContours = [c for c in input.circles]
-            for i in range(len(cvContours)):
-                cv.drawContours(canvas, cvContours, i, color, 2, cv.LINE_8, input.hierarchy, 0)
+            for c in input.circles:
+                center = np.uint16(np.around(c.center))
+                radius = np.uint16(np.around(c.radius))
+                # draw the outer circle
+                cv.circle(canvas, center, radius, (0, 255, 0), 2)
+                # draw the center of the circle
+                cv.circle(canvas, center, 2, (0, 0, 255), 3)
 
             cv.imshow(self.window, canvas)
         return input

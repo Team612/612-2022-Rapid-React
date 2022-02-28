@@ -9,12 +9,12 @@
     {
         "type": "Threshold",
         "min": [
-            75,
-            0,
-            124
+            91,
+            41,
+            22
         ],
         "max": [
-            101,
+            107,
             255,
             255
         ]
@@ -32,7 +32,7 @@
     },
     {
         "type": "SpeckleReject",
-        "minAllowedAreaPercent": 24
+        "minAllowedAreaPercent": 43
     },
     {
         "type": "DisplayContours",
@@ -49,6 +49,7 @@
     },
     {
         "type": "DisplayCircles",
-        "window": "circles"
+        "window": "circles",
+        "enabled": true
     }
 ]
