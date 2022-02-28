@@ -12,7 +12,7 @@ public class Pivot extends CommandBase {
   /** Creates a new Pivot. */
   private final Climb m_pivot;
   private double mValue;
-  DigitalInput motorLimit = new DigitalInput(0);
+  // DigitalInput motorLimit = new DigitalInput(0);
     // Use addRequirements() here to declare subsystem dependencies.
     //Constructor
     public Pivot(Climb pivot){
@@ -41,9 +41,9 @@ public class Pivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(motorLimit.get()){
-      return true;
-    }
+    // if(motorLimit.get()){
+    //   return true;
+    // }
     return false;
   }
 }

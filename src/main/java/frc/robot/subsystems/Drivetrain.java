@@ -44,10 +44,9 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     SmartDashboard.putData("Field", m_field);
-
-    drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
-    spark_fr.setInverted(true);
-    spark_br.setInverted(true);
+    spark_fl.setInverted(true);
+    spark_bl.setInverted(true);
+    
     resetEncoders();
     spark_fr.getEncoder().setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
     spark_fl.getEncoder().setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
@@ -63,6 +62,9 @@ public class Drivetrain extends SubsystemBase {
     spark_fr.setIdleMode(IdleMode.kBrake);
     spark_bl.setIdleMode(IdleMode.kBrake);
     spark_br.setIdleMode(IdleMode.kBrake);
+
+    drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
+
   }
 
   public void driveMecanum(double y, double x, double zRot){

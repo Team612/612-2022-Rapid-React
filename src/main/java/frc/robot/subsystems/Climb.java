@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Servo;
 public class Climb extends SubsystemBase {
     //defines both Talons and Solenoids
-    private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.Talon);
-    private Servo Servos1 = new Servo(Constants.Servos);
-    private Servo Servo2 = new Servo(Constants.Servos);
+    private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+    private Servo Servos1 = new Servo(Constants.left_servo);
+    private Servo Servo2 = new Servo(Constants.right_serov);
     private final DoubleSolenoid secondClimb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[0], Constants.firstSolenoid[1]);
     private final DoubleSolenoid climb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[0], Constants.secondSolenoid[1]);
     private final WPI_TalonFX pivotMotor2 = new WPI_TalonFX(0, "rio");

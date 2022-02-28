@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Drivetrain;
@@ -25,7 +24,7 @@ public class DefaultDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.driveMecanum(-ControlMap.driver.getRawAxis(1), ControlMap.driver.getRawAxis(0), ControlMap.driver.getRawAxis(4));
+    m_drivetrain.driveMecanum(ControlMap.driver.getRawAxis(1), -ControlMap.driver.getRawAxis(0), -ControlMap.driver.getRawAxis(4));
     //m_drivetrain.driveMecanum(0, ControlMap.driver.getRawAxis(0),0);
     //m_drivetrain.driveMecanum(0.5, -0.5, -0.5, 0.5);
 

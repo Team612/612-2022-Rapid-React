@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 /** Add your docs here. */
 public class ControlMap {
     //Driver and Gunner Defined
-public static XboxController driver = new XboxController(1);
-public static XboxController gunner = new XboxController(0);
+public static XboxController driver = new XboxController(0);
+public static XboxController gunner = new XboxController(1);
 
  
 
-public static final JoystickButton groundToMid = new JoystickButton(gunner, 0);
-public static final JoystickButton midToHigh = new JoystickButton(gunner, 1);
-public static final JoystickButton highToTraversal = new JoystickButton(gunner, 2);
+public static final JoystickButton groundToMid = new JoystickButton(gunner, 1);
+public static final JoystickButton midToHigh = new JoystickButton(gunner, 2);
+public static final JoystickButton highToTraversal = new JoystickButton(gunner, 3);
 
 
     
