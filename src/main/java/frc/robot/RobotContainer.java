@@ -40,16 +40,18 @@ public class RobotContainer {
   private final HookOff m_hookOff = new HookOff(m_climb);
   private final HookOn m_hookOn = new HookOn(m_climb);
   private final Pivot m_pivot = new Pivot(m_climb);
+  private final ToggleClimb m_toggleClimb = new ToggleClimb(m_climb);
+  private final ToggleHooks m_toggleHooks = new ToggleHooks(m_climb);
   private final TopClose m_topclose = new TopClose(m_intake);
   private final TopOpen m_topopen = new TopOpen(m_intake);
   private final BottomClose m_bottomclose = new BottomClose(m_intake);
   private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
-  private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
-  private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
+  //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
+  //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
   private final Arm m_arm = new Arm(m_intake);
-  private final StartEndCommand m_start_end_top_servo = new StartEndCommand(m_intake::TopServoClose, m_intake::TopServoOpen, m_intake);
-  private final StartEndCommand m_start_end_bottom_servo = new StartEndCommand(m_intake::BottomServoClose, m_intake:: BottomServoOpen, m_intake);
-  private final StartEndCommand m_start_end_wrist_servo = new StartEndCommand(m_intake::WristClose, m_intake::WristOpen, m_intake);
+  //private final StartEndCommand m_start_end_top_servo = new StartEndCommand(m_intake::TopServoClose, m_intake::TopServoOpen, m_intake);
+  //private final StartEndCommand m_start_end_bottom_servo = new StartEndCommand(m_intake::BottomServoClose, m_intake:: BottomServoOpen, m_intake);
+  //private final StartEndCommand m_start_end_wrist_servo = new StartEndCommand(m_intake::WristClose, m_intake::WristOpen, m_intake);
 
 
   /**
@@ -67,22 +69,24 @@ public class RobotContainer {
     //m_chooser.addOption("Manual Code", object);
     SmartDashboard.putData(m_chooser);
 
-    ControlMap.climbExtend.whenPressed(m_extend);
-    ControlMap.climbRetract.whenPressed(m_retract);
-    ControlMap.staticHookOn.whenPressed(m_hookOn);
-    ControlMap.staticHookOff.whenPressed(m_hookOff);
-    ControlMap.rotateWristDown.whenPressed(m_rotatewristdown);
+    ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
+    ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
+    ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
+    ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
+    //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
+    //ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
+    /*ControlMap.rotateWristDown.whenPressed(m_rotatewristdown);
     ControlMap.rotateWristUp.whenPressed(m_rotatewristup);
     ControlMap.topToggle.toggleWhenPressed(m_start_end_top_servo);
     ControlMap.bottomToggle.toggleWhenPressed(m_start_end_bottom_servo);
-    ControlMap.wristToggle.toggleWhenPressed(m_start_end_wrist_servo);
+    ControlMap.wristToggle.toggleWhenPressed(m_start_end_wrist_servo);*/
 
   }
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_defaultdrive);
     m_climb.setDefaultCommand(m_pivot);
-    m_climb.setDefaultCommand(m_arm);
+    m_intake.setDefaultCommand(m_arm);
   }
 
   /**
@@ -91,7 +95,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    // An ExampleCommand will run in autonomous sussy baka
     return m_chooser.getSelected();
   }
 }

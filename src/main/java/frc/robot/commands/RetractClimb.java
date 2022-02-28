@@ -18,7 +18,7 @@ public class RetractClimb extends CommandBase {
     //Extend the pivot arm
     @Override
     public void initialize(){
-        m_climb.extendArm();
+        m_climb.retractArm();
     }
   // Called every time the scheduler runs while the command is scheduled.
   @Override

@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
  */
 public final class Constants {
     //Spark constants
-    public final static int SPARK_FL = 1;
-    public final static int SPARK_FR = 2;
-    public final static int SPARK_BL = 3;
-    public final static int SPARK_BR = 4;
+    public final static int SPARK_FL = 2;
+    public final static int SPARK_FR = 1;
+    public final static int SPARK_BL = 4;
+    public final static int SPARK_BR = 3;
 
     //wheel diameter
     public static final double kWheelDiameterMeters = 0.1524;
@@ -87,18 +87,19 @@ public final class Constants {
         new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
     
     //climb
-    public static int Talon = 3;
-    public static int PCM_2 = 1;
-    public static int[] firstSolenoid = {4, 5};
+    public static int Talon_arm = 5;
+    public static int talon_pivot = 6;
+    public static int PCM_2 = 7;
+    public static int[] firstSolenoid = {1, 0 }; // rev, fwd
+    public static int[] secondSolenoid = {3, 2};
     public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
     //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
-    public static int forward = 4;
-    public static int reverse = 5;
-    public static int secondForward = 6;
-    public static int secondReverse = 7;
+    
     public static int setMotorSpeed = 1;
     public static int swings = 0;
-    public static int Servos = 0;
+    public static int left_servo = 0;
+    public static int right_serov = 1;
+
     public static double height = 15.375;
     public static double length = 24.0;
     public static double pi = Math.PI;

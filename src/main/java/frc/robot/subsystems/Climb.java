@@ -17,23 +17,31 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
-  private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.Talon);
-  private Servo Servo1 = new Servo(Constants.Servos);
-  private Servo Servo2 = new Servo(Constants.Servos);
-  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[0], Constants.firstSolenoid[1]);
-
+  private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+  private Servo leftServo = new Servo(Constants.left_servo);
+  private Servo rightServo = new Servo(Constants.right_serov);
+  private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
+  private final DoubleSolenoid piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
   //Pushes the piston out
   public void extendArm(){
-      piston.set(Value.kForward);
+      piston1.set(Value.kForward);
+      piston2.set(Value.kForward);
+      System.out.println("extend");
   }
   
   //Brings the piston in
   public void retractArm(){
-      piston.set(Value.kReverse);
+      piston1.set(Value.kReverse);
+      piston2.set(Value.kReverse);
+      System.out.println("retract");
+
   }
   public void retractArmHang(){
-    piston.set(Value.kReverse);
+    piston1.set(Value.kReverse);
+    piston2.set(Value.kReverse);
     pivotMotor.setNeutralMode(NeutralMode.Brake);
+    System.out.println("retract hang");
+
 }
 
 
@@ -44,18 +52,19 @@ public class Climb extends SubsystemBase {
   }
   //Opens servos
   public void ServoClose(){
-      Servo1.setAngle(45);
-      Servo2.setAngle(45);
-      
+      leftServo.setAngle(180);
+      rightServo.setAngle(0);
+      System.out.println("close");
+
   }
   //Closes servos
   public void ServoOpen(){
-      Servo1.setAngle(0);
-      Servo2.setAngle(0);
-      
+      leftServo.setAngle(0);
+      rightServo.setAngle(180);
+      System.out.println("open");
+
 
   }
-
 
   @Override
   public void periodic() {

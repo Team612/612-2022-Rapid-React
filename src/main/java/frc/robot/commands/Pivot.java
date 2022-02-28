@@ -14,16 +14,20 @@ public class Pivot extends CommandBase {
   public Pivot(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_pivot = climb;
+    addRequirements(climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_pivot.ServoClose();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_pivot.pivot(ControlMap.gunner.getRawAxis(4));
+    
   }
 
   // Called once the command ends or is interrupted.
