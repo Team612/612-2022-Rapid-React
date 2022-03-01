@@ -17,6 +17,7 @@ public class Intake extends SubsystemBase {
 
 
   private final int TOP_POSITION = 0;
+  private final double DEAD_ZONE = 0.1;
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon_arm);
@@ -48,12 +49,13 @@ public class Intake extends SubsystemBase {
   
   public void TalonFlex(double speed) {
     // moves on a fixed point
-    if(isLimitTriggered()){
-      shoulder.set(0);
-    }
-    else{
-      shoulder.set(speed);
-    }
+    if(Math.abs(speed) < DEAD_ZONE) speed = 0;
+    // if(isLimitTriggered()){
+    //   shoulder.set(0);
+    // }
+    // else{
+    shoulder.set(speed);
+    // }
   }
 
   /*public void TopServoOpen() {

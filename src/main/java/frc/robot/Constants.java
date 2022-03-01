@@ -90,15 +90,16 @@ public final class Constants {
     public static int Talon_arm = 5;
     public static int talon_pivot = 6;
     public static int PCM_2 = 7;
-    public static int[] firstSolenoid = {1, 0 }; // rev, fwd
+    public static int[] firstSolenoid = {1, 0}; // rev, fwd
     public static int[] secondSolenoid = {3, 2};
     public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
     //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
     
-    public static int setMotorSpeed = 1;
+    public static double setMotorSpeed = 0.69;
     public static int swings = 0;
+
     public static int left_servo = 0;
-    public static int right_serov = 1;
+    public static int right_servo = 1;
 
     public static double height = 15.375;
     public static double length = 24.0;

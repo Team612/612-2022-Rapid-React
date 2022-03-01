@@ -18,8 +18,8 @@ import frc.robot.Constants;
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
   private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+  private Servo rightServo = new Servo(Constants.right_servo);
   private Servo leftServo = new Servo(Constants.left_servo);
-  private Servo rightServo = new Servo(Constants.right_serov);
   private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
   private final DoubleSolenoid piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
   //Pushes the piston out
@@ -59,8 +59,8 @@ public class Climb extends SubsystemBase {
   }
   //Closes servos
   public void ServoOpen(){
-      leftServo.setAngle(0);
-      rightServo.setAngle(180);
+      leftServo.setAngle(90);
+      rightServo.setAngle(90);
       System.out.println("open");
 
 

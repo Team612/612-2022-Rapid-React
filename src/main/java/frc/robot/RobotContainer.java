@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Trajectories.TrajectoryCreation;
@@ -46,6 +48,8 @@ public class RobotContainer {
   private final TopOpen m_topopen = new TopOpen(m_intake);
   private final BottomClose m_bottomclose = new BottomClose(m_intake);
   private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
+
+
   //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
   //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
   private final Arm m_arm = new Arm(m_intake);
@@ -71,22 +75,25 @@ public class RobotContainer {
 
     ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
     ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
-    ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
-    ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
     //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
-    //ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
+    ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
+
+    // ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
+    // ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
+    
+    
     /*ControlMap.rotateWristDown.whenPressed(m_rotatewristdown);
     ControlMap.rotateWristUp.whenPressed(m_rotatewristup);
     ControlMap.topToggle.toggleWhenPressed(m_start_end_top_servo);
     ControlMap.bottomToggle.toggleWhenPressed(m_start_end_bottom_servo);
     ControlMap.wristToggle.toggleWhenPressed(m_start_end_wrist_servo);*/
-
+    
   }
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_defaultdrive);
     m_climb.setDefaultCommand(m_pivot);
-    m_intake.setDefaultCommand(m_arm);
+    //m_intake.setDefaultCommand(m_arm);
   }
 
   /**
