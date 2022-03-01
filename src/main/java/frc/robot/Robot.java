@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -28,12 +29,15 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
-   PneumaticsControlModule pcm = new PneumaticsControlModule();
+  //  PneumaticsControlModule pcm = new PneumaticsControlModule();
    //Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    // pcm.clearAllStickyFaults();
+    // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
+    CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
     //m_compressor.enableHybrid(95, 120); //min psi 95 max is 120
   }

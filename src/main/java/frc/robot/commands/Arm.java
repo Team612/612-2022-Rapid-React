@@ -25,7 +25,7 @@ public class Arm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.TalonFlex(0.5);
+    m_intake.TalonFlex(ControlMap.gunner.getRawAxis(1));
   }
 
   // Called once the command ends or is interrupted.
