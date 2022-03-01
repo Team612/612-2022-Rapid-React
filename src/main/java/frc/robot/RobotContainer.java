@@ -12,6 +12,7 @@ import frc.robot.commands.Climb.ToggleHooks;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
+import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
@@ -39,6 +40,7 @@ public class RobotContainer {
   //configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
   private final Pivot m_pivot = new Pivot(m_climb);
+  private final Arm m_arm = new Arm(m_intake);
 
   //Trajectories
   private final FollowTrajectory m_follower = new FollowTrajectory();
@@ -89,6 +91,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
+    m_intake.setDefaultCommand(m_arm);
   }
 
   /**
