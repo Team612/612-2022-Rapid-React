@@ -107,8 +107,7 @@ public final class Constants {
 
     public static int left_servo = 0;
     public static int right_servo = 1;
-    public static int left_intake_servo = 2;
-    public static int right_intake_servo = 3;
+
 
     public static double height = 15.375;
     public static double length = 24.0;
