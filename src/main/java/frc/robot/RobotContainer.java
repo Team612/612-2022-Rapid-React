@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Trajectories.TrajectoryCreation;
@@ -51,7 +53,7 @@ public class RobotContainer {
 
   //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
   //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
-  private final Arm m_arm = new Arm(m_intake);
+  private final ArmForward m_arm = new ArmForward(m_intake);
   //private final StartEndCommand m_start_end_top_servo = new StartEndCommand(m_intake::TopServoClose, m_intake::TopServoOpen, m_intake);
   //private final StartEndCommand m_start_end_bottom_servo = new StartEndCommand(m_intake::BottomServoClose, m_intake:: BottomServoOpen, m_intake);
   //private final StartEndCommand m_start_end_wrist_servo = new StartEndCommand(m_intake::WristClose, m_intake::WristOpen, m_intake);
@@ -96,16 +98,18 @@ public class RobotContainer {
 
     ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
     ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
-    //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
     ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
+    ControlMap.arm_down.whenPressed(new ArmForward(m_intake));
+    ControlMap.arm_down.whenPressed(new ArmReverse(m_intake));
+    
+
+    //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
 
     // ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
     // ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
     
     
-    /*ControlMap.rotateWristDown.whenPressed(m_rotatewristdown);
-    ControlMap.rotateWristUp.whenPressed(m_rotatewristup);
-    ControlMap.topToggle.toggleWhenPressed(m_start_end_top_servo);
+    /*ControlMap.topToggle.toggleWhenPressed(m_start_end_top_servo);
     ControlMap.bottomToggle.toggleWhenPressed(m_start_end_bottom_servo);
     ControlMap.wristToggle.toggleWhenPressed(m_start_end_wrist_servo);*/
     
@@ -114,8 +118,6 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
-    //m_intake.setDefaultCommand(m_arm);
-
   }
 
   /**
@@ -124,8 +126,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous sussy baka
     return m_chooser.getSelected();
-
   }
 }

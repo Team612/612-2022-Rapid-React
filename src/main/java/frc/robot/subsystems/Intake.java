@@ -49,47 +49,19 @@ public class Intake extends SubsystemBase {
   
   public void TalonFlex(double speed) {
     // moves on a fixed point
-    if(Math.abs(speed) < DEAD_ZONE) speed = 0;
-    // if(isLimitTriggered()){
-    //   shoulder.set(0);
-    // }
-    // else{
     shoulder.set(speed);
-    // }
   }
-
-  /*public void TopServoOpen() {
-    //opens the top claw
-    topLeft.setAngle(90);
-    topRight.setAngle(-90);
-  }
-  public void BottomServoOpen() {
-    //opens the bottom claw
-    bottomLeft.setAngle(90);
-    bottomRight.setAngle(-90);
-  }
-  public void TopServoClose() {
-    //closes the top claw
-    topLeft.setAngle(270);
-    topRight.setAngle(-270);
-  }
-  public void BottomServoClose() {
-    //closes the bottom claw
-    bottomLeft.setAngle(270);
-    bottomRight.setAngle(-270);
-  }*/
-  
-  /*public void WristOpen() {
-    //dynamically moves the wrist for the second claw
-    wrist.setAngle(120);
-  }
-  public void WristClose() {
-    //dynamically moves the wrist for the second claw
-    wrist.setAngle(0);
-  }*/
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public boolean bottomlimitGoesOff() {
+      return shoulder.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  public boolean upperLimitGoesOff(){
+    return shoulder.getSensorCollection().isRevLimitSwitchClosed();
   }
 }
