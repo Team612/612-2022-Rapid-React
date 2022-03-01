@@ -30,7 +30,7 @@ public class Pivot extends CommandBase {
   @Override
   public void execute() {
     m_pivot.pivot(ControlMap.gunner.getRawAxis(4));
-   
+    m_pivot.getBoreEncoder();
   }
 
   // Called once the command ends or is interrupted.

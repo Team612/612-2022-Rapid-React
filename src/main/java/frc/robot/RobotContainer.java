@@ -85,13 +85,13 @@ public class RobotContainer {
     ControlMap.staticHookOn.toggleWhenPressed(new ToggleHooks(m_climb));
     ControlMap.arm_down.whenPressed(new ArmForward(m_intake));
     ControlMap.arm_down.whenPressed(new ArmReverse(m_intake));
-    
   }
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
     m_intake.setDefaultCommand(m_arm);
+
   }
 
   /**
