@@ -11,6 +11,7 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
+  
   /*private final Servo topLeft = new Servo(1);
   private final Servo topRight = new Servo(1);*/
   private final Servo bottomLeft = new Servo(Constants.left_intake_servo);
@@ -50,13 +51,7 @@ public class Intake extends SubsystemBase {
   
   public void TalonFlex(double speed) {
     // moves on a fixed point
-    if(Math.abs(speed) < DEAD_ZONE) speed = 0;
-    // if(isLimitTriggered()){
-    //   shoulder.set(0);
-    // }
-    // else{
     shoulder.set(speed);
-    // }
   }
 
   
@@ -86,5 +81,13 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public boolean bottomlimitGoesOff() {
+      return shoulder.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  public boolean upperLimitGoesOff(){
+    return shoulder.getSensorCollection().isRevLimitSwitchClosed();
   }
 }

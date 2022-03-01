@@ -14,6 +14,8 @@ public class ControlMap{
     public static JoystickButton climbRetract = new JoystickButton(gunner, 2); //B
     public static JoystickButton staticHookOn = new JoystickButton(gunner, 3); //X
     public static JoystickButton staticHookOff = new JoystickButton(gunner, 4); //Y
+    public static JoystickButton arm_down = new JoystickButton(gunner, 7); //LB
+    public static JoystickButton arm_up = new JoystickButton(gunner, 8); //RB
 
 
   
