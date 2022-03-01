@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.util.ResourceBundle.Control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +14,6 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 
 /**
@@ -32,7 +30,6 @@ public class RobotContainer {
 
   private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
 
-  private final Climb m_climb = new Climb();
   private final Intake m_intake = new Intake();
   private final ExtendClimb m_extend = new ExtendClimb(m_climb);
   private final RetractClimb m_retract = new RetractClimb(m_climb);
@@ -45,7 +42,11 @@ public class RobotContainer {
   private final TopOpen m_topopen = new TopOpen(m_intake);
   private final BottomClose m_bottomclose = new BottomClose(m_intake);
   private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final Drivetrain m_drivetrain = new Drivetrain();
+  private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
 
+  private final FollowTrajectory m_follower = new FollowTrajectory();
 
   //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
   //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
@@ -62,6 +63,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    configureDefaultCommands();
   }
 
   /**
@@ -94,7 +96,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    m_drivetrain.setDefaultCommand(m_defaultdrive);
+    m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
     //m_intake.setDefaultCommand(m_arm);
 

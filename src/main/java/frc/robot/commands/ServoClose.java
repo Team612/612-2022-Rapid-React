@@ -4,10 +4,7 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.Servo;
 import frc.robot.subsystems.Climb;
-import frc.robot.controls.ControlMap;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ServoClose extends CommandBase {
   /** Creates a new Pivot. */
