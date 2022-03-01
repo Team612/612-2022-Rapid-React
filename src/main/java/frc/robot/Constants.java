@@ -113,5 +113,9 @@ public final class Constants {
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
+
+    // limit switch ports
+    public static int INOUT_BOTTOM_LIMIT = 0; // needs to be added, placeholder
+    public static int INOUT_TOP_LIMIT = 1;
 }
 
