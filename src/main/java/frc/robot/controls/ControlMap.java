@@ -16,10 +16,9 @@ public class ControlMap{
     public static JoystickButton staticHookOff = new JoystickButton(gunner, 4); //Y
 
 
-    /*public static JoystickButton topOpen = new JoystickButton(gunner, 10);
-    public static JoystickButton topClose = new JoystickButton(gunner, 11);
-    public static JoystickButton bottomOpen = new JoystickButton(gunner, 12);
-    public static JoystickButton bottomClose = new JoystickButton(gunner, 13); */
+  
+    public static JoystickButton bottomOpen = new JoystickButton(gunner, 5);
+    public static JoystickButton bottomClose = new JoystickButton(gunner, 6); 
     /*public static JoystickButton topToggle = new JoystickButton(gunner, 69);
     public static JoystickButton bottomToggle = new JoystickButton(gunner, 420);
     public static JoystickButton rotateWristUp = new JoystickButton(gunner, 10);

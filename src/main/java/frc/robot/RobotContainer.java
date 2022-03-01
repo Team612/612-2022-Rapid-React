@@ -94,11 +94,13 @@ public class RobotContainer {
     
     SmartDashboard.putData(m_chooser);
 
-    ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
-    //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
+    //ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
+    //ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
+    ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
     ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
-
+    //ControlMap.bottomClose.whenPressed(new BottomClose(m_intake));
+    //ControlMap.bottomOpen.whenPressed(new BottomOpen(m_intake));
+    ControlMap.bottomOpen.toggleWhenPressed(new ToggleBottomGrabber(m_intake));
     // ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
     // ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
     
@@ -114,7 +116,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
-    //m_intake.setDefaultCommand(m_arm);
+    m_intake.setDefaultCommand(m_arm);
 
   }
 
