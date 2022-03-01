@@ -47,6 +47,7 @@ public class RobotContainer {
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
 
   private final FollowTrajectory m_follower = new FollowTrajectory();
+  private final TrajectoryCreation m_traj = new TrajectoryCreation();
 
   //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
   //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
@@ -76,6 +77,21 @@ public class RobotContainer {
     m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
     m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
     //m_chooser.addOption("Manual Code", object);
+    m_chooser.addOption("Line up 1v1", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1));
+    m_chooser.addOption("Line up 1v2", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v2));
+    m_chooser.addOption("Line up 1v3", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v3));
+
+    m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v1));
+    m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v2));
+    m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
+    m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v4));
+
+    m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v1));
+    m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2));
+    m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3));
+    m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4));
+    
+    
     SmartDashboard.putData(m_chooser);
 
     ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
