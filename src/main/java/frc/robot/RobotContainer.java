@@ -5,14 +5,18 @@
 package frc.robot;
 
 import java.util.ResourceBundle.Control;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.controls.ControlMap;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Trajectories.TrajectoryCreation;
 import frc.robot.commands.*;
+import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +30,35 @@ public class RobotContainer {
   
   private final Pivot m_autoCommand = new Pivot(m_climb);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
+
+  private final Climb m_climb = new Climb();
+  private final Intake m_intake = new Intake();
+  private final ExtendClimb m_extend = new ExtendClimb(m_climb);
+  private final RetractClimb m_retract = new RetractClimb(m_climb);
+  private final HookOff m_hookOff = new HookOff(m_climb);
+  private final HookOn m_hookOn = new HookOn(m_climb);
+  private final Pivot m_pivot = new Pivot(m_climb);
+  private final ToggleClimb m_toggleClimb = new ToggleClimb(m_climb);
+  private final ToggleHooks m_toggleHooks = new ToggleHooks(m_climb);
+  private final TopClose m_topclose = new TopClose(m_intake);
+  private final TopOpen m_topopen = new TopOpen(m_intake);
+  private final BottomClose m_bottomclose = new BottomClose(m_intake);
+  private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
+
+
+  //private final RotateWristDown m_rotatewristdown = new RotateWristDown(m_intake);
+  //private final RotateWristUp m_rotatewristup = new RotateWristUp(m_intake);
+  private final Arm m_arm = new Arm(m_intake);
+  //private final StartEndCommand m_start_end_top_servo = new StartEndCommand(m_intake::TopServoClose, m_intake::TopServoOpen, m_intake);
+  //private final StartEndCommand m_start_end_bottom_servo = new StartEndCommand(m_intake::BottomServoClose, m_intake:: BottomServoOpen, m_intake);
+  //private final StartEndCommand m_start_end_wrist_servo = new StartEndCommand(m_intake::WristClose, m_intake::WristOpen, m_intake);
+
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -39,14 +71,33 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    ControlMap.midToHigh.whenPressed(new ServoOpen(m_climb).andThen(new ExtendArm(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
-    ControlMap.highToTraversal.whenPressed(new ServoOpen(m_climb).andThen(new ExtendArm(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)));
-    ControlMap.groundToMid.whenPressed(new ExtendArm(m_climb).andThen(new ServoOpen(m_climb)).andThen(new RetractArm(m_climb)).andThen(new ServoClose(m_climb)).andThen(new PartialExtend(m_climb)).andThen(new Pivot(m_climb)));
+    m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
+    m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
+    //m_chooser.addOption("Manual Code", object);
+    SmartDashboard.putData(m_chooser);
+
+    ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
+    ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
+    //ControlMap.climbExtend.toggleWhenPressed(m_toggleClimb);
+    ControlMap.staticHookOn.toggleWhenPressed(m_toggleHooks);
+
+    // ControlMap.staticHookOn.whenPressed(new HookOn(m_climb));
+    // ControlMap.staticHookOff.whenPressed(new HookOff(m_climb));
+    
+    
+    /*ControlMap.rotateWristDown.whenPressed(m_rotatewristdown);
+    ControlMap.rotateWristUp.whenPressed(m_rotatewristup);
+    ControlMap.topToggle.toggleWhenPressed(m_start_end_top_servo);
+    ControlMap.bottomToggle.toggleWhenPressed(m_start_end_bottom_servo);
+    ControlMap.wristToggle.toggleWhenPressed(m_start_end_wrist_servo);*/
     
   }
 
-  private Command ParallelCommandGroup(Pivot pivot, RetractArm retractArm) {
-    return null;
+  private void configureDefaultCommands() {
+    m_drivetrain.setDefaultCommand(m_defaultdrive);
+    m_climb.setDefaultCommand(m_pivot);
+    //m_intake.setDefaultCommand(m_arm);
+
   }
 
   /**
@@ -55,7 +106,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // An ExampleCommand will run in autonomous sussy baka
+    return m_chooser.getSelected();
+
   }
 }

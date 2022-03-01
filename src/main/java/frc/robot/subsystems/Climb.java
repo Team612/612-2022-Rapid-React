@@ -1,68 +1,74 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import frc.robot.commands.ServoOpen;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;    
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 public class Climb extends SubsystemBase {
-    //defines both Talons and Solenoids
-    private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.Talon);
-    private Servo Servos1 = new Servo(Constants.Servos);
-    private Servo Servo2 = new Servo(Constants.Servos);
-    private final DoubleSolenoid secondClimb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[0], Constants.firstSolenoid[1]);
-    private final DoubleSolenoid climb = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[0], Constants.secondSolenoid[1]);
-    private final WPI_TalonFX pivotMotor2 = new WPI_TalonFX(0, "rio");
-    //Pushes the piston out
-    public void extendArm(){
-        climb.set(Value.kForward);
-        secondClimb.set(Value.kForward);
+  //defines both Talons and Solenoids
+  private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+  private Servo rightServo = new Servo(Constants.right_servo);
+  private Servo leftServo = new Servo(Constants.left_servo);
+  private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
+  private final DoubleSolenoid piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
+  //Pushes the piston out
+  public void extendArm(){
+      piston1.set(Value.kForward);
+      piston2.set(Value.kForward);
+      System.out.println("extend");
+  }
+  
+  //Brings the piston in
+  public void retractArm(){
+      piston1.set(Value.kReverse);
+      piston2.set(Value.kReverse);
+      System.out.println("retract");
 
-    }
+  }
+  public void retractArmHang(){
+    piston1.set(Value.kReverse);
+    piston2.set(Value.kReverse);
+    pivotMotor.setNeutralMode(NeutralMode.Brake);
+    System.out.println("retract hang");
 
-    //partial extention
-    public void partialExtention(){
-        climb.set(Value.kForward);
-        secondClimb.set(Value.kReverse);
-    }
-    
-    //Brings the piston in
-    public void retractArm(){
-        climb.set(Value.kReverse);
-        secondClimb.set(Value.kOff);
-        pivotMotor2.setNeutralMode(NeutralMode.Brake);
-    }
-
-
-    //Pivots the pivot arms
-    public void pivot(){
-        pivotMotor2.set(TalonFXControlMode.Position, Constants.ticks);
-    }
-    //Opens servos
-    public void ServoOpen(){
-        Servos1.setAngle(45);
-        Servo2.setAngle(45);
-        
-    }
-    //Closes servos
-    public void ServoClose(){
-        Servos1.setAngle(0);
-        Servo2.setAngle(0);
-        
-
-    }
+}
 
 
-    @Override
-    public void periodic(){
-        
-    }
+  //Pivots the pivot arms
+  public void pivot(double rotate){
+      //pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
+      pivotMotor.set(ControlMode.PercentOutput, rotate);
+  }
+  //Opens servos
+  public void ServoClose(){
+      leftServo.setAngle(180);
+      rightServo.setAngle(0);
+      System.out.println("close");
+
+  }
+  //Closes servos
+  public void ServoOpen(){
+      leftServo.setAngle(90);
+      rightServo.setAngle(90);
+      System.out.println("open");
+
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
 }
