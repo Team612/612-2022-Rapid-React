@@ -1,6 +1,7 @@
 import cv2 as cv
 import argparse
 import pipelines.factory
+from pipelines.result import Result
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--file', required=True)
@@ -28,7 +29,7 @@ while True:
         print("Can't receive frame (stream end?). Exiting ...")
         break
     
-    result = pipeline.run(frame)
+    result = pipeline.run(Result.start(frame))
     
     key = cv.waitKey(1)
 

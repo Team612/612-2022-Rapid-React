@@ -1,7 +1,8 @@
 [
     {
         "type": "DisplayImage",
-        "window": "capture"
+        "window": "capture",
+        "enabled": false
     },
     {
         "type": "ConvertToHSV"
@@ -20,7 +21,7 @@
         ]
     },
     {
-        "type": "Morphology",
+        "type": "Morph",
         "operation": "open"
     },
     {
@@ -36,7 +37,8 @@
     },
     {
         "type": "DisplayContours",
-        "window": "contours"
+        "window": "contours",
+        "enabled": false
     },
     {
         "type": "FindCircles",
@@ -50,6 +52,7 @@
     {
         "type": "DisplayCircles",
         "window": "circles",
-        "enabled": true
+        "enabled": true,
+        "image": "first"
     }
 ]

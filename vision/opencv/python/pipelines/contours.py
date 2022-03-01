@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 from pipelines.base import Base
+from pipelines.result import Result
+from pipelines.display_image import DisplayImage
 
 class Contour:
     def __init__(self, mat):
@@ -16,10 +18,9 @@ class Contour:
             self._moments = cv.moments(self.mat)
         return self._moments
 
-class FindContoursResult:
-    def __init__(self, settings, img, cvContours, hierarchy = None):
-        self.settings = settings
-        self.img = img
+class FindContoursResult(Result):
+    def __init__(self, input, cvContours, hierarchy = None):
+        super().__init__(input)
         self.cvContours = cvContours
         self.hierarchy = hierarchy
         self.contours = [Contour(c) for c in cvContours]
@@ -40,23 +41,24 @@ class FindContours(Base):
         self.settings = settings
         self.enabled = settings.get('enabled', True)
             
-    def run(self, img):
+    def run(self, input):
         if self.enabled:
-            res = cv.findContours(img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_TC89_KCOS)
+            res = cv.findContours(input.img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_TC89_KCOS)
             contours = res[0]
             hierarchy = res[1]
-            return FindContoursResult(self.settings, img, contours, hierarchy)
+            return FindContoursResult(input, contours, hierarchy)
         else:
-            return img
+            return input
 
     def dump(self):
-        return { 'type': 'FindContours' }
+        return {
+            'type': 'FindContours',
+            'enabled': self.enabled
+        }
 
-class SpeckleRejectResult:
-    def __init__(self, settings, input, contours):
-        self.settings = settings
-        self.input = input
-        self.img = input.img
+class SpeckleRejectResult(Result):
+    def __init__(self, input, contours):
+        super().__init__(input)
         self.contours = contours
         self.cvContours = [c.mat for c in contours]
         # TODO: filter hierarchy too?
@@ -76,7 +78,7 @@ class SpeckleReject(Base):
         if self.enabled:
             minAllowedArea = self.minAllowedAreaPercent / 100.0 * input.getAverageArea()
             filteredContours = [c for c in input.contours if c.getArea() >= minAllowedArea]
-            return SpeckleRejectResult(self.settings, input, filteredContours)
+            return SpeckleRejectResult(input, filteredContours)
         else:
             return input
             
@@ -94,30 +96,37 @@ class SpeckleReject(Base):
     def dump(self):
         return {
             'type': 'SpeckleReject',
-            'minAllowedAreaPercent': self.minAllowedAreaPercent
+            'minAllowedAreaPercent': self.minAllowedAreaPercent,
+            'enabled': self.enabled
         }
 
-class DisplayContours(Base):
+class DisplayContours(DisplayImage):
     def __init__(self, settings = {}):
-        self.settings = settings
-        self.window = settings.get('window', 'contours')
-        self.enabled = settings.get('enabled', True)
-        cv.namedWindow(self.window)
+        super().__init__(settings)
     
     def run(self, input):
         if self.enabled:
-            contoursImg = np.zeros((input.img.shape[0], input.img.shape[1], 3), dtype=np.uint8)
+            canvas = self._getImageToDisplay(input, copy = True)
             color = (255, 0, 0)
 
             for i in range(len(input.contours)):
-                cv.drawContours(contoursImg, input.cvContours, i, color, 2, cv.LINE_8, input.hierarchy, 0)
+                cv.drawContours(
+                    canvas,
+                    input.cvContours,
+                    i,
+                    color,
+                    2,
+                    cv.LINE_8,
+                    input.hierarchy,
+                    0)
 
-            cv.imshow(self.window, contoursImg)
+            cv.imshow(self.window, canvas)
 
         return input
 
     def dump(self):
         return {
             'type': 'DisplayContours',
-            'window': self.window
+            'window': self.window,
+            'enabled': self.enabled
         }

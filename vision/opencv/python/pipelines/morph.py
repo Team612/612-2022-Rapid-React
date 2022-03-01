@@ -2,18 +2,18 @@ import cv2 as cv
 import numpy as np
 from pipelines.base import Base
 
-class Morphology(Base):
+class Morph(Base):
     def __init__(self, settings = {}):
         self.settings = settings
         self.kernel = np.ones((5, 5), np.uint8)
         self.operation = settings.get('operation', 'open')
         self.enabled = settings.get('enabled', True)
 
-    def run(self, img):
+    def run(self, input):
         if self.enabled and self.operation == 'open':
-            return cv.morphologyEx(img, cv.MORPH_OPEN, self.kernel)
+            return input.next(cv.morphologyEx(input.img, cv.MORPH_OPEN, self.kernel))
         else:
-            return img
+            return input
 
     def gui(self, window):
         cv.createTrackbar(
@@ -31,6 +31,7 @@ class Morphology(Base):
 
     def dump(self):
         return {
-            'type': 'Morphology',
-            'operation': self.operation
+            'type': 'Morph',
+            'operation': self.operation,
+            'enabled': self.enabled
         }

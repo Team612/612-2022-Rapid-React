@@ -8,15 +8,16 @@ class Threshold(Base):
         self.max = settings.get('max', [ 255, 255, 255 ])
         self.enabled = settings.get('enabled', True)
     
-    def run(self, img):
+    def run(self, input):
         if self.enabled:
-            return cv.inRange(
-                img,
-                (self.min[0], self.min[1], self.min[2]),
-                (self.max[0], self.max[1], self.max[2]))
+            return input.next(
+                cv.inRange(
+                    input.img,
+                    (self.min[0], self.min[1], self.min[2]),
+                    (self.max[0], self.max[1], self.max[2])))
         else:
-            return img
-            
+            return input
+
     def gui(self, window):
         cv.createTrackbar('H min', window, self.min[0], 255, lambda value: self._setMin(0, value))
         cv.createTrackbar('H max', window, self.max[0], 255, lambda value: self._setMax(0, value))
@@ -35,5 +36,6 @@ class Threshold(Base):
         return {
             'type': 'Threshold',
             'min': self.min,
-            'max': self.max
+            'max': self.max,
+            'enabled': self.enabled
         }

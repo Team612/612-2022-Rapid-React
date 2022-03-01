@@ -3,6 +3,8 @@ from multiprocessing.sharedctypes import Value
 import cv2 as cv
 import numpy as np
 from pipelines.base import Base
+from pipelines.result import Result
+from pipelines.display_image import DisplayImage
 
 class Circle:
     def __init__(self, contour, center, radius):
@@ -10,11 +12,9 @@ class Circle:
         self.center = center
         self.radius = radius
 
-class FindCirclesResult:
-    def __init__(self, settings, input, circles):
-        self.settings = settings
-        self.input = input
-        self.img = input.img
+class FindCirclesResult(Result):
+    def __init__(self, input, circles):
+        super().__init__(input)
         self.circles = circles
 
 class FindCircles(Base):
@@ -45,7 +45,7 @@ class FindCircles(Base):
             param2 = self.accuracy,
             minRadius = minRadius,
             maxRadius = maxRadius)
-            
+
         if circles is None:
             return None
 
@@ -71,7 +71,7 @@ class FindCircles(Base):
                     unmatchedContours.remove(contour)
                     break
 
-        return FindCirclesResult(self.settings, input, results)
+        return FindCirclesResult(input, results)
 
     def gui(self, window):
         cv.createTrackbar(
@@ -142,23 +142,18 @@ class FindCircles(Base):
             'minDist': self.minDist,
             'maxCannyThresh': self.maxCannyThresh,
             'accuracy': self.accuracy,
-            'allowableThreshold': self.allowableThreshold
+            'allowableThreshold': self.allowableThreshold,
+            'enabled': self.enabled
         }
 
-class DisplayCircles(Base):
+class DisplayCircles(DisplayImage):
     def __init__(self, settings = {}):
-        self.settings = settings
-        self.window = settings.get('window', 'circles')
-        self.enabled = settings.get('enabled', True)
-        if self.enabled:
-            cv.namedWindow(self.window)
+        super().__init__(settings)
     
     def run(self, input):
-        if input is None:
-            return None
+        if self.enabled and input is not None:
+            canvas = self._getImageToDisplay(input, copy = True)
 
-        if self.enabled:
-            canvas = np.zeros((input.img.shape[0], input.img.shape[1], 3), dtype=np.uint8)
             for c in input.circles:
                 center = np.uint16(np.around(c.center))
                 radius = np.uint16(np.around(c.radius))
@@ -168,10 +163,12 @@ class DisplayCircles(Base):
                 cv.circle(canvas, center, 2, (0, 0, 255), 3)
 
             cv.imshow(self.window, canvas)
+
         return input
 
     def dump(self):
         return {
             'type': 'DisplayCircles',
-            'window': self.window
+            'window': self.window,
+            'enabled': self.enabled
         }

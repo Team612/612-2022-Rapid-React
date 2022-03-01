@@ -6,12 +6,15 @@ class ConvertToHSV(Base):
         self.settings = settings
         self.enabled = settings.get('enabled', True)
     
-    def run(self, img):
+    def run(self, input):
         if self.enabled:
             # TODO: Support other color spaces?
-            return cv.cvtColor(img, cv.COLOR_BGR2HSV, 3)
+            return input.next(cv.cvtColor(input.img, cv.COLOR_BGR2HSV, 3))
         else:
-            return img
+            return input
 
     def dump(self):
-        return { 'type': 'ConvertToHSV' }
+        return {
+            'type': 'ConvertToHSV',
+            'enabled': self.enabled
+        }

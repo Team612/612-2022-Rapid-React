@@ -4,7 +4,7 @@ import json
 from pipelines.chain import Chain
 from pipelines.color_space import ConvertToHSV
 from pipelines.contours import FindContours, SpeckleReject, DisplayContours
-from pipelines.morphology import Morphology
+from pipelines.morph import Morph
 from pipelines.threshold import Threshold
 from pipelines.display_image import DisplayImage
 from pipelines.find_circles import FindCircles, DisplayCircles
@@ -17,7 +17,8 @@ types = {
     'DisplayContours': DisplayContours,
     'FindCircles': FindCircles,
     'FindContours': FindContours,
-    'Morphology': Morphology,
+    'Morph': Morph,
+    'Morphology': Morph,
     'SpeckleReject': SpeckleReject,
     'Threshold': Threshold
 }
