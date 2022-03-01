@@ -17,21 +17,18 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
+
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final DefaultDrive m_defaultdrive = new DefaultDrive(m_drivetrain);
-  private final FollowTrajectory m_follower = new FollowTrajectory();
+  private final Climb m_climb = new Climb();
+  
+  private final Pivot m_autoCommand = new Pivot(m_climb);
 
   private final TrajectoryCreation m_trajectory = new TrajectoryCreation();
 
@@ -61,12 +58,18 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    configureDefaultCommands();
   }
 
+  /**
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
   private void configureButtonBindings() {
     m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory));
     m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_trajectory.testTrajectory2));
@@ -94,6 +97,7 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand(m_defaultdrive);
     m_climb.setDefaultCommand(m_pivot);
     //m_intake.setDefaultCommand(m_arm);
+
   }
 
   /**
@@ -104,5 +108,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous sussy baka
     return m_chooser.getSelected();
+
   }
 }

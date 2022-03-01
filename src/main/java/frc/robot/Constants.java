@@ -3,11 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
+import java.math.*;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -24,6 +27,7 @@ public final class Constants {
     public final static int SPARK_BL = 4;
     public final static int SPARK_BR = 3;
 
+
     //wheel diameter
     public static final double kWheelDiameterMeters = 0.1524;
     
@@ -32,6 +36,11 @@ public final class Constants {
 
     //Distance between centers of front and back wheels on robot
     public static final double kWheelBase = 0.676275; 
+
+    /**
+     * 27 1/4 inches = 0.69125
+     * 33 = 0.8382
+     */
 
     public static final double kEncoderCPR = 1; 
     public static final double kGearReduction = 16;
@@ -74,7 +83,7 @@ public final class Constants {
     
     //trajectory constraints
     public static final int kMaxVelocityMetersPerSecond = 3;
-    public static final int maxAccelerationMetersPerSecondSq = 3;
+    public static final int maxAccelerationMetersPerSecondSq = 1;
     public static final double kMaxAngularVelocity = Math.PI;
     public static final double kMaxAngularAcceleration = Math.PI;
 
@@ -101,8 +110,10 @@ public final class Constants {
     public static int left_servo = 0;
     public static int right_servo = 1;
 
+
     public static double height = 15.375;
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
 }
+

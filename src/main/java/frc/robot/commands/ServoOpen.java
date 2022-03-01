@@ -3,45 +3,44 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controls.ControlMap;
+import edu.wpi.first.wpilibj.Servo;
 import frc.robot.subsystems.Climb;
+import frc.robot.controls.ControlMap;
+import edu.wpi.first.wpilibj.DigitalInput;
 
-
-public class Pivot extends CommandBase {
+public class ServoOpen extends CommandBase {
   /** Creates a new Pivot. */
-  private final Climb m_pivot;
-  public Pivot(Climb climb) {
+  private final Climb m_servoOpen;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_pivot = climb;
-    addRequirements(climb);
-
+    //Constructor
+    public ServoOpen(Climb ServoOpen){
+        m_servoOpen = ServoOpen;
+        addRequirements(ServoOpen);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_pivot.ServoClose();
+      m_servoOpen.ServoOpen();
+      
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivot.pivot(ControlMap.gunner.getRawAxis(4));
-   
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
-
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
-  @Override
+  @Override 
   public boolean isFinished() {
-
-    return false;
+      return true;
   }
 }
