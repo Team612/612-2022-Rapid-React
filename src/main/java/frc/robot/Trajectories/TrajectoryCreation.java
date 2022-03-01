@@ -32,6 +32,18 @@ public class TrajectoryCreation {
         List.of(new Translation2d(2,0), new Translation2d(2,-2), new Translation2d(0, -2)),
         new Pose2d(0,0, new Rotation2d(0)), 
         config);
+    
+    public PathPlannerTrajectory path1v1 = PathPlanner.loadPath("Path 1.1", 3, 1);
+    public PathPlannerTrajectory path1v2 = PathPlanner.loadPath("Path 1.2", 3, 1);
+    public PathPlannerTrajectory path1v3 = PathPlanner.loadPath("Path 1.3", 3, 1);
 
-    public PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path", 3, 1);
+    public PathPlannerTrajectory path2v1 = PathPlanner.loadPath("Path 2.1", 3, 1);
+    public PathPlannerTrajectory path2v2 = PathPlanner.loadPath("Path 2.2", 3, 1);
+    public PathPlannerTrajectory path2v3 = PathPlanner.loadPath("Path 2.3", 3, 1);
+    public PathPlannerTrajectory path2v4 = PathPlanner.loadPath("Path 2.4", 3, 1);
+
+    public PathPlannerTrajectory path3v1 = PathPlanner.loadPath("Path 3.1", 3, 1);
+    public PathPlannerTrajectory path3v2 = PathPlanner.loadPath("Path 3.2", 3, 1);
+    public PathPlannerTrajectory path3v3 = PathPlanner.loadPath("Path 3.3", 3, 1);
+    public PathPlannerTrajectory path3v4 = PathPlanner.loadPath("Path 3.4", 3, 1);
 }
