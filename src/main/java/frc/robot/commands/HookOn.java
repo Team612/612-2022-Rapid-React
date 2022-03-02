@@ -2,24 +2,28 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Climb;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
-public class ExtendClimb extends CommandBase {
+public class HookOn extends CommandBase {
+  /** Creates a new HookOn. */
   private final Climb m_climb;
 
-  //Constructor
-  public ExtendClimb(Climb climb){
+  public HookOn(Climb climb) {
+    // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
     addRequirements(climb);
   }
-  //Extend the pivot arm
+
+  // Called when the command is initially scheduled.
   @Override
-  public void initialize(){
-    m_climb.extendArm();
+  public void initialize() {
+    m_climb.ServoClose();
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {}
 
