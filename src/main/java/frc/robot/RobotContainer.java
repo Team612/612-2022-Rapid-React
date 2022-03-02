@@ -17,6 +17,7 @@ import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
+import frc.robot.commands.Intake.BottomToggle;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -80,11 +81,12 @@ public class RobotContainer {
     
     SmartDashboard.putData(m_chooser);
 
-    ControlMap.climbExtend.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.climbRetract.whenPressed(new RetractClimb(m_climb));
-    ControlMap.staticHookOn.toggleWhenPressed(new ToggleHooks(m_climb));
-    ControlMap.arm_down.whenPressed(new ArmForward(m_intake));
-    ControlMap.arm_down.whenPressed(new ArmReverse(m_intake));
+    ControlMap.GUNNER_A.whenPressed(new ExtendClimb(m_climb));
+    ControlMap.GUNNER_B.whenPressed(new RetractClimb(m_climb));
+    ControlMap.GUNNER_X.toggleWhenPressed(new ToggleHooks(m_climb));
+    ControlMap.GUNNER_RB.whenPressed(new ArmForward(m_intake));
+    ControlMap.GUNNER_LB.whenPressed(new ArmReverse(m_intake));
+    ControlMap.GUNNER_BACK.toggleWhenPressed(new BottomToggle(m_intake));
     
   }
 
