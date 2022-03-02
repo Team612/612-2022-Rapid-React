@@ -114,5 +114,7 @@ public final class Constants {
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
+
+    public static boolean toggle = false;
 }
 

@@ -23,7 +23,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  public static Object m_romiDrivetrain;
+
+// The robot's subsystems and commands are defined here...
   private final Climb m_climb = new Climb();
   
   private final Pivot m_autoCommand = new Pivot(m_climb);
@@ -43,7 +45,7 @@ public class RobotContainer {
   private final BottomClose m_bottomclose = new BottomClose(m_intake);
   private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final Drivetrain m_drivetrain = new Drivetrain();
+  public static final Drivetrain m_drivetrain = new Drivetrain();
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
 
   private final FollowTrajectory m_follower = new FollowTrajectory();

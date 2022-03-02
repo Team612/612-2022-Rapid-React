@@ -18,7 +18,8 @@ public class ControlMap{
 
   
     public static JoystickButton bottomOpen = new JoystickButton(gunner, 5);
-    public static JoystickButton bottomClose = new JoystickButton(gunner, 6); 
+    public static JoystickButton bottomClose = new JoystickButton(gunner, 6);
+    public static JoystickButton toggleDrive = new JoystickButton(gunner, 7); 
     /*public static JoystickButton topToggle = new JoystickButton(gunner, 69);
     public static JoystickButton bottomToggle = new JoystickButton(gunner, 420);
     public static JoystickButton rotateWristUp = new JoystickButton(gunner, 10);
