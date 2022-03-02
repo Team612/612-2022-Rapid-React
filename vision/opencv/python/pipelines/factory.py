@@ -1,33 +1,26 @@
-from asyncio.windows_utils import pipe
 import json
+from importlib import import_module
 
-from pipelines.chain import Chain
-from pipelines.color_space import ConvertToHSV
-from pipelines.contours import FindContours, SpeckleReject, DisplayContours
-from pipelines.morph import Morph
-from pipelines.threshold import Threshold
-from pipelines.display_image import DisplayImage
-from pipelines.find_circles import FindCircles, DisplayCircles
 
-types = {
-    'Chain': Chain,
-    'ConvertToHSV': ConvertToHSV,
-    'DisplayImage': DisplayImage,
-    'DisplayCircles': DisplayCircles,
-    'DisplayContours': DisplayContours,
-    'FindCircles': FindCircles,
-    'FindContours': FindContours,
-    'Morph': Morph,
-    'Morphology': Morph,
-    'SpeckleReject': SpeckleReject,
-    'Threshold': Threshold
-}
+def createPipeline(p):
+    typeParts = p['type'].split('.')
+    moduleName = '.'.join(typeParts[0:-1])
+    
+    if len(moduleName) == 0:
+        moduleName = 'pipelines.index'
+
+    className = typeParts[-1]
+    module = import_module(moduleName)
+    cls = getattr(module, className)
+    return cls(p)
 
 def load(fileName):
     pipeline = json.load(open(fileName))
 
     if isinstance(pipeline, list):
-        return Chain([types[p['type']](p) for p in pipeline])
+        return createPipeline({ 'type': 'Chain', 'steps': pipeline })
+    elif 'type' in pipeline:
+        return createPipeline(pipeline)
     else:
         return None
 

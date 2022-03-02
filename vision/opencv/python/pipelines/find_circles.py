@@ -47,7 +47,7 @@ class FindCircles(Base):
             maxRadius = maxRadius)
 
         if circles is None:
-            return None
+            return FindCirclesResult(input, [])
 
         unmatchedContours = input.contours.copy()
         results = []
@@ -149,9 +149,10 @@ class FindCircles(Base):
 class DisplayCircles(DisplayImage):
     def __init__(self, settings = {}):
         super().__init__(settings)
+        self.type = 'DisplayCircles'
     
     def run(self, input):
-        if self.enabled and input is not None:
+        if self.enabled:
             canvas = self._getImageToDisplay(input, copy = True)
 
             for c in input.circles:
@@ -166,9 +167,3 @@ class DisplayCircles(DisplayImage):
 
         return input
 
-    def dump(self):
-        return {
-            'type': 'DisplayCircles',
-            'window': self.window,
-            'enabled': self.enabled
-        }

@@ -4,8 +4,9 @@ from pipelines.base import Base
 
 class DisplayImage(Base):
     def __init__(self, settings = {}):
+        self.type = 'DisplayImage'
         self.settings = settings
-        self.window = settings.get('window', 'circles')
+        self.window = settings.get('window', 'result')
         self.image = settings.get('image', 'input')
         self.enabled = settings.get('enabled', True)
 
@@ -19,7 +20,7 @@ class DisplayImage(Base):
 
     def dump(self):
         return {
-            'type': 'DisplayImage',
+            'type': self.type,
             'window': self.window,
             'image': self.image,
             'enabled': self.enabled

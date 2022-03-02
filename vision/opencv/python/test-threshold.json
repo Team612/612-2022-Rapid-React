@@ -3,12 +3,12 @@
         "type": "DisplayImage",
         "window": "capture",
         "image": "input",
-        "enabled": true
+        "enabled": false
     },
     {
         "type": "ColorSpace",
         "to": "HSV",
-        "enabled": true
+        "enabled": false
     },
     {
         "type": "Threshold",
@@ -22,12 +22,41 @@
             255,
             255
         ],
+        "enabled": false
+    },
+    {
+        "type": "ColorSpace",
+        "to": "GRAY",
         "enabled": true
+    },
+    {
+        "type": "Threshold",
+        "method": "OTSU",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "TRIANGLE",
+        "invert": true,
+        "enabled": true
+    },
+    {
+        "type": "Threshold",
+        "method": "ADAPTIVE_THRESH_MEAN",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "ADAPTIVE_THRESH_GAUSSIAN",
+        "invert": true,
+        "enabled": false
     },
     {
         "type": "Morph",
         "operation": "open",
-        "enabled": true
+        "enabled": false
     },
     {
         "type": "DisplayImage",

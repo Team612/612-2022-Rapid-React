@@ -103,6 +103,7 @@ class SpeckleReject(Base):
 class DisplayContours(DisplayImage):
     def __init__(self, settings = {}):
         super().__init__(settings)
+        self.type = 'DisplayContours'
     
     def run(self, input):
         if self.enabled:
@@ -123,10 +124,3 @@ class DisplayContours(DisplayImage):
             cv.imshow(self.window, canvas)
 
         return input
-
-    def dump(self):
-        return {
-            'type': 'DisplayContours',
-            'window': self.window,
-            'enabled': self.enabled
-        }
