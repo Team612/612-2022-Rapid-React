@@ -5,6 +5,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.ToggleBottomGrabber;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.Pivot;
 import frc.robot.commands.Climb.RetractClimb;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 
 /**
@@ -46,6 +48,37 @@ public class RobotContainer {
   private final FollowTrajectory m_follower = new FollowTrajectory();
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SequentialCommandGroup m_outakeSequential = new SequentialCommandGroup(new ArmForward(m_intake)
+                                                      .andThen(new BottomOpen(m_intake)));
+  private final SequentialCommandGroup m_intakeSequential = new SequentialCommandGroup(new BottomClose(m_intake)
+                                                            .andThen(new ArmReverse(m_intake)));
+  private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
+                                                            m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1)
+                                                            .andThen(m_outakeSequential)
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path1v2))
+                                                            .andThen(m_intakeSequential)
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path1v3))
+                                                            .andThen(m_outakeSequential));
+  private final SequentialCommandGroup m_autonomousSequentialTwoPath = new SequentialCommandGroup(m_outakeSequential
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path2v1))
+                                                            .andThen(m_intakeSequential)
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path2v2))
+                                                            .andThen(m_outakeSequential)
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3))
+                                                            .andThen(m_intakeSequential)
+                                                            .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path2v4))
+                                                            .andThen(m_outakeSequential));
+  
+  private final SequentialCommandGroup m_autonomousSequentialThreePath = new SequentialCommandGroup(m_outakeSequential
+                                                              .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path3v1))
+                                                              .andThen(m_intakeSequential)
+                                                              .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2))
+                                                              .andThen(m_outakeSequential)
+                                                              .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3))
+                                                              .andThen(m_intakeSequential)
+                                                              .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4))
+                                                              .andThen(m_outakeSequential));
+                                                              
 
   public RobotContainer() {
     // Configure the button bindings
@@ -76,6 +109,10 @@ public class RobotContainer {
     m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2));
     m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3));
     m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4));
+    
+    m_chooser.addOption("Away from hub- align to straight edge corner (PRELOADED)", m_autonomousSequentialOnePath);
+    m_chooser.addOption("Run second path and sequence", m_autonomousSequentialTwoPath);
+    m_chooser.addOption("Run third path and sequence", m_autonomousSequentialThreePath);
     
     
     SmartDashboard.putData(m_chooser);
