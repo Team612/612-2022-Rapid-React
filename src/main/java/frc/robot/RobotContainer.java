@@ -3,12 +3,15 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.Pivot;
 import frc.robot.commands.Climb.RetractClimb;
 import frc.robot.commands.Climb.ToggleHooks;
+import frc.robot.commands.Climb.TogglePistons;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
@@ -18,6 +21,7 @@ import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.BottomToggle;
+import frc.robot.commands.Intake.ToggleArm;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -81,14 +85,33 @@ public class RobotContainer {
     
     SmartDashboard.putData(m_chooser);
 
-    ControlMap.GUNNER_A.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.GUNNER_B.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_X.toggleWhenPressed(new ToggleHooks(m_climb));
-    ControlMap.GUNNER_RB.whenPressed(new ArmForward(m_intake));
-    ControlMap.GUNNER_LB.whenPressed(new ArmReverse(m_intake));
-    ControlMap.GUNNER_BACK.toggleWhenPressed(new BottomToggle(m_intake));
-    
+    manualButtonBindings();
+    //autoButtonBindings();
   }
+
+  private void manualButtonBindings(){
+    ControlMap.GUNNER_START.whenPressed(new ExtendClimb(m_climb));
+    ControlMap.GUNNER_BACK.whenPressed(new RetractClimb(m_climb));
+    ControlMap.GUNNER_Y.whenPressed(new ArmReverse(m_intake));
+    ControlMap.GUNNER_A.whenPressed(new ArmForward(m_intake));
+    ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
+    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+  }
+
+  private void autoButtonBindings(){
+    ControlMap.GUNNER_Y.toggleWhenPressed(new ToggleHooks(m_climb));
+    ControlMap.GUNNER_B.toggleWhenPressed(new BottomToggle(m_intake));
+    //ControlMap.GUNNER_BACK.toggleWhenPressed(new TogglePistons(m_climb));
+    //ControlMap.GUNNER_A.toggleWhenPressed(new ToggleArm(m_intake));
+  }
+  /*
+  things we can toggle:
+  arm - a
+  grabber - b
+  pistons - back
+  hooks - y
+  pivot motor - start
+  */
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
