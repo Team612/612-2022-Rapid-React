@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,8 +19,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  
   private RobotContainer m_robotContainer;
+  private PIDController rotationController = new PIDController(Constants.kPThetaController, 0, 0);
+  private PIDController forwardController = new PIDController(Constants.kPXController, 0, 0);
+  private double forwardSpeed = 0;
+  private double rotationSpeed = 0;
+  //private Compressor m_compressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -28,6 +36,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    //m_compressor.enableHybrid(95, 120); //min psi 95 max is 120
   }
 
   /**
@@ -66,22 +75,37 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    Drivetrain m_drive = RobotContainer.m_drivetrain;
+    
+      var result = Constants.camera.getLatestResult();
+      //System.out.println(result.hasTargets());
+      if(result.hasTargets()){
+        rotationSpeed = -rotationController.calculate(result.getBestTarget().getYaw(), 0);
+        System.out.println(rotationSpeed);
+        //double range = (Constants.CAMERA_HEIGHT_METERS - Constants.TARGET_HEIGHT_METERS)/ 
+        //Math.tan(Constants.CAMERA_PITCH_RADIANS + Units.degreesToRadians(result.getBestTarget().getPitch()));
+        //forwardSpeed = forwardController.calculate(range, Constants.GOAL_RANGE_METERS);
+        forwardSpeed = 0;
+      }
+      else{
+        rotationSpeed = 0;
+        forwardSpeed = 0;
+      }
+    m_drive.driveMecanum(forwardSpeed, 0, rotationSpeed);
+  }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+  }
 
   @Override
   public void testInit() {
