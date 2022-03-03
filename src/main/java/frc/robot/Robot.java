@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
     CameraServer.startAutomaticCapture(0);
-    // CameraServer.startAutomaticCapture(1);
+    CameraServer.startAutomaticCapture(1);
     m_robotContainer = new RobotContainer();
   }
 

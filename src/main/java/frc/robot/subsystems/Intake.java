@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
   }
   
   public void TalonFlex(double speed) {
-    if(Math.abs(speed) < DEADZONE) speed = 0;
+    // if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
   }
   
