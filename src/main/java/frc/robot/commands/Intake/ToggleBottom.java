@@ -2,46 +2,40 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Climb;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controls.ControlMap;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Intake;
 
-
-public class Pivot extends CommandBase {
-  /** Creates a new Pivot. */
-  private final Climb m_pivot;
-  public Pivot(Climb climb) {
+public class ToggleBottom extends CommandBase {
+  /** Creates a new BottomToggle. */
+  private final Intake m_intake;
+  public ToggleBottom(Intake intake) {
+    m_intake = intake;
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_pivot = climb;
-    addRequirements(climb);
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_pivot.ServoClose();
-
+    m_intake.BottomServoOpen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_pivot.pivot(ControlMap.gunner.getRawAxis(4));
-    m_pivot.getBoreEncoder();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intake.BottomServoClose();
 
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
     return false;
   }
 }

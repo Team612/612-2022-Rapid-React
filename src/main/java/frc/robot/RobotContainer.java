@@ -8,10 +8,10 @@ import java.util.ResourceBundle.Control;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ExtendClimb;
-import frc.robot.commands.Climb.Pivot;
+import frc.robot.commands.Climb.PivotClimb;
 import frc.robot.commands.Climb.RetractClimb;
-import frc.robot.commands.Climb.ToggleHooks;
-import frc.robot.commands.Climb.TogglePistons;
+import frc.robot.commands.Climb.ToggleClimbHooks;
+import frc.robot.commands.Climb.ToggleClimb;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
@@ -20,8 +20,7 @@ import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
-import frc.robot.commands.Intake.BottomToggle;
-import frc.robot.commands.Intake.ToggleArm;
+import frc.robot.commands.Intake.ToggleBottom;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -44,7 +43,7 @@ public class RobotContainer {
 
   //configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
-  private final Pivot m_pivot = new Pivot(m_climb);
+  private final PivotClimb m_pivot = new PivotClimb(m_climb);
   private final Arm m_arm = new Arm(m_intake);
 
   //Trajectories
@@ -90,18 +89,19 @@ public class RobotContainer {
   }
 
   private void manualButtonBindings(){
-    ControlMap.GUNNER_START.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.GUNNER_BACK.whenPressed(new RetractClimb(m_climb));
+    ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
+    ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
     ControlMap.GUNNER_Y.whenPressed(new ArmReverse(m_intake));
     ControlMap.GUNNER_A.whenPressed(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    ControlMap.GUNNER_RB.whenPressed(new ToggleClimbHooks(m_climb));
   }
 
   private void autoButtonBindings(){
-    ControlMap.GUNNER_Y.toggleWhenPressed(new ToggleHooks(m_climb));
-    ControlMap.GUNNER_B.toggleWhenPressed(new BottomToggle(m_intake));
-    //ControlMap.GUNNER_BACK.toggleWhenPressed(new TogglePistons(m_climb));
+    ControlMap.GUNNER_A.toggleWhenPressed(new ToggleBottom(m_intake));
+    ControlMap.GUNNER_BACK.toggleWhenPressed(new ToggleClimb(m_climb));
+    ControlMap.GUNNER_Y.whenPressed(new ToggleClimbHooks(m_climb));
     //ControlMap.GUNNER_A.toggleWhenPressed(new ToggleArm(m_intake));
   }
   /*
@@ -116,7 +116,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
-    m_intake.setDefaultCommand(m_arm);
+    m_intake.setDefaultCommand(m_arm); 
 
   }
 

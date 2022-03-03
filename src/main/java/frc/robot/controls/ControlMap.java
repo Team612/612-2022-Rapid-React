@@ -17,10 +17,10 @@ public class ControlMap{
     public static JoystickButton GUNNER_Y = new JoystickButton(gunner, 4); //Y
     public static JoystickButton GUNNER_LB = new JoystickButton(gunner, 5); //LB
     public static JoystickButton GUNNER_RB = new JoystickButton(gunner, 6); //RB
-    public static JoystickButton GUNNER_START = new JoystickButton(gunner, 7); //RB
-    public static JoystickButton GUNNER_BACK = new JoystickButton(gunner, 8); //RB
-    public static JoystickButton GUNNER_LJ_BUTTON = new JoystickButton(gunner, 9); //RB
-    public static JoystickButton GUNNER_RJ_BUTTON = new JoystickButton(gunner, 10); //RB
+    public static JoystickButton GUNNER_BACK = new JoystickButton(gunner, 7); 
+    public static JoystickButton GUNNER_START = new JoystickButton(gunner, 8); 
+    public static JoystickButton GUNNER_LJ_BUTTON = new JoystickButton(gunner, 9); //
+    public static JoystickButton GUNNER_RJ_BUTTON = new JoystickButton(gunner, 10); //
     
     
     // public static JoystickButton climbExtend = new JoystickButton(gunner, 1); //A

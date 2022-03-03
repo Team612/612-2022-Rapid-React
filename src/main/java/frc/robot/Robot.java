@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -34,7 +35,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
-    CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture(0);
+    // CameraServer.startAutomaticCapture(1);
     m_robotContainer = new RobotContainer();
   }
 

@@ -66,9 +66,24 @@ public class Intake extends SubsystemBase {
 
   public void BottomServoClose(){
     bottomLeft.setAngle(180);
-    bottomRight.setAngle(0);
+    bottomRight.setAngle(0); 
   }
 
+  public boolean isBottomOpened(){
+    if(bottomLeft.getAngle() == 90 && bottomRight.getAngle() == 90){
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isBottomClosed(){
+    if(bottomLeft.getAngle() == 180 && bottomRight.getAngle() == 0){
+      return true;
+    }
+    return false;
+  }
+
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -7,19 +7,19 @@ package frc.robot.commands.Climb;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
-public class ToggleHooks extends CommandBase {
-  /** Creates a new ToggleHooks. */
-  private final Climb m_climb;
-  public ToggleHooks(Climb climb) {
+public class ToggleClimb extends CommandBase {
+  /** Creates a new TogglePistons. */
+  Climb m_climb;
+  public ToggleClimb(Climb climb) {
     m_climb = climb;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climb);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climb.ServoOpen();
+    m_climb.extendArm();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -29,7 +29,7 @@ public class ToggleHooks extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climb.ServoClose();
+    m_climb.retractArm();
   }
 
   // Returns true when the command should end.
