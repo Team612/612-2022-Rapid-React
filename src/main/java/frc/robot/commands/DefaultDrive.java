@@ -6,14 +6,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LED;
 
 public class DefaultDrive extends CommandBase {
   /** Creates a new DefaultDrive. */
   public Drivetrain m_drivetrain;
-  public DefaultDrive(Drivetrain drivetrain) {
+  public LED m_led;
+  public DefaultDrive(Drivetrain drivetrain, LED led) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrain = drivetrain;
-    addRequirements(drivetrain);
+    m_led = led;
+    addRequirements(drivetrain, led);
   }
 
   // Called when the command is initially scheduled.
@@ -30,12 +33,16 @@ public class DefaultDrive extends CommandBase {
     //m_drivetrain.mecanumVolts(new MecanumDriveMotorVoltages(12,0,0,0));
   
     //m_drivetrain.driveMecanum( ControlMap.driver.getRawAxis(4), ControlMap.driver.getRawAxis(0),-ControlMap.driver.getRawAxis(1));
+
+    m_led.setLED(255, 0, 0);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_drivetrain.driveMecanum(0, 0, 0);
+
   }
 
   // Returns true when the command should end.

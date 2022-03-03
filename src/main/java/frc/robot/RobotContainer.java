@@ -13,6 +13,7 @@ import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -24,6 +25,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private final LED m_led = new LED();
+
   private final Climb m_climb = new Climb();
   
   private final Pivot m_autoCommand = new Pivot(m_climb);
@@ -44,7 +48,7 @@ public class RobotContainer {
   private final BottomOpen m_bottomopen = new BottomOpen(m_intake);
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final Drivetrain m_drivetrain = new Drivetrain();
-  private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
+  private final DefaultDrive m_default = new DefaultDrive(m_drivetrain, m_led);
 
   private final FollowTrajectory m_follower = new FollowTrajectory();
 
