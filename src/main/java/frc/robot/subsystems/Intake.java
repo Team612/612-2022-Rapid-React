@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
   
   private final Servo bottomLeft = new Servo(Constants.bottom_servos[0]);
   private final Servo bottomRight = new Servo(Constants.bottom_servos[1]); 
-  
+ 
   private final int TOP_POSITION = 0;
   private final double DEADZONE = 0.1;
   
@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
   }
   
   public void TalonFlex(double speed) {
-    // if(Math.abs(speed) < DEADZONE) speed = 0;
+    if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
   }
   
@@ -82,7 +82,6 @@ public class Intake extends SubsystemBase {
     }
     return false;
   }
-
   
   @Override
   public void periodic() {

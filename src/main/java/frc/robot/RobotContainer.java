@@ -3,8 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import java.util.ResourceBundle.Control;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ExtendClimb;
@@ -50,6 +48,7 @@ public class RobotContainer {
   private final FollowTrajectory m_follower = new FollowTrajectory();
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 
   public RobotContainer() {
     // Configure the button bindings

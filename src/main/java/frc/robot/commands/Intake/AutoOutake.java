@@ -4,13 +4,16 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class BottomClose extends CommandBase {
-  /** Creates a new TopClose. */
+public class AutoOutake extends CommandBase {
+  /** Creates a new AutoOutake. */
+  Ultrasonic m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
   private final Intake m_intake;
-  public BottomClose(Intake intake) {
+  public AutoOutake(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     addRequirements(intake);
@@ -24,15 +27,19 @@ public class BottomClose extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    Ultrasonic.setAutomaticMode(true);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intake.BottomServoOpen();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_ultrasonicOutake.getRangeInches() <= 2;
   }
 }

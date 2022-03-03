@@ -110,6 +110,8 @@ public final class Constants {
 
     public static int[] bottom_servos = {2,3};
 
+    public static int[] ULTRASONIC_INTAKE =  {1,2};
+    public static int[] ULTRASONIC_OUTAKE =  {3,4};
 
     public static double height = 15.375;
     public static double length = 24.0;
