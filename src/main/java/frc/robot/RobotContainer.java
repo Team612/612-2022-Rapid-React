@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
@@ -29,41 +30,42 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
-
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 
-  //Subsystem Declarations
+  // Subsystem Declarations
   private final Climb m_climb = new Climb();
   private final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
 
-  //configure default commands
+  // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
   private final PivotClimb m_pivot = new PivotClimb(m_climb);
   private final Arm m_arm = new Arm(m_intake);
 
-  //Trajectories
+  // Trajectories
   private final FollowTrajectory m_follower = new FollowTrajectory();
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  
-  private final SequentialCommandGroup m_outakeSequential = new SequentialCommandGroup(new ArmReverse(m_intake)
-                                                      .andThen(new BottomOpen(m_intake)));
+  private final SequentialCommandGroup m_outakeSequential = new SequentialCommandGroup(
+    (new ArmReverse(m_intake)
+    .andThen(new BottomOpen(m_intake))));
+
   private final SequentialCommandGroup m_intakeSequential = new SequentialCommandGroup(new BottomClose(m_intake)
-                                                            .andThen(new ArmReverse(m_intake)));
+      .andThen(new ArmReverse(m_intake)));
 
   private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
-    m_outakeSequential
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters)));
-
-
+      m_outakeSequential
+          .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters)));
 
   public RobotContainer() {
     // Configure the button bindings
@@ -72,38 +74,50 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters));
     m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_traj.testTrajectory2));
-    //m_chooser.addOption("Manual Code", object);
+    // m_chooser.addOption("Manual Code", object);
     m_chooser.addOption("auto test", m_autonomousSequentialOnePath);
-    // m_chooser.addOption("Line up 1v1", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1));
-    // m_chooser.addOption("Line up 1v2", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v2));
-    // m_chooser.addOption("Line up 1v3", m_follower.generateTrajectory(m_drivetrain, m_traj.path1v3));
+    // m_chooser.addOption("Line up 1v1",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1));
+    // m_chooser.addOption("Line up 1v2",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v2));
+    // m_chooser.addOption("Line up 1v3",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v3));
 
-    // m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v1));
-    // m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v2));
-    // m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
-    // m_chooser.addOption("Two Ball Pick Up Left First", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v4));
+    // m_chooser.addOption("Two Ball Pick Up Left First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v1));
+    // m_chooser.addOption("Two Ball Pick Up Left First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v2));
+    // m_chooser.addOption("Two Ball Pick Up Left First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
+    // m_chooser.addOption("Two Ball Pick Up Left First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v4));
 
-    // m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v1));
-    // m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2));
-    // m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3));
-    // m_chooser.addOption("Two Ball Pick Up Right First", m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4));
-    
-    
+    // m_chooser.addOption("Two Ball Pick Up Right First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v1));
+    // m_chooser.addOption("Two Ball Pick Up Right First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2));
+    // m_chooser.addOption("Two Ball Pick Up Right First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3));
+    // m_chooser.addOption("Two Ball Pick Up Right First",
+    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4));
+
     SmartDashboard.putData(m_chooser);
 
     manualButtonBindings();
-    //autoButtonBindings();
+    // autoButtonBindings();
   }
 
-  private void manualButtonBindings(){
+  private void manualButtonBindings() {
     ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
     ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
@@ -112,29 +126,30 @@ public class RobotContainer {
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
-    // ControlMap.GUNNER_RB.toggleWhenPressed(new StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
+    // ControlMap.GUNNER_RB.toggleWhenPressed(new
+    // StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
   }
 
-  private void autoButtonBindings(){
+  private void autoButtonBindings() {
     ControlMap.GUNNER_A.toggleWhenPressed(new ToggleBottom(m_intake));
     ControlMap.GUNNER_BACK.toggleWhenPressed(new ToggleClimb(m_climb));
     ControlMap.GUNNER_Y.whenPressed(new ToggleClimbHooks(m_climb));
-    //ControlMap.GUNNER_A.toggleWhenPressed(new ToggleArm(m_intake));
+    // ControlMap.GUNNER_A.toggleWhenPressed(new ToggleArm(m_intake));
   }
   /*
-  things we can toggle:
-  arm - a
-  grabber - b
-  pistons - back
-  hooks - y
-  pivot motor - start
-  */
+   * things we can toggle:
+   * arm - a
+   * grabber - b
+   * pistons - back
+   * hooks - y
+   * pivot motor - start
+   */
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
     m_climb.setDefaultCommand(m_pivot);
-    m_intake.setDefaultCommand(m_arm); 
+    m_intake.setDefaultCommand(m_arm);
 
   }
 

@@ -5,9 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,14 +17,18 @@ public class Intake extends SubsystemBase {
  
   private final int TOP_POSITION = 0;
   private final double DEADZONE = 0.1;
+
+  public boolean servoOpen = false;
+  public boolean servoClose = false;
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon_arm);
-  
+ 
   
   public Intake() {
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
+    
   }
 
   public int getEncoder(){
@@ -65,11 +67,15 @@ public class Intake extends SubsystemBase {
   public void BottomServoOpen() {
     bottomLeft.setAngle(90);
     bottomRight.setAngle(90);
+    servoOpen = true;
+    servoClose = false;
   }
 
   public void BottomServoClose(){
     bottomLeft.setAngle(180);
     bottomRight.setAngle(0); 
+    servoOpen = false;
+    servoClose = true;
   }
 
   public boolean isBottomOpened(){
