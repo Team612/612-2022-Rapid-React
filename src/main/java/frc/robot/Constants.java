@@ -24,7 +24,7 @@ public final class Constants {
     public final static int SPARK_FR = 1;
     public final static int SPARK_BL = 4;
     public final static int SPARK_BR = 3;
-    
+
     //wheel diameter
     public static final double kWheelDiameterMeters = 0.1524;
     
@@ -94,6 +94,8 @@ public final class Constants {
     
     //climb
     public static int Talon_arm = 5;
+    public static double intakeArmSpeed = .5;//.38;
+
     public static int talon_pivot = 6;
     public static int PCM_2 = 7;
     public static int[] firstSolenoid = {1, 0}; // rev, fwd

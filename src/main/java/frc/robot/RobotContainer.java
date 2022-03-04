@@ -93,8 +93,8 @@ public class RobotContainer {
   private void manualButtonBindings(){
     ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_Y.whenPressed(new ArmReverse(m_intake));
-    ControlMap.GUNNER_A.whenPressed(new ArmForward(m_intake));
+    ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
+    ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
