@@ -10,6 +10,9 @@ import frc.robot.subsystems.Drivetrain;
 public class DefaultDrive extends CommandBase {
   /** Creates a new DefaultDrive. */
   public Drivetrain m_drivetrain;
+
+  private int invert_dir = 1;
+
   public DefaultDrive(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrain = drivetrain;
@@ -24,7 +27,8 @@ public class DefaultDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.driveMecanum(ControlMap.driver.getRawAxis(1), ControlMap.driver.getRawAxis(0), -ControlMap.driver.getRawAxis(4));
+    
+    m_drivetrain.driveMecanum(ControlMap.driver.getRawAxis(1) * invert_dir, -ControlMap.driver.getRawAxis(0) * invert_dir, -ControlMap.driver.getRawAxis(4));
     //m_drivetrain.driveMecanum(0, ControlMap.driver.getRawAxis(0),0);
     // m_drivetrain.driveMecanum(1.0,0,0,0);
     //m_drivetrain.mecanumVolts(new MecanumDriveMotorVoltages(12,0,0,0));

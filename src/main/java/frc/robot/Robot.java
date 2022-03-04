@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
+
+    //front_cam = CameraServer.startAutomaticCapture();
     /*front_cam = CameraServer.startAutomaticCapture(0);
     rear_cam = CameraServer.startAutomaticCapture(1);
 

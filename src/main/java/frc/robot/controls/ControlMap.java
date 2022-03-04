@@ -9,8 +9,11 @@ public class ControlMap{
     
     //Controller objects
     public static Joystick driver = new Joystick(DRIVER_PORT);
+    
+    public static JoystickButton DRIVER_A = new JoystickButton(driver, 1);
+    
+    
     public static Joystick gunner = new Joystick(GUNNER_PORT);
-   
     public static JoystickButton GUNNER_A = new JoystickButton(gunner, 1); //A
     public static JoystickButton GUNNER_B = new JoystickButton(gunner, 2); //B
     public static JoystickButton GUNNER_X = new JoystickButton(gunner, 3); //X

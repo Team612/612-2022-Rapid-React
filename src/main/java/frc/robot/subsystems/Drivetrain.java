@@ -40,9 +40,13 @@ public class Drivetrain extends SubsystemBase {
   MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
   private Field2d m_field = new Field2d();
 
+  public static boolean intaking;
 
 
   public Drivetrain() {
+    
+    intaking = false;
+
     SmartDashboard.putData("Field", m_field);
 
     spark_fr.setInverted(false);
