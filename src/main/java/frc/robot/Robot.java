@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -26,12 +29,50 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+  AddressableLED m_led;
+  AddressableLEDBuffer m_ledBuffer;
+  public int m_rainbowFirstPixelHue = 5;
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CameraServer.startAutomaticCapture();
+
     //m_compressor.enableHybrid(95, 120); //min psi 95 max is 120
+    // PWM port 9
+    // Must be a PWM header, not MXP or DIO
+    AddressableLED m_led = new AddressableLED(0);
+    
+    // Reuse buffer
+    // Default to a length of 60, start empty output
+    // Length is expensive to set, so only set it once, then just update data
+    m_ledBuffer = new AddressableLEDBuffer(150);
+    m_led.setLength(m_ledBuffer.getLength());
+    int r_val = 0;
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the HSV values for red
+      m_ledBuffer.setRGB(i, 100, 0, 0);
+    }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+  }
+
+  private void rainbow() {
+    // For every pixel
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+      // Set the value
+      m_ledBuffer.setHSV(i, hue, 255, 128);
+    }
+    // Increase by to make the rainbow "move"
+    m_rainbowFirstPixelHue += 3;
+    // Check bounds
+    m_rainbowFirstPixelHue %= 180;
+    // Increase by to make the rainbow "move"
   }
 
   /**
@@ -48,6 +89,14 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    // Fill the buffer with a rainbow
+    //rainbow();
+    // Set the LEDs
+   // m_led.setData(m_ledBuffer);
+
+    //System.out.println("5");
+    //System.out.println(m_ledBuffer.getLED(10));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -55,7 +104,11 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    
+    
+
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
