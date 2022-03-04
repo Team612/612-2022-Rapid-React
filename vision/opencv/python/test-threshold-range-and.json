@@ -1,0 +1,115 @@
+[
+    {
+        "type": "DisplayImage",
+        "window": "capture",
+        "image": "input",
+        "enabled": false
+    },
+    {
+        "type": "ColorSpace",
+        "to": "HSV",
+        "enabled": true
+    },
+    {
+        "type": "Threshold",
+        "method": "RANGE_AND",
+        "min": [
+            73,
+            41,
+            22
+        ],
+        "max": [
+            107,
+            255,
+            255
+        ],
+        "enabled": true
+    },
+    {
+        "type": "ColorSpace",
+        "to": "GRAY",
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "OTSU",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "TRIANGLE",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "ADAPTIVE_THRESH_MEAN",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Threshold",
+        "method": "ADAPTIVE_THRESH_GAUSSIAN",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "Morph",
+        "operation": "open",
+        "enabled": false
+    },
+    {
+        "type": "ColorSpace",
+        "to": "HSV2GRAY",
+        "enabled": true
+    },
+    {
+        "type": "DisplayImage",
+        "window": "range_and",
+        "image": "input",
+        "enabled": true
+    },
+    {
+        "type": "Threshold",
+        "method": "OTSU",
+        "invert": true,
+        "enabled": false
+    },
+    {
+        "type": "DisplayImage",
+        "window": "adaptive_gaussian",
+        "image": "input",
+        "enabled": true
+    },
+    {
+        "type": "FindContours",
+        "enabled": false
+    },
+    {
+        "type": "SpeckleReject",
+        "minAllowedAreaPercent": 43,
+        "enabled": false
+    },
+    {
+        "type": "DisplayContours",
+        "window": "contours",
+        "enabled": false
+    },
+    {
+        "type": "FindCircles",
+        "minRadius": 0,
+        "maxRadius": 100,
+        "minDist": 20,
+        "maxCannyThresh": 61,
+        "accuracy": 16,
+        "allowableThreshold": 38,
+        "enabled": false
+    },
+    {
+        "type": "DisplayCircles",
+        "window": "circles",
+        "image": "first",
+        "enabled": false
+    }
+]

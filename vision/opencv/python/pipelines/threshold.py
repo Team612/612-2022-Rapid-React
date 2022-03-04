@@ -15,11 +15,10 @@ class Threshold(Base):
             thresh = cv.THRESH_BINARY_INV if self.invert else cv.THRESH_BINARY
             
             if self.method == 'RANGE':
-                return input.next(
-                    cv.inRange(
-                        input.img,
-                        (self.min[0], self.min[1], self.min[2]),
-                        (self.max[0], self.max[1], self.max[2])))
+                return input.next(self._getMaskFromRange(input))
+            elif self.method == 'RANGE_AND':
+                mask = self._getMaskFromRange(input)
+                return input.next(cv.bitwise_and(input.img, input.img, mask = mask))
             elif self.method == 'OTSU':
                 ret, timg = cv.threshold(input.img, 0, 255, thresh + cv.THRESH_OTSU)
                 return input.next(timg)
@@ -45,6 +44,12 @@ class Threshold(Base):
                     2)
                 return input.next(timg)
         return input
+
+    def _getMaskFromRange(self, input):
+        return cv.inRange(
+            input.img,
+            (self.min[0], self.min[1], self.min[2]),
+            (self.max[0], self.max[1], self.max[2]))
 
     def gui(self, window):
         if self.enabled:

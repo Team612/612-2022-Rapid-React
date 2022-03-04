@@ -6,6 +6,27 @@
   "configurations": [
 
     {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Test Pipeline",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}\\vision\\opencv\\python\\test-pipeline.py",
+      "args": [
+        "--file",
+        "${workspaceFolder}\\vision\\opencv\\python\\saved.json",
+        "--gui",
+        "--device",
+        "1"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
       "type": "wpilib",
       "name": "WPILib Desktop Debug",
       "request": "launch",

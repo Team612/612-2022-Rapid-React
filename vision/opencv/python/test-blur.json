@@ -1,6 +1,5 @@
 {
     "type": "Chain",
-    "printFPS": false,
     "steps": [
         {
             "type": "DisplayImage",
@@ -11,33 +10,37 @@
         {
             "type": "Blur",
             "method": "BILATERAL",
-            "d": 9,
-            "sigmaColor": 150,
-            "sigmaSpace": 150,
+            "kernelSize": 5,
+            "sigmaX": 0,
+            "sigmaY": 0,
+            "d": 8,
+            "sigmaColor": 209,
+            "sigmaSpace": 209,
             "enabled": true
         },
         {
             "type": "DisplayImage",
             "window": "blur",
             "image": "input",
-            "enabled": false
+            "enabled": true
         },
         {
             "type": "ColorSpace",
-            "to": "HSV",
+            "to": "COLOR_BGR2HSV",
+            "channels": 0,
             "enabled": true
         },
         {
             "type": "Threshold",
             "method": "RANGE",
             "min": [
-                21,
-                35,
-                0
+                45,
+                73,
+                67
             ],
             "max": [
-                92,
-                250,
+                108,
+                255,
                 246
             ],
             "invert": true,
@@ -85,5 +88,6 @@
             "image": "first",
             "enabled": false
         }
-    ]
+    ],
+    "printFPS": false
 }

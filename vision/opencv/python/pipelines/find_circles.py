@@ -74,6 +74,9 @@ class FindCircles(Base):
         return FindCirclesResult(input, results)
 
     def gui(self, window):
+        if not self.enabled:
+            return
+            
         cv.createTrackbar(
             'Min radius %',
             window,

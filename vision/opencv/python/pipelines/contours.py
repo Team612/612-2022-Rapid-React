@@ -83,12 +83,13 @@ class SpeckleReject(Base):
             return input
             
     def gui(self, window):
-        cv.createTrackbar(
-            'Speckle Reject',
-            window,
-            self.minAllowedAreaPercent,
-            100,
-            lambda value: self._setMinAllowedAreaPercent(value))
+        if self.enabled:
+            cv.createTrackbar(
+                'Speckle Reject',
+                window,
+                self.minAllowedAreaPercent,
+                100,
+                lambda value: self._setMinAllowedAreaPercent(value))
 
     def _setMinAllowedAreaPercent(self, value):
         self.minAllowedAreaPercent = value

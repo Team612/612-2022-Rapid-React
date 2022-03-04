@@ -16,12 +16,13 @@ class Morph(Base):
             return input
 
     def gui(self, window):
-        cv.createTrackbar(
-            'Morph Open',
-            window,
-            1 if self.operation == 'open' else 0,
-            1,
-            lambda value: self._setOperationFromGUI(value))
+        if self.enabled:
+            cv.createTrackbar(
+                'Morph Open',
+                window,
+                1 if self.operation == 'open' else 0,
+                1,
+                lambda value: self._setOperationFromGUI(value))
     
     def _setOperationFromGUI(self, value):
         if value == 1:
