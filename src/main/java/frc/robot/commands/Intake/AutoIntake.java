@@ -43,6 +43,6 @@ public class AutoIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_ultrasonicIntake.getRangeInches() <= 2;
+    return m_ultrasonicIntake.getRangeInches() <= Constants.ULTRASONIC_INTAKE_THRESH;
   }
 }

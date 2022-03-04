@@ -24,8 +24,7 @@ public final class Constants {
     public final static int SPARK_FR = 1;
     public final static int SPARK_BL = 4;
     public final static int SPARK_BR = 3;
-
-
+    
     //wheel diameter
     public static final double kWheelDiameterMeters = 0.1524;
     
@@ -112,6 +111,12 @@ public final class Constants {
 
     public static int[] ULTRASONIC_INTAKE =  {1,2};
     public static int[] ULTRASONIC_OUTAKE =  {3,4};
+
+    public static final double ULTRASONIC_INTAKE_THRESH = 2.0;
+    public static final double ULTRASONIC_OUTTAKE_THRESH = 2.0;
+
+
+
 
     public static double height = 15.375;
     public static double length = 24.0;

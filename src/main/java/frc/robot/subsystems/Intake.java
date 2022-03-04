@@ -3,9 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -24,6 +26,7 @@ public class Intake extends SubsystemBase {
   
   public Intake() {
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
+    shoulder.setNeutralMode(NeutralMode.Brake);
   }
 
   public int getEncoder(){

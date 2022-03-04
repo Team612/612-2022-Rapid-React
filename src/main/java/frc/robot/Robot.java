@@ -7,6 +7,9 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,12 +25,14 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
+  UsbCamera front_cam;
+  UsbCamera rear_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
 
-  //  PneumaticsControlModule pcm = new PneumaticsControlModule();
+   //PneumaticsControlModule pcm = new PneumaticsControlModule();
    //Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
   @Override
   public void robotInit() {
@@ -35,9 +40,14 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
-    CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
+    /*front_cam = CameraServer.startAutomaticCapture(0);
+    rear_cam = CameraServer.startAutomaticCapture(1);
+
+    front_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    rear_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);*/
+
     m_robotContainer = new RobotContainer();
+
   }
 
   /**

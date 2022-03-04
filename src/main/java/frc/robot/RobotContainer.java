@@ -5,6 +5,8 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Climb.ClimbClose;
+import frc.robot.commands.Climb.ClimbOpen;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.PivotClimb;
 import frc.robot.commands.Climb.RetractClimb;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 
 /**
@@ -94,7 +97,10 @@ public class RobotContainer {
     ControlMap.GUNNER_A.whenPressed(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
-    ControlMap.GUNNER_RB.whenPressed(new ToggleClimbHooks(m_climb));
+    ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
+    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
+    // ControlMap.GUNNER_RB.toggleWhenPressed(new StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
+    // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
   }
 
   private void autoButtonBindings(){

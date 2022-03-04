@@ -18,13 +18,16 @@ import frc.robot.Constants;
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
   private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+
   private Servo rightServo = new Servo(Constants.right_servo);
   private Servo leftServo = new Servo(Constants.left_servo);
   private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
   private final DoubleSolenoid piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
   //Pushes the piston out
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
-
+  public Climb(){
+    pivotMotor.setNeutralMode(NeutralMode.Brake);
+  }
   
   public void extendArm(){
       piston1.set(Value.kForward);

@@ -40,6 +40,6 @@ public class AutoOutake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_ultrasonicOutake.getRangeInches() <= 2;
+    return m_ultrasonicOutake.getRangeInches() <= Constants.ULTRASONIC_OUTTAKE_THRESH;
   }
 }
