@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  UsbCamera front_cam;
+  //UsbCamera front_cam;
   //UsbCamera rear_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,10 +40,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
-    front_cam = CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture();
     // rear_cam = CameraServer.startAutomaticCapture(1);
 
-    front_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    //front_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
     // rear_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
     m_robotContainer = new RobotContainer();

@@ -39,9 +39,9 @@ public class ArmForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if(m_intake.bottomlimitGoesOff()){
-    //   return true;
-    // }
+    if(m_intake.bottomlimitGoesOff()){
+      return true;
+    }
     return false;
   }
 }

@@ -34,10 +34,6 @@ public final class Constants {
     //Distance between centers of front and back wheels on robot
     public static final double kWheelBase = 0.676275; 
 
-    /**
-     * 27 1/4 inches = 0.69125
-     * 33 = 0.8382
-     */
 
     public static final double kEncoderCPR = 1; 
     public static final double kGearReduction = 16;
@@ -47,27 +43,27 @@ public final class Constants {
         ((kWheelDiameterMeters * Math.PI)) / (kGearReduction);
  
     //Feedforward gains for system dynamics 
-    public static final double kS = 0.11104; 
-    public static final double kV = 4.1572;  
-    public static final double kA = 0.21354;
+    public static final double kS = 0.14638; 
+    public static final double kV = 4.2124;  
+    public static final double kA = 0.36348;
     
     //Angular gains
-    public static final double kV_Angular = 1; //
-    public static final double kA_Angular = 1; //
+    public static final double kV_Angular = 1; // do not touch
+    public static final double kA_Angular = 1; // do not touch
 
     //position controllers
 
     //have to tune manually
-    public static final double kPXController = .5;
+    public static final double kPXController = .85;
     public static final double kPYController = .5;
     public static final double kPThetaController = .5; //TODO
 
     
     //Velocity controllers
-    public static final double kPFrontLeftVel = 3.8167; 
-    public static final double kPRearLeftVel = 3.8167;
-    public static final double kPFrontRightVel = 3.8167;
-    public static final double kPRearRightVel = 3.8167;
+    public static final double kPFrontLeftVel = 4.8327; 
+    public static final double kPRearLeftVel = 4.8327;
+    public static final double kPFrontRightVel = 4.8327;
+    public static final double kPRearRightVel = 4.8327;
 
     //Converting chassis velocity into individual wheel velocities
     public static final MecanumDriveKinematics kDriveKinematics =

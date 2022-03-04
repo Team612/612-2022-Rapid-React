@@ -45,11 +45,11 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     SmartDashboard.putData("Field", m_field);
 
-    spark_fr.setInverted(false);
-    spark_br.setInverted(false);
+    spark_fr.setInverted(true);
+    spark_br.setInverted(true);
 
-    spark_fl.setInverted(true);
-    spark_bl.setInverted(true);
+    spark_fl.setInverted(false);
+    spark_bl.setInverted(false);
 
     spark_fl.setIdleMode(IdleMode.kBrake);
     spark_fr.setIdleMode(IdleMode.kBrake);

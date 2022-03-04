@@ -39,9 +39,9 @@ public class ArmReverse extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if(m_intake.upperLimitGoesOff()){
-    //   return true;
-    // }
+    if(m_intake.upperLimitGoesOff()){
+      return true;
+    }
     return false;
   }
 }
