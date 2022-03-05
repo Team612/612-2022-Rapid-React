@@ -14,13 +14,13 @@ def createPipeline(p):
     cls = getattr(module, className)
     return cls(p)
 
-def load(fileName):
+def load(fileName, settings = {}):
     pipeline = json.load(open(fileName))
 
     if isinstance(pipeline, list):
-        return createPipeline({ 'type': 'Chain', 'steps': pipeline })
+        return createPipeline(settings | { 'type': 'Chain', 'steps': pipeline })
     elif 'type' in pipeline:
-        return createPipeline(pipeline)
+        return createPipeline(settings | pipeline)
     else:
         return None
 
