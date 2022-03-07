@@ -120,5 +120,10 @@ public final class Constants {
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
+
+    //new intake constants
+    public static int intakeWheelTalon = 8;
+    public static int buttonTrigger = 2;
+    public static boolean isFilled = false;
 }
 
