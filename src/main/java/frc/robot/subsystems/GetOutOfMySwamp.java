@@ -16,7 +16,6 @@ public class GetOutOfMySwamp extends SubsystemBase {
   private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.intakeWheelTalon);
   private DigitalInput m_button = new DigitalInput(Constants.buttonTrigger);
   private Debouncer m_debouncer = new Debouncer(0.1, Debouncer.DebounceType.kBoth);
-  /** Creates a new AndysGayBalls. */
   public GetOutOfMySwamp() {}
 
   public void intakeOutake(double movement){
