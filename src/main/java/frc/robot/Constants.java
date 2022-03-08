@@ -43,9 +43,9 @@ public final class Constants {
         ((kWheelDiameterMeters * Math.PI)) / (kGearReduction);
  
     //Feedforward gains for system dynamics 
-    public static final double kS = 0.14638; 
-    public static final double kV = 4.2124;  
-    public static final double kA = 0.36348;
+    public static final double kS = 0.12187; 
+    public static final double kV = 4.1231;  
+    public static final double kA = 0.90139;
     
     //Angular gains
     public static final double kV_Angular = 1; // do not touch
@@ -54,16 +54,16 @@ public final class Constants {
     //position controllers
 
     //have to tune manually
-    public static final double kPXController = .85;
+    public static final double kPXController = .5;
     public static final double kPYController = .5;
     public static final double kPThetaController = .5; //TODO
 
     
     //Velocity controllers
-    public static final double kPFrontLeftVel = 4.8327; 
-    public static final double kPRearLeftVel = 4.8327;
-    public static final double kPFrontRightVel = 4.8327;
-    public static final double kPRearRightVel = 4.8327;
+    public static final double kPFrontLeftVel = 5.7094; 
+    public static final double kPRearLeftVel = 5.7094;
+    public static final double kPFrontRightVel = 5.7094;
+    public static final double kPRearRightVel = 5.7094;
 
     //Converting chassis velocity into individual wheel velocities
     public static final MecanumDriveKinematics kDriveKinematics =
@@ -102,6 +102,7 @@ public final class Constants {
     public static double setMotorSpeed = 0.69;
     public static int swings = 0;
 
+    public static int[] climb_servo = {0,1};
     public static int left_servo = 0;
     public static int right_servo = 1;
 
@@ -112,9 +113,6 @@ public final class Constants {
 
     public static final double ULTRASONIC_INTAKE_THRESH = 2.0;
     public static final double ULTRASONIC_OUTTAKE_THRESH = 2.0;
-
-
-
 
     public static double height = 15.375;
     public static double length = 24.0;

@@ -28,7 +28,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -56,18 +55,19 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  private final SequentialCommandGroup m_outakeSequential = new SequentialCommandGroup(
-    (new ArmReverse(m_intake)
-    .andThen(new BottomOpen(m_intake))));
-
-  private final SequentialCommandGroup m_intakeSequential = new SequentialCommandGroup(new BottomClose(m_intake)
-      .andThen(new ArmReverse(m_intake)));
-
   private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
-      m_outakeSequential
-          .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters)));
+    new BottomClose(m_intake)
+    .andThen(new ArmReverse(m_intake))
+    .andThen(new BottomOpen(m_intake))
+    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters))
+    );
+  
+  private final SequentialCommandGroup m_autonomousSequential2 = new SequentialCommandGroup(
+    new ArmForward(m_intake)
+    .andThen(new BottomClose(m_intake))
+  );
 
-  public RobotContainer() {
+  public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
     configureDefaultCommands();
@@ -82,35 +82,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_chooser.addOption("Mecanum Trajectory", m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters));
-    m_chooser.addOption("Bill", m_follower.generateTrajectory(m_drivetrain, m_traj.testTrajectory2));
-    // m_chooser.addOption("Manual Code", object);
+    m_chooser.addOption("get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters));
     m_chooser.addOption("auto test", m_autonomousSequentialOnePath);
-    // m_chooser.addOption("Line up 1v1",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1));
-    // m_chooser.addOption("Line up 1v2",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v2));
-    // m_chooser.addOption("Line up 1v3",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path1v3));
-
-    // m_chooser.addOption("Two Ball Pick Up Left First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v1));
-    // m_chooser.addOption("Two Ball Pick Up Left First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v2));
-    // m_chooser.addOption("Two Ball Pick Up Left First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
-    // m_chooser.addOption("Two Ball Pick Up Left First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path2v4));
-
-    // m_chooser.addOption("Two Ball Pick Up Right First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v1));
-    // m_chooser.addOption("Two Ball Pick Up Right First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v2));
-    // m_chooser.addOption("Two Ball Pick Up Right First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v3));
-    // m_chooser.addOption("Two Ball Pick Up Right First",
-    // m_follower.generateTrajectory(m_drivetrain, m_traj.path3v4));
-
+    // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
     SmartDashboard.putData(m_chooser);
 
     manualButtonBindings();
@@ -159,6 +133,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    // return m_chooser.getSelected();
+    // return m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1);
+    return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
   }
 }

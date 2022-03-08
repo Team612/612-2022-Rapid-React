@@ -14,17 +14,22 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Constants  ;
+import frc.robot.subsystems.Drivetrain;
 
 /** Add your docs here. */
 public class TrajectoryCreation {
 
+    
+
     public TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxVelocityMetersPerSecond, Constants.maxAccelerationMetersPerSecondSq)
         .setKinematics(Constants.kDriveKinematics);
     
+    
     public Trajectory moveForwardTwoMeters = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)), 
-        List.of(new Translation2d(1, 0)),
-        new Pose2d(2.5, 0, new Rotation2d(0)), 
+
+        new Pose2d(0, 0, new Rotation2d(Drivetrain.getHeading())), 
+        List.of(new Translation2d(1, Drivetrain.getHeading())),
+        new Pose2d(2.5, 0, new Rotation2d(Drivetrain.getHeading())), 
         config);
 
     public Trajectory testTrajectory2 = TrajectoryGenerator.generateTrajectory(
@@ -46,4 +51,6 @@ public class TrajectoryCreation {
     public PathPlannerTrajectory path3v2 = PathPlanner.loadPath("Path 3.2", 3, 1);
     public PathPlannerTrajectory path3v3 = PathPlanner.loadPath("Path 3.3", 3, 1);
     public PathPlannerTrajectory path3v4 = PathPlanner.loadPath("Path 3.4", 3, 1);
+
+    public PathPlannerTrajectory testPath = PathPlanner.loadPath("New Path", 3, 1);
 }

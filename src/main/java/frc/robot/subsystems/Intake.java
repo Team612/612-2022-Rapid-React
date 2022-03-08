@@ -12,8 +12,8 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   
-  private final Servo bottomLeft = new Servo(Constants.bottom_servos[0]);
-  private final Servo bottomRight = new Servo(Constants.bottom_servos[1]); 
+  private final Servo bottomLeft;
+  private final Servo bottomRight;
  
   private final int TOP_POSITION = 0;
   private final double DEADZONE = 0.1;
@@ -22,13 +22,16 @@ public class Intake extends SubsystemBase {
   public boolean servoClose = false;
   
   private final int BOTTOM_POSITION = 1;
-  private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon_arm);
+  private final WPI_TalonSRX shoulder;
  
   
   public Intake() {
+    shoulder = new WPI_TalonSRX(Constants.Talon_arm);
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
-    
+    bottomLeft = new Servo(Constants.bottom_servos[0]);
+    bottomRight = new Servo(Constants.bottom_servos[1]);
+    //shoulder.setSafetyEnabled(true); 
   }
 
   public int getEncoder(){

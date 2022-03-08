@@ -17,18 +17,27 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
-  private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+  private WPI_TalonSRX pivotMotor;
+  private Servo rightServo;
+  private Servo leftServo;
+  private final DoubleSolenoid piston1;
+  private final DoubleSolenoid piston2;
 
-  private Servo rightServo = new Servo(Constants.right_servo);
-  private Servo leftServo = new Servo(Constants.left_servo);
-  private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
-  private final DoubleSolenoid piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
   //Pushes the piston out
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
   public Climb(){
-    pivotMotor.setNeutralMode(NeutralMode.Brake);
+    pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+    rightServo = new Servo(Constants.climb_servo[1]);
+    leftServo = new Servo(Constants.climb_servo[0]);
+    piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
+    piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
+
+    pivotMotor.setNeutralMode(NeutralMode.Brake); //issue? 
+    //pivotMotor.setSafetyEnabled(true);
   }
   
+  
+
   public void extendArm(){
       piston1.set(Value.kForward);
       piston2.set(Value.kForward);
@@ -55,6 +64,7 @@ public class Climb extends SubsystemBase {
   public void pivot(double rotate){
       //pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
       pivotMotor.set(ControlMode.PercentOutput, rotate);
+      
   }
   //Opens servos
   public void ServoClose(){
