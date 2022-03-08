@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -25,7 +26,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  //UsbCamera front_cam;
+  UsbCamera front_cam;
+  private MjpegServer cameraServer;
   //UsbCamera rear_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,8 +42,11 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
-    //CameraServer.startAutomaticCapture();
+    front_cam = CameraServer.startAutomaticCapture();
     System.out.println("init finished.");
+    cameraServer = CameraServer.addSwitchedCamera("test_server");
+    cameraServer.setSource(front_cam);
+    cameraServer.setFPS(20);
     // rear_cam = CameraServer.startAutomaticCapture(1);
 
     //front_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);

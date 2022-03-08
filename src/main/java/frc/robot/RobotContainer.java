@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
 import frc.robot.commands.Climb.ClimbOpen;
 import frc.robot.commands.Climb.ExtendClimb;
-import frc.robot.commands.Climb.PivotClimb;
+import frc.robot.commands.Climb.NeutralClimb;
+//import frc.robot.commands.Climb.PivotClimb;
+import frc.robot.commands.Climb.PivotPistonsSeperate;
 import frc.robot.commands.Climb.RetractClimb;
 import frc.robot.commands.Climb.ToggleClimbHooks;
 import frc.robot.commands.Climb.ToggleClimb;
@@ -26,6 +28,7 @@ import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PivotMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -44,10 +47,12 @@ public class RobotContainer {
   private final Climb m_climb = new Climb();
   private final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
+  private final PivotMotor m_pivotmotor = new PivotMotor();
 
   // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
-  private final PivotClimb m_pivot = new PivotClimb(m_climb);
+  //private final PivotClimb m_pivot = new PivotClimb(m_climb);
+  private final PivotPistonsSeperate m_pivot = new PivotPistonsSeperate(m_pivotmotor, m_climb);
   private final Arm m_arm = new Arm(m_intake);
 
   // Trajectories
@@ -100,6 +105,7 @@ public class RobotContainer {
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
+    ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
@@ -122,7 +128,8 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
-    m_climb.setDefaultCommand(m_pivot);
+    //m_climb.setDefaultCommand(m_pivot);
+    m_pivotmotor.setDefaultCommand(m_pivot);
     m_intake.setDefaultCommand(m_arm);
 
   }

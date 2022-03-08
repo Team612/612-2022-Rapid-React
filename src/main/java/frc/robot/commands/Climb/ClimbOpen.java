@@ -20,6 +20,7 @@ public class ClimbOpen extends CommandBase {
   @Override
   public void initialize() {
     m_climb.ServoOpen();
+    System.out.println("Neutral Mode: Off");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -4,28 +4,36 @@
 
 package frc.robot.commands.Climb;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climb;
+import java.util.ResourceBundle.Control;
 
-public class ClimbClose extends CommandBase {
-  /** Creates a new ClimbOpen. */
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.PivotMotor;
+
+public class PivotPistonsSeperate extends CommandBase {
+  /** Creates a new PivotPistonsSeperate. */
+  private final PivotMotor m_pivot;
   private final Climb m_climb;
-  public ClimbClose(Climb climb) {
+  public PivotPistonsSeperate(PivotMotor pivot, Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_pivot = pivot;
     m_climb = climb;
-    addRequirements(climb);
+    addRequirements(pivot);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_climb.ServoClose();
-    System.out.println("Neutral Mode: Off");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_pivot.pivot(ControlMap.gunner.getRawAxis(4));
+  }
 
   // Called once the command ends or is interrupted.
   @Override

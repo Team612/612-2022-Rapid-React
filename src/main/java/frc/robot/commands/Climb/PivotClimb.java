@@ -7,14 +7,17 @@ package frc.robot.commands.Climb;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.PivotMotor;
 
 
 public class PivotClimb extends CommandBase {
   /** Creates a new Pivot. */
-  private final Climb m_pivot;
-  public PivotClimb(Climb climb) {
+  private final Climb m_climb;
+  private final PivotMotor m_pivot;
+  public PivotClimb(Climb climb, PivotMotor pivot) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_pivot = climb;
+    m_climb = climb;
+    m_pivot = pivot;
     addRequirements(climb);
 
   }
@@ -22,7 +25,7 @@ public class PivotClimb extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_pivot.ServoClose();
+    m_climb.ServoClose();
 
   }
 

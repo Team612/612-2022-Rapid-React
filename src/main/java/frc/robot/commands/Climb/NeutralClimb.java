@@ -7,10 +7,10 @@ package frc.robot.commands.Climb;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
-public class ClimbClose extends CommandBase {
-  /** Creates a new ClimbOpen. */
+public class NeutralClimb extends CommandBase {
+  /** Creates a new NeutralClimb. */
   private final Climb m_climb;
-  public ClimbClose(Climb climb) {
+  public NeutralClimb(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
     addRequirements(climb);
@@ -19,8 +19,8 @@ public class ClimbClose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climb.ServoClose();
-    System.out.println("Neutral Mode: Off");
+    m_climb.setServosNeutral();
+    System.out.println("Neutral Mode: On");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

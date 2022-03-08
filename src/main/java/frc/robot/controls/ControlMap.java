@@ -1,6 +1,7 @@
 package frc.robot.controls;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 public class ControlMap{
     //driver ports
@@ -21,6 +22,7 @@ public class ControlMap{
     public static JoystickButton GUNNER_START = new JoystickButton(gunner, 8); 
     public static JoystickButton GUNNER_LJ_BUTTON = new JoystickButton(gunner, 9); //
     public static JoystickButton GUNNER_RJ_BUTTON = new JoystickButton(gunner, 10); //
+    public static POVButton GUNNER_DUP = new POVButton(gunner, 0);
     
     
     // public static JoystickButton climbExtend = new JoystickButton(gunner, 1); //A
