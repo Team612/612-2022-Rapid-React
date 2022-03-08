@@ -23,27 +23,32 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  public final CANSparkMax spark_fl = new CANSparkMax(Constants.SPARK_FL, MotorType.kBrushless);
-  public final CANSparkMax spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
-  public final CANSparkMax spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
-  public final CANSparkMax spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
-
-  public final MotorControllerGroup m_leftMotor = new MotorControllerGroup(spark_fl, spark_bl);
-  public final MotorControllerGroup m_rightMotor = new MotorControllerGroup(spark_fr, spark_br);
+  public final CANSparkMax spark_fl;
+  public final CANSparkMax spark_fr;
+  public final CANSparkMax spark_bl;
+  public final CANSparkMax spark_br;
 
   private final double DEADZONE = 0.1;
 
   private MecanumDrive drivetrain;
   public double vel = Constants.kEncoderDistancePerPulse / 60;
 
-  private final AHRS navx = new AHRS(I2C.Port.kMXP);
-  MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
-  private Field2d m_field = new Field2d();
-
+  private static AHRS navx;
+  MecanumDriveOdometry m_odometry;
+  private Field2d m_field;
 
 
   public Drivetrain() {
+    m_field = new Field2d();
     SmartDashboard.putData("Field", m_field);
+
+    spark_fl = new CANSparkMax(Constants.SPARK_FL, MotorType.kBrushless);
+    spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
+    spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
+    spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
+
+    navx = new AHRS(I2C.Port.kMXP);
+    m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
 
     spark_fr.setInverted(true);
     spark_br.setInverted(true);
@@ -90,7 +95,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     //update the odometry in the periodic block
-    m_odometry.update(navx.getRotation2d(), 
+    m_odometry.update(navx.getRotation2d().unaryMinus(), 
       new MecanumDriveWheelSpeeds(
         spark_fl.getEncoder().getVelocity(), 
         spark_fr.getEncoder().getVelocity(), 
@@ -141,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
     navx.reset();
   }
 
-  public double getHeading(){
+  public static double getHeading(){
     return navx.getRotation2d().getDegrees();
   }
 
