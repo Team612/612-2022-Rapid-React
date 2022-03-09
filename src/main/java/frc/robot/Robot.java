@@ -13,6 +13,23 @@ import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Climb.MoveLeftStatic;
+import frc.robot.commands.Climb.MoveRightSolenoid;
+import frc.robot.commands.Climb.MoveRightStatic;
+import frc.robot.commands.Climb.MoveLeftSolenoid;
+import frc.robot.commands.Climb.MoveTalon;
+import frc.robot.commands.Intake.MoveIntakeTalon;
+import frc.robot.commands.Intake.MoveLeftServo;
+import frc.robot.commands.Intake.MoveRightServo;
+import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.Climb.SimLeftServoClimb;
+import frc.robot.subsystems.Climb.SimLeftPiston;
+import frc.robot.subsystems.Climb.SimPivotMotor;
+import frc.robot.subsystems.Climb.SimRightPiston;
+import frc.robot.subsystems.Climb.SimRightServoClimb;
+import frc.robot.subsystems.Intake.SimIntakeArmMotor;
+import frc.robot.subsystems.Intake.SimLeftServoClaw;
+import frc.robot.subsystems.Intake.SimRightServoClaw;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +41,15 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  
+   private SimLeftPiston m_lPiston;
+  private SimLeftServoClaw m_lServo;
+  private SimPivotMotor m_climbMotor;
+  private SimLeftServoClimb m_staticLeftServo;
+  private SimRightPiston m_rPiston;
+  private SimRightServoClimb m_staticRightServo;
+  private SimRightServoClaw m_rServo;
+  private SimIntakeArmMotor m_intakeTalon;
   
   //UsbCamera front_cam;
   //UsbCamera rear_cam;
@@ -48,7 +74,14 @@ public class Robot extends TimedRobot {
     // rear_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
     m_robotContainer = new RobotContainer();
-
+    m_lPiston = new SimLeftPiston();
+    m_rPiston = new SimRightPiston();
+    m_lServo = new SimLeftServoClaw();
+    m_climbMotor = new SimPivotMotor();
+    m_staticLeftServo = new SimLeftServoClimb();
+    m_staticRightServo = new SimRightServoClimb();
+    m_rServo = new SimRightServoClaw();
+    m_intakeTalon = new SimIntakeArmMotor();
   }
 
   /**
@@ -98,6 +131,16 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
+    //Running commands through keyboard
+    ControlMap.m_z.whenPressed(new MoveLeftSolenoid(m_lPiston));
+    ControlMap.m_j.whenPressed(new MoveRightSolenoid(m_rPiston));
+    ControlMap.m_n.whenPressed(new MoveLeftServo(m_lServo));
+    ControlMap.m_m.whenPressed(new MoveTalon(m_climbMotor));
+    ControlMap.m_l.whenPressed(new MoveLeftStatic(m_staticLeftServo));
+    ControlMap.m_q.whenPressed(new MoveRightStatic(m_staticRightServo));
+    ControlMap.m_y.whenPressed(new MoveRightServo(m_rServo));
+    ControlMap.m_u.whenPressed(new MoveIntakeTalon(m_intakeTalon));
   }
 
   /** This function is called periodically during operator control. */
