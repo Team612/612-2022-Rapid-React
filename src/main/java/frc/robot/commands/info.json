@@ -1,0 +1,26 @@
+{
+    "TimeSensitive":{
+        "0-5 Seconds":[
+            {"Info1":["Time","Value"]},
+            {"Info2":["Time","Value"]}
+            ],
+        "5-10 Seconds":[
+            {"Info1":["Time","Value"]},
+            {"Info2":["Time","Value"]}
+            ],
+    "NonTimeSensitive":{
+        "Encoder":[
+            {"Info1":["Time","Value"]},
+            {"Info2":["Time","Value"]}
+        ],
+        "Arm":[
+            {"Info1":["Time","Value"]},
+            {"Info2":["Time","Value"]}
+        ],
+        "Climb":[
+            {"Info1":["Time","Value"]},
+            {"Info2":["Time","Value"]}
+        ]
+    }
+}
+}
