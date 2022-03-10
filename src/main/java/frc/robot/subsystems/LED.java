@@ -12,11 +12,13 @@ import frc.robot.Constants;
 public class LED extends SubsystemBase {
 
   AddressableLED m_led;
-  AddressableLEDBuffer m_ledBuffer;
+  static AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
 
   /** Creates a new LED. */
-  public LED() {}
+  public LED() {
+
+  }
 
   public void ledInit() {
     m_led = new AddressableLED(Constants.LED_PORT);
@@ -35,9 +37,37 @@ public class LED extends SubsystemBase {
       // Sets the specified LED to the RGB values for red
       m_ledBuffer.setRGB(i, RGB_R, RGB_G, RGB_B);
    }
+
+
    
    m_led.setData(m_ledBuffer);
   }
+
+  public static void extendArm(){
+    for (int i = 0; i <= 255; i++) {
+
+      final var hue = (i);
+      m_ledBuffer.setHSV(0, (int) 0, hue, hue); //starts as black, as climb progresses arms turn blue
+    }
+  }
+
+  public static void retractArm(){
+    for (int i = 255; i >= 0; i--){
+      final var hue = (i);
+      m_ledBuffer.setHSV(0, (int) 0, hue, hue); //starts at blue, then slowly progesses to black
+    }
+  }
+
+  public static void OpenServo(){
+    m_ledBuffer.setHSV(0,237,255,0);
+  }
+
+  public static void CloseServo(){
+    m_ledBuffer.setHSV(0,255,0,0 );
+  }
+
+
+  
 
     private void rainbow() {
 
@@ -56,6 +86,8 @@ public class LED extends SubsystemBase {
     // Check bounds
     m_rainbowFirstPixelHue %= 180;
 
+
+
   }
 
   @Override
@@ -66,3 +98,4 @@ public class LED extends SubsystemBase {
     m_led.setData(m_ledBuffer);
   }
 }
+

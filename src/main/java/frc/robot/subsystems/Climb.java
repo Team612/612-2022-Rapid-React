@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import frc.robot.subsystems.LED;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -26,6 +26,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kForward);
       piston2.set(Value.kForward);
       System.out.println("extend");
+      LED.extendArm();
   }
   
   //Brings the piston in
@@ -33,6 +34,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kReverse);
       piston2.set(Value.kReverse);
       System.out.println("retract");
+      LED.retractArm();
 
   }
   public void retractArmHang(){
@@ -54,6 +56,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(180);
       rightServo.setAngle(0);
       System.out.println("close");
+      LED.CloseServo();
 
   }
   //Closes servos
@@ -61,6 +64,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(90);
       rightServo.setAngle(90);
       System.out.println("open");
+      LED.OpenServo();
 
 
   }
