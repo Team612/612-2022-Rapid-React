@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,6 +24,8 @@ public class Intake extends SubsystemBase {
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
+
+  private final Ultrasonic your_mother;
  
   
   public Intake() {
@@ -31,6 +34,8 @@ public class Intake extends SubsystemBase {
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
+    your_mother = new Ultrasonic(1, 2);
+
     //shoulder.setSafetyEnabled(true); 
   }
 
@@ -98,6 +103,7 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println("ultrasonic: " + your_mother.getRangeInches());
   }
 
 }
