@@ -43,10 +43,12 @@ public class Robot extends TimedRobot {
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
     front_cam = CameraServer.startAutomaticCapture();
+    front_cam.setFPS(20);
+    
     System.out.println("init finished.");
-    cameraServer = CameraServer.addSwitchedCamera("test_server");
-    cameraServer.setSource(front_cam);
-    cameraServer.setFPS(20);
+    //cameraServer = CameraServer.addSwitchedCamera("test_server");
+    //cameraServer.setSource(front_cam);
+    //cameraServer.setFPS(20);
     // rear_cam = CameraServer.startAutomaticCapture(1);
 
     //front_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
