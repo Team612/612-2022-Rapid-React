@@ -16,6 +16,7 @@ import frc.robot.subsystems.Drivetrain;
 public class FollowTrajectory {
     Drivetrain m_drivetrain;
     public Command generateTrajectory(Drivetrain drivetrain, Trajectory m_traj){
+        
          MecanumControllerCommand mecanumControllerCommand =
           new MecanumControllerCommand(
             m_traj,

@@ -66,11 +66,7 @@ public class RobotContainer {
     .andThen(new BottomOpen(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters))
     );
-  
-  private final SequentialCommandGroup m_autonomousSequential2 = new SequentialCommandGroup(
-    new ArmForward(m_intake)
-    .andThen(new BottomClose(m_intake))
-  );
+
 
   public RobotContainer() { 
     // Configure the button bindings
@@ -128,7 +124,6 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
-    //m_climb.setDefaultCommand(m_pivot);
     m_pivotmotor.setDefaultCommand(m_pivot);
     m_intake.setDefaultCommand(m_arm);
 
@@ -140,8 +135,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return m_chooser.getSelected();
-    // return m_follower.generateTrajectory(m_drivetrain, m_traj.path1v1);
-    return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
+    return m_chooser.getSelected();
+    // return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
   }
 }

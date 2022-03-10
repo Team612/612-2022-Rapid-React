@@ -11,12 +11,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -95,7 +95,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     //update the odometry in the periodic block
-    m_odometry.update(navx.getRotation2d().unaryMinus(), 
+    m_odometry.update(getNavxAngle(), 
       new MecanumDriveWheelSpeeds(
         spark_fl.getEncoder().getVelocity(), 
         spark_fr.getEncoder().getVelocity(), 
@@ -103,6 +103,7 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
+    System.out.println("Navx angle: " + getNavxAngle());
   }
  
   public void simulationPeriodic(){
@@ -142,15 +143,13 @@ public class Drivetrain extends SubsystemBase {
       spark_br.getEncoder().getVelocity());
   }
 
-  public void zeroHeading(){
-    navx.reset();
+  public static void zeroYaw(){
+    navx.zeroYaw();
+    System.out.println("resetted yaw");
   }
 
-  public static double getHeading(){
-    return navx.getRotation2d().getDegrees();
-  }
 
-  public double getTurnRate(){
-    return -navx.getRate();
+  public static Rotation2d getNavxAngle(){
+    return Rotation2d.fromDegrees(-navx.getAngle());
   }
 }
