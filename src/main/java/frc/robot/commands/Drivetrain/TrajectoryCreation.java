@@ -19,17 +19,20 @@ import frc.robot.subsystems.Drivetrain;
 /** Add your docs here. */
 public class TrajectoryCreation {
 
-    
+
+
+    public TrajectoryCreation(){
+        Drivetrain.zeroYaw();
+    }
 
     public TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxVelocityMetersPerSecond, Constants.maxAccelerationMetersPerSecondSq)
         .setKinematics(Constants.kDriveKinematics);
     
     
     public Trajectory moveForwardTwoMeters = TrajectoryGenerator.generateTrajectory(
-
-        new Pose2d(0, 0, new Rotation2d(Drivetrain.getHeading())), 
-        List.of(new Translation2d(1, Drivetrain.getHeading())),
-        new Pose2d(2.5, 0, new Rotation2d(Drivetrain.getHeading())), 
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(new Translation2d(1,new Rotation2d(0))),
+        new Pose2d(2.5, 0, new Rotation2d(0)), 
         config);
 
     public Trajectory testTrajectory2 = TrajectoryGenerator.generateTrajectory(
