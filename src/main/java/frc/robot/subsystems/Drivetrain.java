@@ -103,7 +103,7 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
-    System.out.println("Navx angle: " + getNavxAngle());
+    // System.out.println("Navx angle: " + getNavxAngle().getDegrees());
   }
  
   public void simulationPeriodic(){

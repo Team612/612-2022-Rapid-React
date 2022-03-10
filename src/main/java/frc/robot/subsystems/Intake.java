@@ -35,8 +35,7 @@ public class Intake extends SubsystemBase {
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
     your_mother = new Ultrasonic(1, 2);
-    your_mother.setEnabled(true);
-
+    Ultrasonic.setAutomaticMode(true);
     //shoulder.setSafetyEnabled(true); 
   }
 
@@ -104,7 +103,8 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    System.out.println("ultrasonic: " + your_mother.getRangeInches());
+    // your_mother.setEnabled(true);
+    // System.out.println("ultrasonic: " + your_mother.getRangeInches());
   }
 
 }
