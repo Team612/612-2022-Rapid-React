@@ -35,6 +35,7 @@ public class Intake extends SubsystemBase {
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
     your_mother = new Ultrasonic(1, 2);
+    your_mother.setEnabled(true);
 
     //shoulder.setSafetyEnabled(true); 
   }
