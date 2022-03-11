@@ -71,9 +71,10 @@ public class Logging extends CommandBase {
   }
 
  
-  public void logNumericalData(String device, float data, float time){
+  public void logNumericalData(String device, float data){
     //try to read and append the data gathered
     JSONParser jsonParser = new JSONParser();
+    Runtime time = Runtime.getRuntime();
     try{
       Object obj = jsonParser.parse(new FileReader("info.json"));
       JSONArray jsonArray = (JSONArray)obj;
@@ -88,9 +89,11 @@ public class Logging extends CommandBase {
     }
   }
 
-  public void logBoolData(String device, boolean data, float time){
+  //device should be the name of the data your grabbing, data is what you want to log and time is the current time
+  public void logBoolData(String device, boolean data){
     //try to read and append the data gathered
     JSONParser jsonParser = new JSONParser();
+    Runtime time = Runtime.getRuntime();
     try{
       Object obj = jsonParser.parse(new FileReader("info.json"));
       JSONArray jsonArray = (JSONArray)obj;
