@@ -145,7 +145,7 @@ public class Drivetrain extends SubsystemBase {
 
   public static void zeroYaw(){
     navx.zeroYaw();
-    System.out.println("resetted yaw");
+    System.out.println("******************resetted yaw*********");
   }
 
 
