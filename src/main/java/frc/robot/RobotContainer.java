@@ -23,6 +23,7 @@ import frc.robot.commands.Drivetrain.TrajectoryCreation;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
+import frc.robot.commands.Intake.AutoOuttake;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.NewWheelIntake;
@@ -66,16 +67,12 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
+  private final SequentialCommandGroup m_outake_gotoball = new SequentialCommandGroup(
+    new AutoOuttake(m_roller)
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters))
     );
-  // private final SequentialCommandGroup m_pickupright = new SequentialCommandGroup(
-  //   new BottomClose(m_intake)
-  //   .andThen(new ArmReverse(m_intake))
-  // );
+
+  
 
   public RobotContainer() { 
     // Configure the button bindings
@@ -93,7 +90,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     m_chooser.addOption("get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters));
-    m_chooser.addOption("auto test", m_autonomousSequentialOnePath);
+    m_chooser.addOption("auto test", m_outake_gotoball);
     // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
     SmartDashboard.putData(m_chooser);
 
@@ -147,6 +144,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_chooser.getSelected();
-    // return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
   }
 }
