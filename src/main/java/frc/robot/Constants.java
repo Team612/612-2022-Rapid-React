@@ -119,5 +119,9 @@ public final class Constants {
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
+    
+    //roller intake
+    public static int intakeWheelTalon = 1;
+    public static int buttonTrigger = 3;
 }
 

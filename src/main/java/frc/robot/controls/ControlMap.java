@@ -1,4 +1,6 @@
 package frc.robot.controls;
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -11,6 +13,8 @@ public class ControlMap{
     //Controller objects
     public static Joystick driver = new Joystick(DRIVER_PORT);
     public static Joystick gunner = new Joystick(GUNNER_PORT);
+
+    //public static io
    
     public static JoystickButton GUNNER_A = new JoystickButton(gunner, 1); //A
     public static JoystickButton GUNNER_B = new JoystickButton(gunner, 2); //B
