@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
@@ -22,14 +24,18 @@ import frc.robot.commands.Drivetrain.ZeroYaw;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
+import frc.robot.commands.Intake.AutoOuttake;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
+import frc.robot.commands.Intake.NewWheelIntake;
+import frc.robot.commands.Intake.NewWheelOuttake;
 import frc.robot.commands.Intake.ToggleBottom;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
+import frc.robot.subsystems.RollerIntake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -49,6 +55,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final PivotMotor m_pivotmotor = new PivotMotor();
+  private final RollerIntake m_roller = new RollerIntake();
 
   // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
@@ -74,6 +81,7 @@ public class RobotContainer {
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBall))
   );
 
+  
 
   public RobotContainer() { 
     // Configure the button bindings
@@ -104,8 +112,10 @@ public class RobotContainer {
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
     ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    //ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
+    //ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    ControlMap.GUNNER_X.whileHeld(new NewWheelIntake(m_roller));
+    ControlMap.GUNNER_B.whileHeld(new NewWheelOuttake(m_roller));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
@@ -143,7 +153,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_chooser.getSelected();
-    // return m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac);
-    // return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
   }
 }
