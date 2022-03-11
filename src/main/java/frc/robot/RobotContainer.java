@@ -18,6 +18,7 @@ import frc.robot.commands.Climb.ToggleClimb;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
+import frc.robot.commands.Drivetrain.ZeroYaw;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
@@ -64,8 +65,14 @@ public class RobotContainer {
     new BottomClose(m_intake)
     .andThen(new ArmReverse(m_intake))
     .andThen(new BottomOpen(m_intake))
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters))
-    );
+    .andThen(new ZeroYaw())
+    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
+  );
+
+  private final SequentialCommandGroup m_outTarmacGetBall = new SequentialCommandGroup(
+    m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac)
+    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBall))
+  );
 
 
   public RobotContainer() { 
@@ -83,8 +90,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_chooser.addOption("get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters));
-    m_chooser.addOption("auto test", m_autonomousSequentialOnePath);
+    m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
+    // m_chooser.addOption("auto test", m_outTarmacGetBall);
     // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
     SmartDashboard.putData(m_chooser);
 
@@ -136,6 +143,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_chooser.getSelected();
+    // return m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac);
     // return m_follower.generateTrajectory(m_drivetrain, m_traj.moveForwardTwoMeters);
   }
 }

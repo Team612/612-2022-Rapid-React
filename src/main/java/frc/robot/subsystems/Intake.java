@@ -104,7 +104,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // your_mother.setEnabled(true);
-    System.out.println("ultrasonic: " + your_mother.getRangeInches());
+    // System.out.println("ultrasonic: " + your_mother.getRangeInches());
   }
 
 }
