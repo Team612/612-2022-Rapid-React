@@ -8,12 +8,20 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Climb.ClimbSimCommands.CloseClimb;
+import frc.robot.commands.Climb.ClimbSimCommands.ExtendPistons;
+import frc.robot.commands.Climb.ClimbSimCommands.OpenClimb;
+import frc.robot.commands.Climb.ClimbSimCommands.RetractPiston;
+import frc.robot.commands.Intake.IntakeSimCommands.CloseServoIntake;
+import frc.robot.commands.Intake.IntakeSimCommands.IntakeForward;
+import frc.robot.commands.Intake.IntakeSimCommands.IntakeReverse;
+import frc.robot.commands.Intake.IntakeSimCommands.OpenServoIntake;
+import frc.robot.controls.ControlMap;
+import frc.robot.subsystems.SimClimb;
+import frc.robot.subsystems.SimIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +33,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private SimClimb m_simClimb;
+  private SimIntake m_simIntake;
   
   UsbCamera front_cam;
   private MjpegServer cameraServer;
@@ -55,6 +65,8 @@ public class Robot extends TimedRobot {
     // rear_cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
     m_robotContainer = new RobotContainer();
+    m_simClimb = new SimClimb();
+    m_simIntake = new SimIntake();
 
   }
 
@@ -109,7 +121,19 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    //Climb sim controls
+    ControlMap.GUNNER_BACK.whenPressed(new ExtendPistons(m_simClimb));
+    ControlMap.GUNNER_START.whenPressed(new RetractPiston(m_simClimb));
+    ControlMap.GUNNER_LB.whenPressed(new CloseClimb(m_simClimb));
+    ControlMap.GUNNER_RB.whenPressed(new OpenClimb(m_simClimb));
+
+    //Intake sim controls
+    ControlMap.GUNNER_Y.whileHeld(new IntakeReverse(m_simIntake));
+    ControlMap.GUNNER_A.whileHeld(new IntakeForward(m_simIntake));
+    ControlMap.GUNNER_X.whenPressed(new OpenServoIntake(m_simIntake));
+    ControlMap.GUNNER_B.whenPressed(new CloseServoIntake(m_simIntake));
+  }
 
   @Override
   public void testInit() {

@@ -1,0 +1,43 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Drivetrain": "Subsystem",
+      "/LiveWindow/PivotMotor": "Subsystem",
+      "/LiveWindow/SimClimb": "Subsystem",
+      "/LiveWindow/SimIntake": "Subsystem",
+      "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
+      "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[11]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[12]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[13]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[14]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [9]": "Motor Controller",
+      "/LiveWindow/Ungrouped/navX-Sensor[1]": "Gyro",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "Intake": {
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "open": true
+    }
+  }
+}

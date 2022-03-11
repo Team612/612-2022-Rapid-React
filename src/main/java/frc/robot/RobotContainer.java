@@ -45,29 +45,29 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class RobotContainer {
 
   // Subsystem Declarations
-  private final Climb m_climb = new Climb();
-  private final Intake m_intake = new Intake();
+  //private final Climb m_climb = new Climb();
+  //private final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final PivotMotor m_pivotmotor = new PivotMotor();
 
   // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
   //private final PivotClimb m_pivot = new PivotClimb(m_climb);
-  private final PivotPistonsSeperate m_pivot = new PivotPistonsSeperate(m_pivotmotor, m_climb);
-  private final Arm m_arm = new Arm(m_intake);
+ // private final PivotPistonsSeperate m_pivot = new PivotPistonsSeperate(m_pivotmotor, m_climb);
+  //private final Arm m_arm = new Arm(m_intake);
 
   // Trajectories
   private final FollowTrajectory m_follower = new FollowTrajectory();
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
-    .andThen(new ZeroYaw())
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
-  );
+  // private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
+  //   new BottomClose(m_intake)
+  //   .andThen(new ArmReverse(m_intake))
+  //   .andThen(new BottomOpen(m_intake))
+  //   .andThen(new ZeroYaw())
+  //   .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
+  // );
 
   private final SequentialCommandGroup m_outTarmacGetBall = new SequentialCommandGroup(
     m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac)
@@ -100,24 +100,24 @@ public class RobotContainer {
   }
 
   private void manualButtonBindings() {
-    ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
-    ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
-    ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
-    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
-    ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    // ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
+    // ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
+    // ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
+    // ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
+    // ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
+    // ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    // ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
+    // ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
+    // ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
   }
 
   private void autoButtonBindings() {
-    ControlMap.GUNNER_A.toggleWhenPressed(new ToggleBottom(m_intake));
-    ControlMap.GUNNER_BACK.toggleWhenPressed(new ToggleClimb(m_climb));
-    ControlMap.GUNNER_Y.whenPressed(new ToggleClimbHooks(m_climb));
+    //ControlMap.GUNNER_A.toggleWhenPressed(new ToggleBottom(m_intake));
+    //ControlMap.GUNNER_BACK.toggleWhenPressed(new ToggleClimb(m_climb));
+    //ControlMap.GUNNER_Y.whenPressed(new ToggleClimbHooks(m_climb));
     // ControlMap.GUNNER_A.toggleWhenPressed(new ToggleArm(m_intake));
   }
   /*
@@ -131,8 +131,8 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     m_drivetrain.setDefaultCommand(m_default);
-    m_pivotmotor.setDefaultCommand(m_pivot);
-    m_intake.setDefaultCommand(m_arm);
+    //m_pivotmotor.setDefaultCommand(m_pivot);
+    //m_intake.setDefaultCommand(m_arm);
 
   }
 
