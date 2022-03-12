@@ -3,12 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
@@ -18,29 +12,20 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
-  //private WPI_TalonSRX pivotMotor;
-  private TalonSRX pivot_test;
   private Servo rightServo;
   private Servo leftServo;
   private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
-  
 
   //Pushes the piston out
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
   public Climb(){
-    //pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
     rightServo = new Servo(Constants.climb_servo[1]);
     leftServo = new Servo(Constants.climb_servo[0]);
     piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1] ,Constants.secondSolenoid[0]);
     piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
 
-    //pivotMotor.setNeutralMode(NeutralMode.Brake); //issue? 
-    //pivotMotor.setSafetyEnabled(true);
-    pivot_test = new TalonSRX(Constants.talon_pivot);
   }
-  
-  
 
   public void extendArm(){
       piston1.set(Value.kForward);
@@ -55,25 +40,12 @@ public class Climb extends SubsystemBase {
       System.out.println("retract");
 
   }
-  public void retractArmHang(){
-    piston1.set(Value.kReverse);
-    piston2.set(Value.kReverse);
-    //pivotMotor.setNeutralMode(NeutralMode.Brake);
-    System.out.println("retract hang");
-
-}
 
    public void setServosNeutral(){
     leftServo.setDisabled();
     rightServo.setDisabled();
   }
 
-  //Pivots the pivot arms
-  // public void pivot(double rotate){
-  //     //pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
-  //     pivotMotor.set(ControlMode.PercentOutput, rotate);
-      
-  // }
   //Opens servos
   public void ServoClose(){
       leftServo.setAngle(180);
@@ -91,7 +63,7 @@ public class Climb extends SubsystemBase {
 
   }
   public void getBoreEncoder() {
-    System.out.println("encoder dist: " + boreEncoder.getDistance());
+    // System.out.println("encoder dist: " + boreEncoder.getDistance());
     /*
     With the rev logo facing towards the user:
     clockwise is negative, counterclockwise is positive
@@ -101,7 +73,7 @@ public class Climb extends SubsystemBase {
     when rio is reset, it'll remove the whole number and do just the decimal
     negative acts weird: if it's at -1.56 and resets, it'll return to 0.4.
     */
-    System.out.println("encoder freq: " + boreEncoder.getFrequency());
+    // System.out.println("encoder freq: " + boreEncoder.getFrequency());
   }
   @Override
   public void periodic() {

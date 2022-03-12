@@ -14,16 +14,9 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Constants  ;
-import frc.robot.subsystems.Drivetrain;
 
 /** Add your docs here. */
 public class TrajectoryCreation {
-
-    private double forward_offset = .17;
-
-    // public TrajectoryCreation(){
-    //     Drivetrain.zeroYaw();
-    // }
 
     public TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxVelocityMetersPerSecond, Constants.maxAccelerationMetersPerSecondSq)
         .setKinematics(Constants.kDriveKinematics);
@@ -32,12 +25,20 @@ public class TrajectoryCreation {
     public Trajectory getOutOfTarmac = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)), 
         List.of(
+            new Translation2d(2.5 * (0.5), new Rotation2d(0))            
+        ),
+        new Pose2d(2.5, 0, new Rotation2d(0)), 
+        config);
+
+    public Trajectory moveToBallPart1 = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(
             new Translation2d(1.5 * (0.5), new Rotation2d(0))            
         ),
         new Pose2d(1.5, 0, new Rotation2d(-Math.PI/2.0)), 
         config);
 
-    public Trajectory moveToBall = TrajectoryGenerator.generateTrajectory(
+    public Trajectory moveToBallPart2 = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)), 
         List.of(
             new Translation2d(1.5/2.0, new Rotation2d(0))

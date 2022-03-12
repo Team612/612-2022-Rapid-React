@@ -73,9 +73,6 @@ public class Drivetrain extends SubsystemBase {
     spark_bl.getEncoder().setVelocityConversionFactor(vel);
 
     drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
-
-
-  
   }
 
   public void driveMecanum(double y, double x, double zRot){

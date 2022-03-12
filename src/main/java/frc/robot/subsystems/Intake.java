@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -24,9 +23,6 @@ public class Intake extends SubsystemBase {
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
-
-  private final Ultrasonic your_mother;
- 
   
   public Intake() {
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
@@ -34,9 +30,7 @@ public class Intake extends SubsystemBase {
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-    your_mother = new Ultrasonic(1, 2);
-    Ultrasonic.setAutomaticMode(true);
-    //shoulder.setSafetyEnabled(true); 
+    
   }
 
   public int getEncoder(){
@@ -85,26 +79,9 @@ public class Intake extends SubsystemBase {
     servoOpen = false;
     servoClose = true;
   }
-
-  public boolean isBottomOpened(){
-    if(bottomLeft.getAngle() == 90 && bottomRight.getAngle() == 90){
-      return true;
-    }
-    return false;
-  }
-
-  public boolean isBottomClosed(){
-    if(bottomLeft.getAngle() == 180 && bottomRight.getAngle() == 0){
-      return true;
-    }
-    return false;
-  }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // your_mother.setEnabled(true);
-    // System.out.println("ultrasonic: " + your_mother.getRangeInches());
   }
-
 }
