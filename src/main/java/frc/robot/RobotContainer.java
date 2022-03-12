@@ -20,13 +20,10 @@ import frc.robot.commands.Climb.ToggleClimb;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
-import frc.robot.commands.Drivetrain.ZeroYaw;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.AutoOuttake;
-import frc.robot.commands.Intake.BottomClose;
-import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.NewWheelIntake;
 import frc.robot.commands.Intake.NewWheelOuttake;
 import frc.robot.commands.Intake.ToggleBottom;
@@ -37,6 +34,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 import frc.robot.subsystems.RollerIntake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
@@ -68,17 +67,22 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  private final SequentialCommandGroup m_autonomousSequentialOnePath = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
-    .andThen(new ZeroYaw())
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
+  private final ParallelDeadlineGroup m_testParallel = new ParallelDeadlineGroup(
+    m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBall),
+    new NewWheelIntake(m_roller)
   );
 
   private final SequentialCommandGroup m_outTarmacGetBall = new SequentialCommandGroup(
-    m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac)
+    new AutoOuttake(m_roller)
+    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBall))
+    .andThen(new NewWheelIntake(m_roller))
+  );
+
+  private final SequentialCommandGroup m_outTarmacGetBallParallel = new SequentialCommandGroup(
+    new AutoOuttake(m_roller)
+    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
+    .andThen(m_testParallel)
   );
 
   
@@ -98,11 +102,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
-    // m_chooser.addOption("auto test", m_outTarmacGetBall);
-    // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
+    m_chooser.addOption("out of tarmac get ball", m_outTarmacGetBall);
+    m_chooser.addOption("out of tarmac get ball Parallel", m_outTarmacGetBallParallel);
     SmartDashboard.putData(m_chooser);
-
     manualButtonBindings();
     // autoButtonBindings();
   }

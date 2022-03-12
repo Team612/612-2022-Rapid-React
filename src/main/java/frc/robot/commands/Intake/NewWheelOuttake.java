@@ -26,7 +26,7 @@ public class NewWheelOuttake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_rollerintake.intakeOutake(-0.5);
+    m_rollerintake.intakeOutake(-1);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,9 +38,6 @@ public class NewWheelOuttake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_rollerintake.getDebouncerVals()){
-      return true;
-    }
     return false;
   }
 }

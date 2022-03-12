@@ -24,7 +24,7 @@ public class RollerIntake extends SubsystemBase {
 
   public boolean getDebouncerVals(){
     System.out.println("Button: " + m_button.getChannel());
-    return m_debouncer.calculate(m_button.get());
+    return m_debouncer.calculate(!m_button.get());
   }
   @Override
   public void periodic() {

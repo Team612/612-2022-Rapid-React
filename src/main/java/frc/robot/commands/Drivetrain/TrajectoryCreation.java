@@ -13,17 +13,10 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.Constants  ;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants;
 
 /** Add your docs here. */
 public class TrajectoryCreation {
-
-    private double forward_offset = .17;
-
-    // public TrajectoryCreation(){
-    //     Drivetrain.zeroYaw();
-    // }
 
     public TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxVelocityMetersPerSecond, Constants.maxAccelerationMetersPerSecondSq)
         .setKinematics(Constants.kDriveKinematics);
