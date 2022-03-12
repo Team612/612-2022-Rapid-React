@@ -4,43 +4,42 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.RollerIntake;
+import frc.robot.subsystems.Intake;
 
-public class NewWheelIntake extends CommandBase {
-  private final RollerIntake m_rollerintake;
-  /** Creates a new IntakeCargo. */
-  public NewWheelIntake(RollerIntake roller) {
+public class AutoOutake extends CommandBase {
+  /** Creates a new AutoOutake. */
+  Ultrasonic m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+  private final Intake m_intake;
+  public AutoOutake(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_rollerintake = roller;
-    addRequirements(roller);
+    m_intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    m_intake.BottomServoClose();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_rollerintake.intakeOutake(0.5);
+    Ultrasonic.setAutomaticMode(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_rollerintake.intakeOutake(0);
+    m_intake.BottomServoOpen();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_rollerintake.getDebouncerVals()){
-      return true;
-    }
-    return false;
+    return m_ultrasonicOutake.getRangeInches() <= Constants.ULTRASONIC_OUTTAKE_THRESH;
   }
 }
