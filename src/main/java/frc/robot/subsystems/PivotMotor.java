@@ -14,15 +14,27 @@ import frc.robot.Constants;
 public class PivotMotor extends SubsystemBase {
   /** Creates a new PivotMotor. */
   private WPI_TalonSRX pivotMotor;
+  private double currRotate = 0.0;
+
   public PivotMotor() {
     pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
     pivotMotor.setNeutralMode(NeutralMode.Brake);
   }
-  public void pivot(double rotate){
-    //pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
+
+  public void pivot(double rotate) {
+    if (rotate != currRotate) {
+      System.out.println("PivotMotor.pivot() start : " + rotate);
+    }
+
+    // pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
     pivotMotor.set(ControlMode.PercentOutput, rotate);
     
-}
+    if (rotate != currRotate) {
+      System.out.println("PivotMotor.pivot() end : " + rotate);
+    }
+
+    currRotate = rotate;
+  }
 
   @Override
   public void periodic() {

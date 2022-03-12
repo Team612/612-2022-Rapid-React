@@ -79,6 +79,8 @@ public class Intake extends SubsystemBase {
     servoOpen = false;
     servoClose = true;
   }
+
+  
   
   @Override
   public void periodic() {

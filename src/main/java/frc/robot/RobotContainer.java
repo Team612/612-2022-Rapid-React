@@ -110,7 +110,7 @@ public class RobotContainer {
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
-    // StartEndCommand(m_climb::ServoClose, m_climb::ServoOpen, m_climb));
+    // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
   }
 

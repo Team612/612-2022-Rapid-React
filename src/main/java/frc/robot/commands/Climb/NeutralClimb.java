@@ -19,6 +19,7 @@ public class NeutralClimb extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("NeutralClimb.initialize()");    
     m_climb.setServosNeutral();
     System.out.println("Neutral Mode: On");
   }
@@ -29,7 +30,9 @@ public class NeutralClimb extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("NeutralClimb.end() : " + interrupted);    
+  }
 
   // Returns true when the command should end.
   @Override

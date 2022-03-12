@@ -10,23 +10,29 @@ import frc.robot.subsystems.Climb;
 public class RetractClimb extends CommandBase {
   private final Climb m_climb;
 
-    //Constructor
-    public RetractClimb(Climb climb){
-        m_climb = climb;
-        addRequirements(climb);
-    }
-    //Extend the pivot arm
-    @Override
-    public void initialize(){
-        m_climb.retractArm();
-    }
+  // Constructor
+  public RetractClimb(Climb climb) {
+    m_climb = climb;
+    addRequirements(climb);
+  }
+
+  // Extend the pivot arm
+  @Override
+  public void initialize() {
+    System.out.println("RetractClimb.initialize()");    
+    m_climb.retractArm();
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("RetractClimb.end() : " + interrupted);
+  }
 
   // Returns true when the command should end.
   @Override
