@@ -17,6 +17,7 @@ import frc.robot.Constants;
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
   private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
+  private LED m_led;
   private Servo rightServo = new Servo(Constants.right_servo);
   private Servo leftServo = new Servo(Constants.left_servo);
   private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
@@ -26,7 +27,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kForward);
       piston2.set(Value.kForward);
       System.out.println("extend");
-      LED.extendArm();
+      m_led.extendArm();
   }
   
   //Brings the piston in
@@ -34,7 +35,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kReverse);
       piston2.set(Value.kReverse);
       System.out.println("retract");
-      LED.retractArm();
+      m_led.retractArm();
 
   }
   public void retractArmHang(){
@@ -56,7 +57,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(180);
       rightServo.setAngle(0);
       System.out.println("close");
-      LED.CloseServo();
+      m_led.CloseServo();
 
   }
   //Closes servos
@@ -64,7 +65,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(90);
       rightServo.setAngle(90);
       System.out.println("open");
-      LED.OpenServo();
+      m_led.OpenServo();
 
 
   }
