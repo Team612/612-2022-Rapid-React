@@ -116,7 +116,6 @@ public final class Constants {
 
     // LEDs
     public static int LED_PORT = 0;
-    public static int LED_LENGTH = 5000;
-    
+    public static int LED_LENGTH = 150;   
 }
 

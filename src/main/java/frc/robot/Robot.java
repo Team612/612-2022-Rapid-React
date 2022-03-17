@@ -43,10 +43,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_led = new AddressableLED(Constants.LED_PORT);
-    m_ledBuffer = new AddressableLEDBuffer(5460);
+    m_ledBuffer = new AddressableLEDBuffer(150);
 
     //do it just once cause the setlength method sucks
-    m_led.setLength(5460);
+    m_led.setLength(150);
 
     //set data
     m_led.setData(m_ledBuffer);
