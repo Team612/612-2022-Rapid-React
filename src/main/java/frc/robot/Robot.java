@@ -8,7 +8,9 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  AddressableLEDBuffer m_ledBuffer;
+  AddressableLED m_led;
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -30,13 +34,77 @@ public class Robot extends TimedRobot {
    //Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
   @Override
   public void robotInit() {
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     // pcm.clearAllStickyFaults();
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
     CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
+
+    m_led = new AddressableLED(Constants.LED_PORT);
+    m_ledBuffer = new AddressableLEDBuffer(5460);
+
+    //do it just once cause the setlength method sucks
+    m_led.setLength(5460);
+
+    //set data
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+    
+    
   }
+
+  public void setLED(int RGB_R, int RGB_G, int RGB_B) {
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for red
+      m_ledBuffer.setRGB(i, RGB_R, RGB_G, RGB_B);
+   }
+
+
+   
+   m_led.setData(m_ledBuffer);
+  }
+
+  public void extendArm(){
+    for (int i = 0; i <= 255; i++) {
+
+      final var hue = (i);
+      m_led.setLength(150); //testing purposes here.
+      m_ledBuffer.setRGB(i, (int) 0, hue, hue); //starts as black, as climb progresses arms turn blue
+      m_led.setData(m_ledBuffer);
+      m_led.start();
+    }
+  }
+
+  public void retractArm(){
+    for (int i = 255; i >= 0; i--){
+      final var hue = (i);
+      m_ledBuffer.setRGB(i, (int) 0, hue, hue); //starts at blue, then slowly progesses to black
+      m_led.setData(m_ledBuffer);
+      m_led.start();
+    }
+  }
+
+  public void OpenServo(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+    m_ledBuffer.setRGB(i,237,255,0);
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+  }
+}
+
+  public void CloseServo(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+    m_ledBuffer.setRGB(0,255,0,0 );
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+  }
+}
+
+
+
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like

@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class Climb extends SubsystemBase {
   //defines both Talons and Solenoids
   private WPI_TalonSRX pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
   private LED m_led;
+  private Robot m_robot;
   private Servo rightServo = new Servo(Constants.right_servo);
   private Servo leftServo = new Servo(Constants.left_servo);
   private final DoubleSolenoid piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1], Constants.firstSolenoid[0]);
@@ -27,7 +29,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kForward);
       piston2.set(Value.kForward);
       System.out.println("extend");
-      m_led.extendArm();
+      m_robot.extendArm();
   }
   
   //Brings the piston in
@@ -35,7 +37,7 @@ public class Climb extends SubsystemBase {
       piston1.set(Value.kReverse);
       piston2.set(Value.kReverse);
       System.out.println("retract");
-      m_led.retractArm();
+      m_robot.retractArm();
 
   }
   public void retractArmHang(){
@@ -57,7 +59,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(180);
       rightServo.setAngle(0);
       System.out.println("close");
-      m_led.CloseServo();
+      m_robot.CloseServo();
 
   }
   //Closes servos
@@ -65,7 +67,7 @@ public class Climb extends SubsystemBase {
       leftServo.setAngle(90);
       rightServo.setAngle(90);
       System.out.println("open");
-      m_led.OpenServo();
+      m_robot.OpenServo();
 
 
   }

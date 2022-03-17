@@ -48,7 +48,7 @@ public class LED extends SubsystemBase {
     for (int i = 0; i <= 255; i++) {
 
       final var hue = (i);
-      m_led.setLength(5460); //testing purposes here.
+      m_led.setLength(150); //testing purposes here.
       m_ledBuffer.setRGB(i, (int) 0, hue, hue); //starts as black, as climb progresses arms turn blue
       m_led.setData(m_ledBuffer);
       m_led.start();
