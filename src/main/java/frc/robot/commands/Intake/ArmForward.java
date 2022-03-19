@@ -28,6 +28,8 @@ public class ArmForward extends CommandBase {
   @Override
   public void execute() {
     m_intake.TalonFlex(Constants.intakeArmSpeed);
+
+    m_intake.autoOpen(50);
   }
 
   // Called once the command ends or is interrupted.

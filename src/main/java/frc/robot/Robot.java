@@ -7,9 +7,13 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.controls.ControlMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,6 +26,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
+  Compressor compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM); 
+
   UsbCamera front_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,7 +42,7 @@ public class Robot extends TimedRobot {
     front_cam.setFPS(20);
     System.out.println("init finished.");
     m_robotContainer = new RobotContainer();
-
+    m_robotContainer.m_intake.BottomServoClose();
   }
 
   /**
@@ -90,7 +96,18 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println(compressor.enabled());
+  if (ControlMap.driver.getRawButton(1)) {
+    compressor.enableDigital();
+  }
+
+  else if (ControlMap.driver.getRawButton(2)) {
+    compressor.disable();
+  }
+
+
+  }
 
   @Override
   public void testInit() {

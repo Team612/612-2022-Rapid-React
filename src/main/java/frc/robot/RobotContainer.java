@@ -41,7 +41,7 @@ public class RobotContainer {
 
   // Subsystem Declarations
   private final Climb m_climb = new Climb();
-  private final Intake m_intake = new Intake();
+  public final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final PivotMotor m_pivotmotor = new PivotMotor();
 
