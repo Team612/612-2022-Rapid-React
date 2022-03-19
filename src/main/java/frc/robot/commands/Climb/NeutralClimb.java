@@ -2,16 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
-public class HookOff extends CommandBase {
-  /** Creates a new HookOn. */
+public class NeutralClimb extends CommandBase {
+  /** Creates a new NeutralClimb. */
   private final Climb m_climb;
-
-  public HookOff(Climb climb) {
+  public NeutralClimb(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
     addRequirements(climb);
@@ -20,7 +19,9 @@ public class HookOff extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climb.ServoOpen();
+    System.out.println("NeutralClimb.initialize()");    
+    m_climb.setServosNeutral();
+    System.out.println("Neutral Mode: On");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -29,7 +30,9 @@ public class HookOff extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("NeutralClimb.end() : " + interrupted);    
+  }
 
   // Returns true when the command should end.
   @Override
