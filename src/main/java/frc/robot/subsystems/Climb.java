@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -69,7 +70,8 @@ public class Climb extends SubsystemBase {
     System.out.println("Climb.servoOpen() end");
   }
 
-  public void getBoreEncoder() {
+  public double getBoreEncoder() {
+    return boreEncoder.getAbsolutePosition();
     // System.out.println("encoder dist: " + boreEncoder.getDistance());
     /*
      * With the rev logo facing towards the user:
