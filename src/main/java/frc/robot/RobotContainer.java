@@ -12,7 +12,6 @@ import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.NeutralClimb;
 import frc.robot.commands.Climb.PivotPistonsSeperate;
 import frc.robot.commands.Climb.RetractClimb;
-import frc.robot.commands.Climb.climbLogicThingy;
 import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
@@ -21,6 +20,7 @@ import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
+import frc.robot.commands.Intake.climbLogicThingy;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -109,7 +109,7 @@ public class RobotContainer {
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     //ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
-    ControlMap.GUNNER_RB.whenHeld(new climbLogicThingy(m_climb, m_pivotmotor, 2000));
+    ControlMap.GUNNER_RB.whenHeld(new climbLogicThingy(m_intake, .82));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));

@@ -5,7 +5,12 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,6 +28,9 @@ public class Intake extends SubsystemBase {
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
+  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
+  ShuffleboardTab m_tab;
+  NetworkTableEntry entry;
   
   public Intake() {
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
@@ -30,13 +38,32 @@ public class Intake extends SubsystemBase {
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-    
+    m_tab = Shuffleboard.getTab("encoder");
+    entry = m_tab.add("Encoder", 0.0).getEntry();
   }
 
   public int getEncoder(){
     return shoulder.getSensorCollection().getQuadraturePosition();
   }
 
+  public void setShuffleBoard(double val){
+    entry.setDouble(val);
+  }
+  public double getBoreEncoder() {
+    return boreEncoder.getDistance();
+    // System.out.println("encoder dist: " + boreEncoder.getDistance());
+    /*
+     * With the rev logo facing towards the user:
+     * clockwise is negative, counterclockwise is positive
+     * distance of 1 indicates one full rotation. there is no upper bound
+     * (i.e. if there's more than one rotation, the distance will return a value
+     * greater than 1)
+     * therefore, should take mod of distance and 1.0
+     * when rio is reset, it'll remove the whole number and do just the decimal
+     * negative acts weird: if it's at -1.56 and resets, it'll return to 0.4.
+     */
+    // System.out.println("encoder freq: " + boreEncoder.getFrequency());
+  }
   public void setEncoder(){ 
     if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
       shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);

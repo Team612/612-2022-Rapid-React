@@ -40,6 +40,7 @@ public class ArmForward extends CommandBase {
   @Override
   public boolean isFinished() {
     if(m_intake.bottomlimitGoesOff()){
+      System.out.println("Noah's bad");
       return true;
     }
     return false;

@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +18,6 @@ public class Climb extends SubsystemBase {
   private final DoubleSolenoid piston2;
 
   // Pushes the piston out
-  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
 
   public Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
@@ -54,6 +51,7 @@ public class Climb extends SubsystemBase {
     System.out.println("Climb.setServosNeutral() end");
   }
 
+
   // Opens servos
   public void servoClose() {
     System.out.println("Climb.servoClose() start");
@@ -70,22 +68,7 @@ public class Climb extends SubsystemBase {
     System.out.println("Climb.servoOpen() end");
   }
 
-  public double getBoreEncoder() {
-    return boreEncoder.getAbsolutePosition();
-    // System.out.println("encoder dist: " + boreEncoder.getDistance());
-    /*
-     * With the rev logo facing towards the user:
-     * clockwise is negative, counterclockwise is positive
-     * distance of 1 indicates one full rotation. there is no upper bound
-     * (i.e. if there's more than one rotation, the distance will return a value
-     * greater than 1)
-     * therefore, should take mod of distance and 1.0
-     * when rio is reset, it'll remove the whole number and do just the decimal
-     * negative acts weird: if it's at -1.56 and resets, it'll return to 0.4.
-     */
-    // System.out.println("encoder freq: " + boreEncoder.getFrequency());
-  }
-
+ 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
