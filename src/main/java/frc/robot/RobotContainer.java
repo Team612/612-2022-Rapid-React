@@ -20,7 +20,7 @@ import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
-import frc.robot.commands.Intake.climbLogicThingy;
+import frc.robot.commands.Intake.ReleaseAtSpot;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -42,7 +42,7 @@ public class RobotContainer {
 
   // Subsystem Declarations
   private final Climb m_climb = new Climb();
-  private final Intake m_intake = new Intake();
+  public final Intake m_intake = new Intake();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final PivotMotor m_pivotmotor = new PivotMotor();
 
@@ -103,14 +103,13 @@ public class RobotContainer {
   private void compButtonBindings() {
     ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
+    ControlMap.GUNNER_Y.whileHeld(new ReleaseAtSpot(m_intake));
+    //ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
-    //ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
-    ControlMap.GUNNER_RB.whenHeld(new climbLogicThingy(m_intake, .82));
-    ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));

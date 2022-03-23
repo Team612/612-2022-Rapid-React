@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
+  
   UsbCamera front_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -90,7 +91,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_robotContainer.m_intake.setShuffleBoard(m_robotContainer.m_intake.getBoreEncoder());
+  }
 
   @Override
   public void testInit() {
