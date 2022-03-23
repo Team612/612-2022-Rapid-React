@@ -2,21 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
-public class ZeroYaw extends CommandBase {
-  /** Creates a new ZeroYaw. */
-  public ZeroYaw() {
+public class TopClose extends CommandBase {
+  /** Creates a new TopClose. */
+  private final Intake m_intake;
+  public TopClose(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Drivetrain.zeroYaw();
+    //m_intake.TopServoClose();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,6 +33,6 @@ public class ZeroYaw extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
