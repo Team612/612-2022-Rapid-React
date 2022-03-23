@@ -5,9 +5,13 @@
 package frc.robot;
 
 
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -22,20 +26,26 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  UsbCamera front_cam;
+  //UsbCamera front_cam;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+  //Ultrasonic ultrasonic = new Ultrasonic (1,0); //DIO 1 and 2
 
+  
+  //private final ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
+  private final CoreRangeSensor coreRange = new CoreRangeSensor();
+  
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    front_cam = CameraServer.startAutomaticCapture();
-    front_cam.setFPS(20);
+    //front_cam = CameraServer.startAutomaticCapture();
+    //front_cam.setFPS(20);
     System.out.println("init finished.");
     m_robotContainer = new RobotContainer();
+    
 
   }
 
@@ -46,12 +56,40 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
+
+  /*public void getUltrasonicData(){
+    /*if(ultrasonic.getRangeInches() > 12) {
+        m_drivetrain.driveMecanum(.5, 0, .5, 0); //drives the robot for till sensor is 12 inches aways
+    }
+    else {
+        m_drivetrain.driveMecanum(0, 0, 0, 0);
+    }
+    System.out.println("Ultrasonic data: " + ultrasonic.getRangeInches());
+  }
+
+  public void getInfraredData(){
+    System.out.println("Infrared data: " + colorSensor.getProximity());
+  }
+  
+  public void getMaxColor(){
+    System.out.println("The color value: " + colorSensor.getColor());
+  }*/
+
   @Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    // getMaxColor();
+    // getUltrasonicData();
+    // getInfraredData();
+    System.out.println("infrared data: " + coreRange.getIRValue());
+    System.out.println("ultrasonic data: " + coreRange.getUltraValue());
+    System.out.println("distance: " + coreRange.getDistanceVal());
+
+
+   
     CommandScheduler.getInstance().run();
   }
 

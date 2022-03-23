@@ -27,6 +27,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,43 +40,43 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  */
 public class RobotContainer {
 
-  // Subsystem Declarations
-  private final Climb m_climb = new Climb();
-  private final Intake m_intake = new Intake();
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final PivotMotor m_pivotmotor = new PivotMotor();
+  // // Subsystem Declarations
+  // private final Climb m_climb = new Climb();
+  // private final Intake m_intake = new Intake();
+  // private final Drivetrain m_drivetrain = new Drivetrain();
+  // private final PivotMotor m_pivotmotor = new PivotMotor();
 
-  // configure default commands
-  private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
-  private final PivotPistonsSeperate m_pivot = new PivotPistonsSeperate(m_pivotmotor, m_climb);
-  private final Arm m_arm = new Arm(m_intake);
+  // // configure default commands
+  // private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
+  // private final PivotPistonsSeperate m_pivot = new PivotPistonsSeperate(m_pivotmotor, m_climb);
+  // private final Arm m_arm = new Arm(m_intake);
 
-  // Trajectories
-  private final FollowTrajectory m_follower = new FollowTrajectory();
-  private final TrajectoryCreation m_traj = new TrajectoryCreation();
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // // Trajectories
+  // private final FollowTrajectory m_follower = new FollowTrajectory();
+  // private final TrajectoryCreation m_traj = new TrajectoryCreation();
+  // private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
-  private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
-  );
+  // private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
+  //   new BottomClose(m_intake)
+  //   .andThen(new ArmReverse(m_intake))
+  //   .andThen(new BottomOpen(m_intake))
+  //   .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
+  // );
 
-  private final SequentialCommandGroup dumpGoToBall = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart1))
-    .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
-  );
+  // private final SequentialCommandGroup dumpGoToBall = new SequentialCommandGroup(
+  //   new BottomClose(m_intake)
+  //   .andThen(new ArmReverse(m_intake))
+  //   .andThen(new BottomOpen(m_intake))
+  //   .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart1))
+  //   .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
+  // );
 
 
   public RobotContainer() { 
     // Configure the button bindings
-    configureButtonBindings();
-    configureDefaultCommands();
+    // configureButtonBindings();
+    // configureDefaultCommands();
   }
 
   /**
@@ -87,28 +88,30 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_chooser.addOption("Get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac));
-    m_chooser.addOption("Dump get out of tarmac", dumpGetOut);
-    m_chooser.addOption("Dump go to ball", dumpGoToBall);
+    // m_chooser.addOption("Get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac));
+    // m_chooser.addOption("Dump get out of tarmac", dumpGetOut);
+    // m_chooser.addOption("Dump go to ball", dumpGoToBall);
     
     // m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
     // m_chooser.addOption("auto test", m_outTarmacGetBall);
     // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
-    SmartDashboard.putData(m_chooser);
+    //SmartDashboard.putData(m_chooser);
 
     compButtonBindings();
   }
 
   private void compButtonBindings() {
-    ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
-    ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
-    ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
-    ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
-    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
-    ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    // ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
+    // ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
+    // ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
+    // ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
+    // ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
+    // ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    // ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
+    // ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
+    // ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    // ControlMap.GUNNER_Aa.whenPressed(new Ultrasonic(intake));
+    
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
@@ -124,9 +127,9 @@ public class RobotContainer {
    */
 
   private void configureDefaultCommands() {
-    m_drivetrain.setDefaultCommand(m_default);
-    m_pivotmotor.setDefaultCommand(m_pivot);
-    m_intake.setDefaultCommand(m_arm);
+    // m_drivetrain.setDefaultCommand(m_default);
+    // m_pivotmotor.setDefaultCommand(m_pivot);
+    // m_intake.setDefaultCommand(m_arm);
 
   }
 
@@ -136,6 +139,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    return null;
   }
 }

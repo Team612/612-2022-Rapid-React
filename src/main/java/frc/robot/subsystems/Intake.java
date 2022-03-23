@@ -3,15 +3,18 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.I2C.Port;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  
   private final Servo bottomLeft;
   private final Servo bottomRight;
  
@@ -23,6 +26,8 @@ public class Intake extends SubsystemBase {
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
+  
+
   
   public Intake() {
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
@@ -37,7 +42,7 @@ public class Intake extends SubsystemBase {
     return shoulder.getSensorCollection().getQuadraturePosition();
   }
 
-  public void setEncoder(){ 
+  public void setEncoder(){
     if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
       shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);
     }
@@ -80,10 +85,13 @@ public class Intake extends SubsystemBase {
     servoClose = true;
   }
 
+
+  
   
   
   @Override
   public void periodic() {
+ 
     // This method will be called once per scheduler run
   }
 }
