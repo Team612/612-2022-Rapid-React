@@ -3,29 +3,34 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  /*private final Servo topLeft = new Servo(1);
-  private final Servo topRight = new Servo(1);*/
-  private final Servo bottomLeft = new Servo(Constants.left_intake_servo);
-  private final Servo bottomRight = new Servo(Constants.right_intake_servo);
-
-
+  
+  private final Servo bottomLeft;
+  private final Servo bottomRight;
+ 
   private final int TOP_POSITION = 0;
-  private final double DEAD_ZONE = 0.1;
+  private final double DEADZONE = 0.1;
+
+  public boolean servoOpen = false;
+  public boolean servoClose = false;
   
   private final int BOTTOM_POSITION = 1;
-  private final WPI_TalonSRX shoulder = new WPI_TalonSRX(Constants.Talon_arm);
-  
+  private final WPI_TalonSRX shoulder;
   
   public Intake() {
+    shoulder = new WPI_TalonSRX(Constants.Talon_arm);
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
+    shoulder.setNeutralMode(NeutralMode.Brake);
+    bottomLeft = new Servo(Constants.bottom_servos[0]);
+    bottomRight = new Servo(Constants.bottom_servos[1]);
+    
   }
 
   public int getEncoder(){
@@ -49,40 +54,34 @@ public class Intake extends SubsystemBase {
   }
   
   public void TalonFlex(double speed) {
-    // moves on a fixed point
-    if(Math.abs(speed) < DEAD_ZONE) speed = 0;
-    // if(isLimitTriggered()){
-    //   shoulder.set(0);
-    // }
-    // else{
+    if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
-    // }
+  }
+  
+  public boolean bottomlimitGoesOff() {
+    return shoulder.getSensorCollection().isFwdLimitSwitchClosed();
   }
 
-  
+  public boolean upperLimitGoesOff(){
+    return shoulder.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
   public void BottomServoOpen() {
-    //opens the bottom claw
     bottomLeft.setAngle(90);
     bottomRight.setAngle(90);
-    System.out.println("opengrabber");
+    servoOpen = true;
+    servoClose = false;
   }
-  
-  public void BottomServoClose() {
-    //closes the bottom claw
-    bottomLeft.setAngle(180);
-    bottomRight.setAngle(0);
-    System.out.println("closegrabber");
-  }
-  
-  /*public void WristOpen() {
-    //dynamically moves the wrist for the second claw
-    wrist.setAngle(120);
-  }
-  public void WristClose() {
-    //dynamically moves the wrist for the second claw
-    wrist.setAngle(0);
-  }*/
 
+  public void BottomServoClose(){
+    bottomLeft.setAngle(180);
+    bottomRight.setAngle(0); 
+    servoOpen = false;
+    servoClose = true;
+  }
+
+  
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
