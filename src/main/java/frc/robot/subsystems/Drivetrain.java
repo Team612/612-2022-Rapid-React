@@ -11,50 +11,45 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  public final CANSparkMax spark_fl;
-  public final CANSparkMax spark_fr;
-  public final CANSparkMax spark_bl;
-  public final CANSparkMax spark_br;
+  public final CANSparkMax spark_fl = new CANSparkMax(Constants.SPARK_FL, MotorType.kBrushless);
+  public final CANSparkMax spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
+  public final CANSparkMax spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
+  public final CANSparkMax spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
+
+  public final MotorControllerGroup m_leftMotor = new MotorControllerGroup(spark_fl, spark_bl);
+  public final MotorControllerGroup m_rightMotor = new MotorControllerGroup(spark_fr, spark_br);
 
   private final double DEADZONE = 0.1;
 
   private MecanumDrive drivetrain;
   public double vel = Constants.kEncoderDistancePerPulse / 60;
 
-  private static AHRS navx;
-  MecanumDriveOdometry m_odometry;
-  private Field2d m_field;
+  private final AHRS navx = new AHRS(I2C.Port.kMXP);
+  MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
+  private Field2d m_field = new Field2d();
+
 
 
   public Drivetrain() {
-    m_field = new Field2d();
     SmartDashboard.putData("Field", m_field);
 
-    spark_fl = new CANSparkMax(Constants.SPARK_FL, MotorType.kBrushless);
-    spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
-    spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
-    spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
+    spark_fr.setInverted(false);
+    spark_br.setInverted(false);
 
-    navx = new AHRS(I2C.Port.kMXP);
-    m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
-
-    spark_fr.setInverted(true);
-    spark_br.setInverted(true);
-
-    spark_fl.setInverted(false);
-    spark_bl.setInverted(false);
+    spark_fl.setInverted(true);
+    spark_bl.setInverted(true);
 
     spark_fl.setIdleMode(IdleMode.kBrake);
     spark_fr.setIdleMode(IdleMode.kBrake);
@@ -73,6 +68,9 @@ public class Drivetrain extends SubsystemBase {
     spark_bl.getEncoder().setVelocityConversionFactor(vel);
 
     drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
+
+
+  
   }
 
   public void driveMecanum(double y, double x, double zRot){
@@ -92,7 +90,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     //update the odometry in the periodic block
-    m_odometry.update(getNavxAngle(), 
+    m_odometry.update(navx.getRotation2d(), 
       new MecanumDriveWheelSpeeds(
         spark_fl.getEncoder().getVelocity(), 
         spark_fr.getEncoder().getVelocity(), 
@@ -100,7 +98,6 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
-    // System.out.println("Navx angle: " + getNavxAngle().getDegrees());
   }
  
   public void simulationPeriodic(){
@@ -140,13 +137,15 @@ public class Drivetrain extends SubsystemBase {
       spark_br.getEncoder().getVelocity());
   }
 
-  public static void zeroYaw(){
-    navx.zeroYaw();
-    System.out.println("******************resetted yaw*********");
+  public void zeroHeading(){
+    navx.reset();
   }
 
+  public double getHeading(){
+    return navx.getRotation2d().getDegrees();
+  }
 
-  public static Rotation2d getNavxAngle(){
-    return Rotation2d.fromDegrees(-navx.getAngle());
+  public double getTurnRate(){
+    return -navx.getRate();
   }
 }

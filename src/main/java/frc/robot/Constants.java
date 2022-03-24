@@ -25,6 +25,7 @@ public final class Constants {
     public final static int SPARK_BL = 4;
     public final static int SPARK_BR = 3;
 
+
     //wheel diameter
     public static final double kWheelDiameterMeters = 0.1524;
     
@@ -34,6 +35,10 @@ public final class Constants {
     //Distance between centers of front and back wheels on robot
     public static final double kWheelBase = 0.676275; 
 
+    /**
+     * 27 1/4 inches = 0.69125
+     * 33 = 0.8382
+     */
 
     public static final double kEncoderCPR = 1; 
     public static final double kGearReduction = 16;
@@ -43,27 +48,27 @@ public final class Constants {
         ((kWheelDiameterMeters * Math.PI)) / (kGearReduction);
  
     //Feedforward gains for system dynamics 
-    public static final double kS = 0.14638; 
-    public static final double kV = 4.2124;  
-    public static final double kA = 0.36348;
+    public static final double kS = 0.11104; 
+    public static final double kV = 4.1572;  
+    public static final double kA = 0.21354;
     
     //Angular gains
-    public static final double kV_Angular = 1; // do not touch
-    public static final double kA_Angular = 1; // do not touch
+    public static final double kV_Angular = 1; //
+    public static final double kA_Angular = 1; //
 
     //position controllers
 
     //have to tune manually
-    public static final double kPXController = .85;
+    public static final double kPXController = .5;
     public static final double kPYController = .5;
     public static final double kPThetaController = .5; //TODO
 
     
     //Velocity controllers
-    public static final double kPFrontLeftVel = 4.8327; 
-    public static final double kPRearLeftVel = 4.8327;
-    public static final double kPFrontRightVel = 4.8327;
-    public static final double kPRearRightVel = 4.8327;
+    public static final double kPFrontLeftVel = 3.8167; 
+    public static final double kPRearLeftVel = 3.8167;
+    public static final double kPFrontRightVel = 3.8167;
+    public static final double kPRearRightVel = 3.8167;
 
     //Converting chassis velocity into individual wheel velocities
     public static final MecanumDriveKinematics kDriveKinematics =
@@ -90,8 +95,6 @@ public final class Constants {
     
     //climb
     public static int Talon_arm = 5;
-    public static double intakeArmSpeed = .5;//.38;
-
     public static int talon_pivot = 6;
     public static int PCM_2 = 7;
     public static int[] firstSolenoid = {1, 0}; // rev, fwd
@@ -102,18 +105,10 @@ public final class Constants {
     public static double setMotorSpeed = 0.69;
     public static int swings = 0;
 
-    public static int[] climb_servo = {0,1};
     public static int left_servo = 0;
     public static int right_servo = 1;
-
-    public static int[] bottom_servos = {2,3};
-
-    public static int[] ULTRASONIC_INTAKE =  {1,2};
-    public static int[] ULTRASONIC_OUTAKE =  {3,4};
-
-    public static final double ULTRASONIC_INTAKE_THRESH = 2.0, ULTRASONIC_INTAKE_THRESH_RANGE = 0.0;
-    public static final double ULTRASONIC_OUTTAKE_THRESH = 7.58, ULTRASONIC_OUTTAKE_THRESH_RANGE = 0.1;
-    //range values???
+    public static int left_intake_servo = 2;
+    public static int right_intake_servo = 3;
 
     public static double height = 15.375;
     public static double length = 24.0;
