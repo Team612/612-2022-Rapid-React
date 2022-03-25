@@ -111,8 +111,8 @@ public final class Constants {
     public static int[] ULTRASONIC_INTAKE =  {1,2};
     public static int[] ULTRASONIC_OUTAKE =  {3,4};
 
-    public static final double ULTRASONIC_INTAKE_THRESH = 2.0, ULTRASONIC_INTAKE_THRESH_RANGE = 0.0;
-    public static final double ULTRASONIC_OUTTAKE_THRESH = 7.58, ULTRASONIC_OUTTAKE_THRESH_RANGE = 0.1;
+    public static final double ULTRASONIC_INTAKE_THRESH = 2.0;//, ULTRASONIC_INTAKE_THRESH_RANGE = 0.0;
+    public static final double ULTRASONIC_OUTTAKE_THRESH = 7.58;//, ULTRASONIC_OUTTAKE_THRESH_RANGE = 0.1;
     //range values???
 
     public static double height = 15.375;
@@ -123,7 +123,10 @@ public final class Constants {
     //intake encoder constants
     public static double bottomIntakeLim = 0.968;
     public static double upperIntakeLim = 0.587;
-    
+
+    //bore encoer constants
+    public static int boreEncoderIntake = 0;
+    public static int boreEncoderPivot = 1;     
     
 }
 

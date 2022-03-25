@@ -59,15 +59,13 @@ public class RobotContainer {
 
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
     new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
+    .andThen(new ReleaseAtSpot(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
   );
 
   private final SequentialCommandGroup dumpGoToBall = new SequentialCommandGroup(
     new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
+    .andThen(new ReleaseAtSpot(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart1))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
   );
@@ -109,7 +107,10 @@ public class RobotContainer {
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
-    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
+    ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+
+    //Contro
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));

@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
   
   private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
-  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(0);
+  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.boreEncoderIntake);
   ShuffleboardTab m_tab;
   NetworkTableEntry entry;
   

@@ -2,45 +2,44 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Climb;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controls.ControlMap;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.PivotMotor;
+package frc.robot.commands.Intake;
 
-public class PivotPistonsSeperate extends CommandBase {
-  /** Creates a new PivotPistonsSeperate. */
-  private final PivotMotor m_pivot;
-  private final Climb m_climb;
-  public PivotPistonsSeperate(PivotMotor pivot, Climb climb) {
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
+
+public class AutoOutake extends CommandBase {
+  /** Creates a new AutoOutake. */
+  Ultrasonic m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+  private final Intake m_intake;
+  public AutoOutake(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_pivot = pivot;
-    m_climb = climb;
-    addRequirements(pivot);
+    m_intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("PivotPistonsSeperate.initialize()");    
-    m_climb.servoOpen();
+    m_intake.BottomServoClose();
+    Ultrasonic.setAutomaticMode(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivot.pivot(-ControlMap.gunner.getRawAxis(5)*0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("PivotPistonsSeperate.end() : " + interrupted);    
+    m_intake.BottomServoOpen();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_ultrasonicOutake.getRangeInches() <= Constants.ULTRASONIC_OUTTAKE_THRESH;
   }
 }
