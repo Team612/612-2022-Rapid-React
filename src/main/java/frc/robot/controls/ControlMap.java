@@ -24,5 +24,17 @@ public class ControlMap{
     public static JoystickButton GUNNER_RJ_BUTTON = new JoystickButton(gunner, 10); //
     public static POVButton GUNNER_DUP = new POVButton(gunner, 0);
 
+    public static JoystickButton DRIVER_A = new JoystickButton(driver, 1); //A
+    public static JoystickButton DRIVER_B = new JoystickButton(driver, 2); //B
+    public static JoystickButton DRIVER_X = new JoystickButton(driver, 3); //X
+    public static JoystickButton DRIVER_Y = new JoystickButton(driver, 4); //Y
+    public static JoystickButton DRIVER_LB = new JoystickButton(driver, 5); //LB
+    public static JoystickButton DRIVER_RB = new JoystickButton(driver, 6); //RB
+    public static JoystickButton DRIVER_BACK = new JoystickButton(driver, 7); 
+    public static JoystickButton DRIVER_START = new JoystickButton(driver, 8); 
+    public static JoystickButton DRIVER_LJ_BUTTON = new JoystickButton(driver, 9); //
+    public static JoystickButton DRIVER_RJ_BUTTON = new JoystickButton(driver, 10); //
+    public static POVButton DRIVER_DUP = new POVButton(driver, 0);
+
     
 }

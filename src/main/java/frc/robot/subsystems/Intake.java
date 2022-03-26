@@ -5,8 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -27,6 +26,7 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX shoulder;
 
   private final int ANGLE_DEADZONE = 100;
+  private DutyCycleEncoder intakeEncoder;
 
   /*
   - figure out angle
@@ -34,6 +34,17 @@ public class Intake extends SubsystemBase {
   - same method, but after encoder val = ___, open servos 
 
   */
+
+  
+
+  public Intake() {
+    shoulder = new WPI_TalonSRX(Constants.Talon_arm);
+    shoulder.getSensorCollection().setQuadraturePosition(0, 10);
+    shoulder.setNeutralMode(NeutralMode.Brake);
+    bottomLeft = new Servo(Constants.bottom_servos[0]);
+    bottomRight = new Servo(Constants.bottom_servos[1]);
+    intakeEncoder = new DutyCycleEncoder(Constants.intakeEncoder);
+  }
 
   private int calculate_target(double theta){
     return (int)(2048 * theta * 5/360);
@@ -46,14 +57,6 @@ public class Intake extends SubsystemBase {
       BottomServoOpen();
       System.out.println("grabber open!");
     }
-  }
-
-  public Intake() {
-    shoulder = new WPI_TalonSRX(Constants.Talon_arm);
-    shoulder.getSensorCollection().setQuadraturePosition(0, 10);
-    shoulder.setNeutralMode(NeutralMode.Brake);
-    bottomLeft = new Servo(Constants.bottom_servos[0]);
-    bottomRight = new Servo(Constants.bottom_servos[1]);
   }
 
   public int getEncoder(){

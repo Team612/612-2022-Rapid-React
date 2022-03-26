@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -100,9 +101,11 @@ public class Drivetrain extends SubsystemBase {
         spark_br.getEncoder().getVelocity()
       ));
       m_field.setRobotPose(m_odometry.getPoseMeters());
+      //System.out.println("fl: " + getWheelVoltages()[0] + "fr: " + getWheelVoltages()[1] + "bl: " + getWheelVoltages()[2] + "br: " + getWheelVoltages()[3]);
     // System.out.println("Navx angle: " + getNavxAngle().getDegrees());
   }
  
+  
   public void simulationPeriodic(){
     int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble sim_yaw = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
@@ -138,6 +141,11 @@ public class Drivetrain extends SubsystemBase {
       spark_fr.getEncoder().getVelocity(),
       spark_bl.getEncoder().getVelocity(),
       spark_br.getEncoder().getVelocity());
+
+  }
+
+  public double[] getWheelVoltages(){
+    return new double[]{spark_fl.getBusVoltage(), spark_fr.getBusVoltage(), spark_bl.getBusVoltage(), spark_br.getBusVoltage()};
   }
 
   public static void zeroYaw(){
