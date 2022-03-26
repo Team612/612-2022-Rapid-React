@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,33 +16,60 @@ public class Intake extends SubsystemBase {
   private final Servo bottomLeft;
   private final Servo bottomRight;
  
-  private final int TOP_POSITION = 0;
+  private final int TOP_POSITION = 0; // --> imo not necessaryx
   private final double DEADZONE = 0.1;
 
   public boolean servoOpen = false;
   public boolean servoClose = false;
   
-  private final int BOTTOM_POSITION = 1;
+  private final int BOTTOM_POSITION = 0; // --> imo not necessary
   private final WPI_TalonSRX shoulder;
+
+  private final int ANGLE_DEADZONE = 100;
+  private DutyCycleEncoder intakeEncoder;
+
+  /*
+  - figure out angle
+  - figure out encoder pos based off it 
+  - same method, but after encoder val = ___, open servos 
+
+  */
+
   
+
   public Intake() {
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-    
+    intakeEncoder = new DutyCycleEncoder(Constants.intakeEncoder);
+  }
+
+  private int calculate_target(double theta){
+    return (int)(2048 * theta * 5/360);
+  }
+  
+  public void autoOpen(double theta){
+    System.out.println("autopen!");
+    System.out.println("encoder: " + getEncoder());
+    if(Math.abs(getEncoder() - calculate_target(theta)) <= ANGLE_DEADZONE){
+      BottomServoOpen();
+      System.out.println("grabber open!");
+    }
   }
 
   public int getEncoder(){
     return shoulder.getSensorCollection().getQuadraturePosition();
   }
 
+  
+
   public void setEncoder(){ 
     if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
       shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);
     }
-    if (shoulder.getSensorCollection().isRevLimitSwitchClosed()){ //backwards goes to the top
+    else if (shoulder.getSensorCollection().isRevLimitSwitchClosed()){ //backwards goes to the top
       shoulder.getSensorCollection().setQuadraturePosition(BOTTOM_POSITION, 10);
     }
   }
@@ -85,5 +113,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setEncoder();
   }
 }

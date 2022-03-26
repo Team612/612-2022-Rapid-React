@@ -4,30 +4,29 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class PivotMotor extends SubsystemBase {
   /** Creates a new PivotMotor. */
-  private WPI_TalonSRX pivotMotor;
+  private CANSparkMax pivotMotor;
   private double currRotate = 0.0;
 
   public PivotMotor() {
-    pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
-    pivotMotor.setNeutralMode(NeutralMode.Brake);
+    pivotMotor = new CANSparkMax(Constants.talon_pivot, MotorType.kBrushless);
+    pivotMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public void pivot(double rotate) {
     if (rotate != currRotate) {
       System.out.println("PivotMotor.pivot() start : " + rotate);
     }
-
-    // pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
-    pivotMotor.set(ControlMode.PercentOutput, rotate);
+    //add brake mode again?
+    pivotMotor.set(rotate);
     
     if (rotate != currRotate) {
       System.out.println("PivotMotor.pivot() end : " + rotate);

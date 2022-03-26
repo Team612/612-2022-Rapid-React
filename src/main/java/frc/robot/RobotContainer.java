@@ -27,6 +27,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -71,10 +72,14 @@ public class RobotContainer {
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
   );
 
+  private void servoInit(){
+    m_intake.BottomServoClose();
+  }
 
   public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
+    servoInit();
     configureDefaultCommands();
   }
 
@@ -109,6 +114,9 @@ public class RobotContainer {
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
+    ControlMap.DRIVER_A.toggleWhenPressed(new StartEndCommand(m_climb::compressorOn, m_climb::compressorOff, m_climb));
+    //ControlMap.DRIVER_A.toggleWhenPressed(new CompressorOn(m_climb));
+    //ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new
     // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
