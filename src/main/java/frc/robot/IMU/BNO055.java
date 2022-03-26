@@ -5,6 +5,7 @@
 package frc.robot.IMU;
 
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
@@ -33,7 +34,9 @@ public class BNO055 {
   private volatile double nextTime; // seconds
   private volatile byte[] positionVector = new byte[6];
   private volatile long turns = 0;
-  private volatile double[] xyz = new double[3];
+  // private volatile double[] xyz = new double[3];
+
+  private AtomicReference<double[]> xyz = new AtomicReference<double[]>();
 
   public class SystemStatus {
     public int system_status;
@@ -471,18 +474,18 @@ public class BNO055 {
     }
 
     // calculate turns
-    headingDiff = xyz[0] - pos[0];
-    if (Math.abs(headingDiff) >= 350) {
-      // We've traveled past the zero heading position
-      if (headingDiff > 0) {
-        turns++;
-      } else {
-        turns--;
-      }
-    }
+    // headingDiff = xyz[0] - pos[0];
+    // if (Math.abs(headingDiff) >= 350) {
+    //   // We've traveled past the zero heading position
+    //   if (headingDiff > 0) {
+    //     turns++;
+    //   } else {
+    //     turns--;
+    //   }
+    // }
 
     // Update position vectors
-    xyz = pos;
+    xyz.set(pos);
   }
 
   /**
@@ -699,7 +702,7 @@ public class BNO055 {
    * @return a vector [heading, roll, pitch]
    */
   public double[] getVector() {
-    return xyz;
+    return xyz.get();
   }
 
   /**
@@ -711,7 +714,7 @@ public class BNO055 {
    * @return heading in degrees
    */
   public double getHeading() {
-    return xyz[0] + turns * 360;
+    return getVector()[0] + turns * 360;
   }
 
   /**
