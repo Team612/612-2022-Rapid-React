@@ -3,10 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,13 +18,23 @@ public class PivotMotor extends SubsystemBase {
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.boreEncoderPivot);
 
   private double currRotate = 0.0;
+  static PivotMotor instance = null;
 
-  public PivotMotor() {
+  private PivotMotor() {
     //pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
     pivotMotor = new CANSparkMax(Constants.talon_pivot, MotorType.kBrushless);
     //pivotMotor.setNeutralMode(NeutralMode.Brake);
     pivotMotor.setIdleMode(IdleMode.kBrake);
   }
+
+  public static PivotMotor getInstance() {
+    if (instance == null) {
+      instance = new PivotMotor();
+    }
+
+    return instance;
+  }
+
 
   public void pivot(double rotate) {
     if (rotate != currRotate) {
@@ -37,7 +43,7 @@ public class PivotMotor extends SubsystemBase {
 
     // pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
     //pivotMotor.set(ControlMode.PercentOutput, rotate);
-    pivotMotor.setIdleMode(IdleMode.kBrake);
+    // pivotMotor.setIdleMode(IdleMode.kBrake);
     
     if (rotate != currRotate) {
       System.out.println("PivotMotor.pivot() end : " + rotate);
@@ -52,12 +58,13 @@ public class PivotMotor extends SubsystemBase {
     return (getBoreEncoder() > target - 0.05 && getBoreEncoder() < target + 0.05);
   }
 
-  private double getBoreEncoder() {
+  public double getBoreEncoder() {
     return boreEncoder.getDistance();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }

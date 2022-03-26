@@ -21,6 +21,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private final RioLogger m_riologger = new RioLogger();
+
   
   
   UsbCamera front_cam;
@@ -37,6 +40,7 @@ public class Robot extends TimedRobot {
     front_cam.setFPS(20);
     System.out.println("init finished.");
     m_robotContainer = new RobotContainer();
+    m_riologger.initLog();
 
   }
 
@@ -92,7 +96,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.m_intake.setShuffleBoard(m_robotContainer.m_intake.getBoreEncoder());
+    m_riologger.executeLogger();
   }
 
   @Override

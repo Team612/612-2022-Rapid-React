@@ -16,17 +16,24 @@ public class Climb extends SubsystemBase {
   private Servo leftServo;
   private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
+  static Climb instance = null;
 
   // Pushes the piston out
 
-  public Climb() {
+  private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
     leftServo = new Servo(Constants.climb_servo[0]);
     piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1],
         Constants.secondSolenoid[0]);
     piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
         Constants.firstSolenoid[0]);
+  }
 
+  public static Climb getInstance(){
+    if(instance == null){
+      instance = new Climb();
+    }
+    return instance;
   }
 
   public void extendArm() {
@@ -68,6 +75,13 @@ public class Climb extends SubsystemBase {
     System.out.println("Climb.servoOpen() end");
   }
 
+  public double getRightServoAngle(){
+    return rightServo.getAngle();
+  }
+
+  public double getLeftServoAngle(){
+    return leftServo.getAngle();
+  }
  
   @Override
   public void periodic() {

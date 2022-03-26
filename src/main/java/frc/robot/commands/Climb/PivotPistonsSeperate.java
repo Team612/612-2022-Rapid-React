@@ -30,6 +30,7 @@ public class PivotPistonsSeperate extends CommandBase {
   @Override
   public void execute() {
     m_pivot.pivot(-ControlMap.gunner.getRawAxis(5)*0.3);
+    // System.out.println("encoder value: " + m_pivot.getBoreEncoder());
   }
 
   // Called once the command ends or is interrupted.

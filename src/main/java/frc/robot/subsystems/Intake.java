@@ -16,7 +16,6 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  
   private final Servo bottomLeft;
   private final Servo bottomRight;
  
@@ -31,8 +30,11 @@ public class Intake extends SubsystemBase {
   DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.boreEncoderIntake);
   ShuffleboardTab m_tab;
   NetworkTableEntry entry;
+
+  static Intake instance = null;
+
   
-  public Intake() {
+  private Intake() {
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
     shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
@@ -42,6 +44,15 @@ public class Intake extends SubsystemBase {
     entry = m_tab.add("Encoder", 0.0).getEntry();
   }
 
+
+  public static Intake getInstance() {
+    if (instance == null) {
+      instance = new Intake();
+    }
+
+    return instance;
+  }
+
   public int getEncoder(){
     return shoulder.getSensorCollection().getQuadraturePosition();
   }
@@ -49,21 +60,15 @@ public class Intake extends SubsystemBase {
   public void setShuffleBoard(double val){
     entry.setDouble(val);
   }
+
   public double getBoreEncoder() {
     return boreEncoder.getDistance();
-    // System.out.println("encoder dist: " + boreEncoder.getDistance());
-    /*
-     * With the rev logo facing towards the user:
-     * clockwise is negative, counterclockwise is positive
-     * distance of 1 indicates one full rotation. there is no upper bound
-     * (i.e. if there's more than one rotation, the distance will return a value
-     * greater than 1)
-     * therefore, should take mod of distance and 1.0
-     * when rio is reset, it'll remove the whole number and do just the decimal
-     * negative acts weird: if it's at -1.56 and resets, it'll return to 0.4.
-     */
-    // System.out.println("encoder freq: " + boreEncoder.getFrequency());
   }
+
+  // public static double getStaticBoreEncoder(){
+  //   return Intake.boreEncoder.getDistance();
+  // }
+  
   public void setEncoder(){ 
     if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
       shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);

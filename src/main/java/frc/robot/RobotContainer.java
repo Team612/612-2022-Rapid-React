@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
@@ -17,7 +16,6 @@ import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
-import frc.robot.commands.Intake.ArmReverse;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.ReleaseAtSpot;
@@ -41,10 +39,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class RobotContainer {
 
   // Subsystem Declarations
-  private final Climb m_climb = new Climb();
-  public final Intake m_intake = new Intake();
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final PivotMotor m_pivotmotor = new PivotMotor();
+  private final Climb m_climb = Climb.getInstance();
+  public final Intake m_intake = Intake.getInstance();
+  private final Drivetrain m_drivetrain = Drivetrain.getInstance();
+  private final PivotMotor m_pivotmotor = PivotMotor.getInstance();
 
   // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
@@ -55,6 +53,7 @@ public class RobotContainer {
   private final FollowTrajectory m_follower = new FollowTrajectory();
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 
 
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
@@ -70,10 +69,19 @@ public class RobotContainer {
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
   );
 
+  private final SequentialCommandGroup onlyDump = new SequentialCommandGroup(
+    new BottomClose(m_intake)
+    .andThen(new ReleaseAtSpot(m_intake))
+  );
+
+  // public void servoInit(){
+  //   m_intake.BottomServoClose();
+  // }
 
   public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
+    // servoInit();
     configureDefaultCommands();
   }
 
@@ -89,6 +97,7 @@ public class RobotContainer {
     m_chooser.addOption("Get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac));
     m_chooser.addOption("Dump get out of tarmac", dumpGetOut);
     m_chooser.addOption("Dump go to ball", dumpGoToBall);
+    m_chooser.addOption("Only Dump" , onlyDump);
     
     // m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
     // m_chooser.addOption("auto test", m_outTarmacGetBall);
