@@ -1,13 +1,11 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -48,7 +46,6 @@ public class Drivetrain extends SubsystemBase {
     spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
     spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
     spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
-
     navx = new AHRS(I2C.Port.kMXP);
     m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
 
@@ -163,13 +160,42 @@ public class Drivetrain extends SubsystemBase {
       spark_br.getEncoder().getVelocity());
   }
 
+  //getYaw = Returns the current yaw value (in degrees, from -180 to 180) 
+  //reported by the sensor. Yaw is a measure of rotation around the Z Axis 
+  //(which is perpendicular to the earth).
+
   public static void zeroYaw(){
     navx.zeroYaw();
     System.out.println("******************resetted yaw*********");
   }
 
-
-  public static Rotation2d getNavxAngle(){
+  //Returns the total accumulated yaw angle (Z Axis, in degrees) reported by the sensor.
+  public Rotation2d getNavxAngle(){
     return Rotation2d.fromDegrees(-navx.getAngle());
   }
+
+  public double getYaw(){
+    return navx.getYaw();
+  }
+
+  public double linearAccelX(){
+    return navx.getWorldLinearAccelX();
+  }
+
+  public double linearAccelY(){
+    return navx.getWorldLinearAccelY();
+  }
+
+  public double linearAccelZ(){
+    return navx.getWorldLinearAccelZ();
+  }
+
+  public double getAngularVel(){
+    return navx.getRate();
+  }
+
+  public boolean isCalibrating(){
+    return navx.isCalibrating();
+  }
+
 }

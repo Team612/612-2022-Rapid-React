@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,6 +32,8 @@ public class Intake extends SubsystemBase {
   ShuffleboardTab m_tab;
   NetworkTableEntry entry;
 
+  private final Ultrasonic m_ultrasonicOutake; 
+  private final Ultrasonic m_ultrasonicIntake;
   static Intake instance = null;
 
   
@@ -42,7 +45,20 @@ public class Intake extends SubsystemBase {
     bottomRight = new Servo(Constants.bottom_servos[1]);
     m_tab = Shuffleboard.getTab("encoder");
     entry = m_tab.add("Encoder", 0.0).getEntry();
+
+    Ultrasonic.setAutomaticMode(true);
+    m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
+    m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
   }
+
+  public double getUltrasonicIntakeInches(){
+    return m_ultrasonicIntake.getRangeInches();
+  }
+
+  public double getUltrasonicOutakeInches(){
+    return m_ultrasonicOutake.getRangeInches();
+  }
+
 
 
   public static Intake getInstance() {
@@ -112,6 +128,13 @@ public class Intake extends SubsystemBase {
     servoClose = true;
   }
 
+  public double getBottomLeftAngle(){
+    return bottomLeft.getAngle();
+  }
+
+  public double getBottomRightAngle(){
+    return bottomRight.getAngle();
+  }
   
   
   @Override

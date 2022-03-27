@@ -54,8 +54,6 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-
-
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
     new BottomClose(m_intake)
     .andThen(new ReleaseAtSpot(m_intake))

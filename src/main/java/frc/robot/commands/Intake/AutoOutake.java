@@ -3,15 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.Intake;
-
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class AutoOutake extends CommandBase {
   /** Creates a new AutoOutake. */
-  Ultrasonic m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
   private final Intake m_intake;
   public AutoOutake(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,12 +20,12 @@ public class AutoOutake extends CommandBase {
   @Override
   public void initialize() {
     m_intake.BottomServoClose();
-    Ultrasonic.setAutomaticMode(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Intake ultrasonic in Inches: " + m_intake.getUltrasonicOutakeInches());
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +37,6 @@ public class AutoOutake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_ultrasonicOutake.getRangeInches() <= Constants.ULTRASONIC_OUTTAKE_THRESH;
+    return m_intake.getUltrasonicOutakeInches() <= Constants.ULTRASONIC_OUTTAKE_THRESH;
   }
 }

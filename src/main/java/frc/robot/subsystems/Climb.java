@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,8 +19,8 @@ public class Climb extends SubsystemBase {
   private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
   static Climb instance = null;
+  private Compressor compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
 
-  // Pushes the piston out
 
   private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
@@ -29,11 +31,16 @@ public class Climb extends SubsystemBase {
         Constants.firstSolenoid[0]);
   }
 
+
   public static Climb getInstance(){
     if(instance == null){
       instance = new Climb();
     }
     return instance;
+  }
+  
+  public boolean getCompressorState(){
+    return compressor.enabled();
   }
 
   public void extendArm() {
