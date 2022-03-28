@@ -6,14 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.controls.ControlMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +24,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private final RioLogger m_riologger = new RioLogger();
+  private final ShuffleBoardButtons m_BoardButtons = new ShuffleBoardButtons();
+  
   UsbCamera front_cam;
 
   /**
@@ -45,8 +43,11 @@ public class Robot extends TimedRobot {
     front_cam.setFPS(20);
     System.out.println("init finished.");
     m_robotContainer = new RobotContainer();
-    m_riologger.initLog();
     Ultrasonic.setAutomaticMode(true);
+
+    m_riologger.initLog();
+    m_BoardButtons.initButtons();
+    
 
   }
 
@@ -112,6 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     m_riologger.executeLogger();
+    m_BoardButtons.updateButtons();
   }
 
   @Override

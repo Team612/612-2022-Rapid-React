@@ -5,13 +5,9 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,8 +23,6 @@ public class Intake extends SubsystemBase {
   
   private final WPI_TalonSRX shoulder;
   DutyCycleEncoder boreEncoderIntake;
-  ShuffleboardTab m_tab; // fix this in logging branch 
-  NetworkTableEntry entry;
 
   private final Ultrasonic m_ultrasonicOutake; 
   private final Ultrasonic m_ultrasonicIntake;
@@ -41,8 +35,6 @@ public class Intake extends SubsystemBase {
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-    m_tab = Shuffleboard.getTab("encoder");
-    entry = m_tab.add("Intake Encoder", 0.0).getEntry();
 
     m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
     m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
@@ -65,10 +57,6 @@ public class Intake extends SubsystemBase {
     }
 
     return instance;
-  }
-
-  public void setShuffleBoard(double val){
-    entry.setDouble(val);
   }
 
   public double getBoreEncoder() {
@@ -128,6 +116,5 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     System.out.println("intake end: " + getUltrasonicIntakeInches());
     System.out.println("outtake end: " + getUltrasonicOutakeInches());
-    setShuffleBoard(getBoreEncoder());
   }
 }
