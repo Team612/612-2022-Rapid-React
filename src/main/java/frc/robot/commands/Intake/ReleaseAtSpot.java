@@ -27,8 +27,8 @@ public class ReleaseAtSpot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.TalonFlex(-Constants.intakeArmSpeed);
-    if(m_intake.getBoreEncoder() < 0.65){
+    m_intake.setArm(-Constants.intakeArmSpeed);
+    if(m_intake.getBoreEncoder() < Constants.upperIntakeLim){
       m_intake.BottomServoOpen();
     }
   }
@@ -36,7 +36,7 @@ public class ReleaseAtSpot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.TalonFlex(0);
+    m_intake.setArm(0);
   }
 
   // Returns true when the command should end.

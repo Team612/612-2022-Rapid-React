@@ -122,7 +122,7 @@ public final class Constants {
 
     //intake encoder constants
     public static double bottomIntakeLim = 0.968;
-    public static double upperIntakeLim = 0.587;
+    public static double upperIntakeLim = 0.587; // possibly increase
 
     //bore encoer constants
     public static int boreEncoderIntake = 0;
