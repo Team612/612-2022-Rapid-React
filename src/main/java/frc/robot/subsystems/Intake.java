@@ -42,11 +42,11 @@ public class Intake extends SubsystemBase {
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
     m_tab = Shuffleboard.getTab("encoder");
-    entry = m_tab.add("Encoder", 0.0).getEntry();
+    entry = m_tab.add("Intake Encoder", 0.0).getEntry();
 
-    Ultrasonic.setAutomaticMode(true);
     m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
     m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+
   }
 
   public double getUltrasonicIntakeInches(){
@@ -126,5 +126,8 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println("intake end: " + getUltrasonicIntakeInches());
+    System.out.println("outtake end: " + getUltrasonicOutakeInches());
+    setShuffleBoard(getBoreEncoder());
   }
 }

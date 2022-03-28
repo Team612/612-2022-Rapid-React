@@ -5,6 +5,7 @@
 package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.PivotMotor;
 
 public class PivotMoveToPosition extends CommandBase {
@@ -24,7 +25,7 @@ public class PivotMoveToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isDestination = m_pivotMotor.moveToPosition(0.8, 0.1);
+    isDestination = m_pivotMotor.moveToPosition(Constants.targetPivot, 0.1);
   }
 
   // Called once the command ends or is interrupted.
