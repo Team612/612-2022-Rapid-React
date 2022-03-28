@@ -20,16 +20,14 @@ public class Intake extends SubsystemBase {
   private final Servo bottomLeft;
   private final Servo bottomRight;
  
-  private final int TOP_POSITION = 0;
   private final double DEADZONE = 0.1;
 
   public boolean servoOpen = false;
   public boolean servoClose = false;
   
-  private final int BOTTOM_POSITION = 1;
   private final WPI_TalonSRX shoulder;
-  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.boreEncoderIntake);
-  ShuffleboardTab m_tab;
+  DutyCycleEncoder boreEncoderIntake;
+  ShuffleboardTab m_tab; // fix this in logging branch 
   NetworkTableEntry entry;
 
   private final Ultrasonic m_ultrasonicOutake; 
@@ -38,8 +36,8 @@ public class Intake extends SubsystemBase {
 
   
   private Intake() {
+    boreEncoderIntake = new DutyCycleEncoder(Constants.boreEncoderIntake);
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
-    shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
@@ -69,31 +67,19 @@ public class Intake extends SubsystemBase {
     return instance;
   }
 
-  public int getEncoder(){
-    return shoulder.getSensorCollection().getQuadraturePosition();
-  }
-
   public void setShuffleBoard(double val){
     entry.setDouble(val);
   }
 
   public double getBoreEncoder() {
-    return boreEncoder.getDistance();
+    return boreEncoderIntake.getDistance();
   }
 
   // public static double getStaticBoreEncoder(){
   //   return Intake.boreEncoder.getDistance();
   // }
   
-  public void setEncoder(){ 
-    if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
-      shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);
-    }
-    if (shoulder.getSensorCollection().isRevLimitSwitchClosed()){ //backwards goes to the top
-      shoulder.getSensorCollection().setQuadraturePosition(BOTTOM_POSITION, 10);
-    }
-  }
-
+ 
   public boolean isLimitTriggered(){
     if(shoulder.getSensorCollection().isFwdLimitSwitchClosed() || shoulder.getSensorCollection().isRevLimitSwitchClosed()){
       return true;
@@ -101,7 +87,7 @@ public class Intake extends SubsystemBase {
     return false;
   }
   
-  public void TalonFlex(double speed) {
+  public void setArm(double speed) {
     if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
   }

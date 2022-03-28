@@ -15,12 +15,13 @@ public class PivotMotor extends SubsystemBase {
   /** Creates a new PivotMotor. */
   //private WPI_TalonSRX pivotMotor;
   private CANSparkMax pivotMotor;
-  DutyCycleEncoder boreEncoder = new DutyCycleEncoder(Constants.boreEncoderPivot);
+  DutyCycleEncoder boreEncoderPivot;
 
   private double currRotate = 0.0;
   static PivotMotor instance = null;
 
   private PivotMotor() {
+    boreEncoderPivot = new DutyCycleEncoder(Constants.boreEncoderPivot);
     //pivotMotor = new WPI_TalonSRX(Constants.talon_pivot);
     pivotMotor = new CANSparkMax(Constants.talon_pivot, MotorType.kBrushless);
     //pivotMotor.setNeutralMode(NeutralMode.Brake);
@@ -40,10 +41,8 @@ public class PivotMotor extends SubsystemBase {
     if (rotate != currRotate) {
       System.out.println("PivotMotor.pivot() start : " + rotate);
     }
-
-    // pivotMotor.set(TalonFXControlMode.PercentOutput, rotate);
-    //pivotMotor.set(ControlMode.PercentOutput, rotate);
-    // pivotMotor.setIdleMode(IdleMode.kBrake);
+    //add brake mode again?
+    pivotMotor.set(rotate);
     
     if (rotate != currRotate) {
       System.out.println("PivotMotor.pivot() end : " + rotate);
@@ -59,7 +58,7 @@ public class PivotMotor extends SubsystemBase {
   }
 
   public double getBoreEncoder() {
-    return boreEncoder.getDistance();
+    return boreEncoderPivot.getDistance();
   }
 
   @Override

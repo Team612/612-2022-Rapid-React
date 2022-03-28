@@ -3,12 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,8 +20,9 @@ public class Climb extends SubsystemBase {
   private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
   static Climb instance = null;
-  private Compressor compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
 
+  // Pushes the piston out
+  private Compressor compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
 
   private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
@@ -29,8 +31,9 @@ public class Climb extends SubsystemBase {
         Constants.secondSolenoid[0]);
     piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
         Constants.firstSolenoid[0]);
+    Shuffleboard.getTab("compressor")
+    .add("compressor state", compressor);
   }
-
 
   public static Climb getInstance(){
     if(instance == null){
@@ -80,6 +83,13 @@ public class Climb extends SubsystemBase {
     leftServo.setAngle(90);
     rightServo.setAngle(90);
     System.out.println("Climb.servoOpen() end");
+  }
+  public void compressorOn(){
+    compressor.enableDigital();
+  }
+
+  public void compressorOff(){
+    compressor.disable();
   }
 
   public double getRightServoAngle(){
