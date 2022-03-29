@@ -5,11 +5,9 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,17 +20,22 @@ public class Climb extends SubsystemBase {
   static Climb instance = null;
 
   // Pushes the piston out
-  private Compressor compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
+  private Compressor compressor;
+
+  private boolean toggle_compressor = false;
 
   private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
     leftServo = new Servo(Constants.climb_servo[0]);
+    
+    compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
     piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1],
         Constants.secondSolenoid[0]);
     piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
         Constants.firstSolenoid[0]);
-    Shuffleboard.getTab("compressor")
-    .add("compressor state", compressor);
+    
+    // Shuffleboard.getTab("compressor")
+    // .add("compressor state", compressor);
   }
 
   public static Climb getInstance(){
@@ -84,12 +87,19 @@ public class Climb extends SubsystemBase {
     rightServo.setAngle(90);
     System.out.println("Climb.servoOpen() end");
   }
+  
   public void compressorOn(){
     compressor.enableDigital();
+    toggle_compressor = true;
   }
 
   public void compressorOff(){
     compressor.disable();
+    toggle_compressor = false;
+  }
+
+  public boolean toggleCompressor(){
+    return toggle_compressor;
   }
 
   public double getRightServoAngle(){

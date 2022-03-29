@@ -12,7 +12,6 @@ import frc.robot.Constants;
 
 public class PivotMotor extends SubsystemBase {
   /** Creates a new PivotMotor. */
-  //private WPI_TalonSRX pivotMotor;
   private CANSparkMax pivotMotor;
   DutyCycleEncoder boreEncoderPivot;
 

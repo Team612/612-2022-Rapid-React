@@ -18,8 +18,7 @@ public class Intake extends SubsystemBase {
  
   private final double DEADZONE = 0.1;
 
-  public boolean servoOpen = false;
-  public boolean servoClose = false;
+  private boolean servoOpen = false;
   
   private final WPI_TalonSRX shoulder;
   DutyCycleEncoder boreEncoderIntake;
@@ -63,10 +62,6 @@ public class Intake extends SubsystemBase {
     return boreEncoderIntake.getDistance();
   }
 
-  // public static double getStaticBoreEncoder(){
-  //   return Intake.boreEncoder.getDistance();
-  // }
-  
  
   public boolean isLimitTriggered(){
     if(shoulder.getSensorCollection().isFwdLimitSwitchClosed() || shoulder.getSensorCollection().isRevLimitSwitchClosed()){
@@ -78,6 +73,7 @@ public class Intake extends SubsystemBase {
   public void setArm(double speed) {
     if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
+    // shoulder.setNeutralMode(NeutralMode.Brake);
   }
   
   public boolean bottomlimitGoesOff() {
@@ -92,14 +88,16 @@ public class Intake extends SubsystemBase {
     bottomLeft.setAngle(90);
     bottomRight.setAngle(90);
     servoOpen = true;
-    servoClose = false;
   }
 
   public void BottomServoClose(){
     bottomLeft.setAngle(180);
     bottomRight.setAngle(0); 
     servoOpen = false;
-    servoClose = true;
+  }
+
+  public boolean isServoOpen(){
+    return servoOpen;
   }
 
   public double getBottomLeftAngle(){
@@ -113,8 +111,5 @@ public class Intake extends SubsystemBase {
   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    System.out.println("intake end: " + getUltrasonicIntakeInches());
-    System.out.println("outtake end: " + getUltrasonicOutakeInches());
   }
 }
