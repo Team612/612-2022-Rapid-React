@@ -21,21 +21,17 @@ public class Climb extends SubsystemBase {
 
   // Pushes the piston out
   private Compressor compressor;
-
   private boolean toggle_compressor = false;
 
   private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
     leftServo = new Servo(Constants.climb_servo[0]);
-    
     compressor = new Compressor(Constants.PCM_2, PneumaticsModuleType.CTREPCM);
+    compressorOff();
     piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1],
         Constants.secondSolenoid[0]);
     piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
         Constants.firstSolenoid[0]);
-    
-    // Shuffleboard.getTab("compressor")
-    // .add("compressor state", compressor);
   }
 
   public static Climb getInstance(){
@@ -44,10 +40,8 @@ public class Climb extends SubsystemBase {
     }
     return instance;
   }
+
   
-  public boolean getCompressorState(){
-    return compressor.enabled();
-  }
 
   public void extendArm() {
     System.out.println("Climb.extendArm() start");
@@ -87,20 +81,26 @@ public class Climb extends SubsystemBase {
     rightServo.setAngle(90);
     System.out.println("Climb.servoOpen() end");
   }
+
+  
+  public boolean getCompressorState(){
+      return compressor.enabled();
+  }
   
   public void compressorOn(){
-    compressor.enableDigital();
-    toggle_compressor = true;
+      compressor.enableDigital();
+      toggle_compressor = true;
   }
 
   public void compressorOff(){
-    compressor.disable();
-    toggle_compressor = false;
+      compressor.disable();
+      toggle_compressor = false;
   }
 
   public boolean toggleCompressor(){
     return toggle_compressor;
   }
+
 
   public double getRightServoAngle(){
     return rightServo.getAngle();

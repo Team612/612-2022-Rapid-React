@@ -42,7 +42,8 @@ public class ReleaseAtSpot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_intake.upperLimitGoesOff()){
+    // .588
+    if(m_intake.upperLimitGoesOff() || m_intake.getBoreEncoder() <= .6){
       return true;
     }
     return false;

@@ -119,11 +119,11 @@ public final class Constants {
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
-    public static double targetPivot = .69;
+    public static double targetPivot = .6999;
 
     //intake encoder constants
     public static double bottomIntakeLim = 0.968;
-    public static double upperIntakeLim = 0.587; // possibly increase
+    public static double upperIntakeLim = 0.605; // possibly increase
 
     //bore encoer constants
     public static int boreEncoderIntake = 1;

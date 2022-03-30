@@ -3,12 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
 import frc.robot.commands.Climb.ClimbOpen;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.NeutralClimb;
+import frc.robot.commands.Climb.PivotMoveToPosition;
 import frc.robot.commands.Climb.PivotPistonsSeperate;
 import frc.robot.commands.Climb.RetractClimb;
 import frc.robot.commands.Drivetrain.DefaultDrive;
@@ -120,7 +122,11 @@ public class RobotContainer {
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
-    ControlMap.DRIVER_A.toggleWhenPressed(new StartEndCommand(m_climb::compressorOn, m_climb::compressorOff, m_climb));
+    ControlMap.GUNNER_DDOWN.whileHeld(new PivotMoveToPosition(m_pivotmotor));
+
+    ControlMap.DRIVER_A.toggleWhenPressed(new StartEndCommand(m_climb::compressorOff, m_climb::compressorOn, m_climb));
+    // ControlMap.DRIVER_A.toggleWhenActive(m_climb_compressor::compressorOff, m_climb_compressor::compressorOn, m_climb_compressor);
+    // ControlMap.DRIVER_A.whenPressed();
     //ControlMap.DRIVER_A.toggleWhenPressed(new CompressorOn(m_climb));
     //ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
     // ControlMap.GUNNER_RB.toggleWhenPressed(new

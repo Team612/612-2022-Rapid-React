@@ -37,22 +37,23 @@ public class PivotMotor extends SubsystemBase {
 
   public void pivot(double rotate) {
     if (rotate != currRotate) {
-      System.out.println("PivotMotor.pivot() start : " + rotate);
+      // System.out.println("PivotMotor.pivot() start : " + rotate);
     }
     //add brake mode again?
     pivotMotor.set(rotate);
     
     if (rotate != currRotate) {
-      System.out.println("PivotMotor.pivot() end : " + rotate);
+      // System.out.println("PivotMotor.pivot() end : " + rotate);
     }
 
     currRotate = rotate;
   }
 
-  public boolean moveToPosition(double target, double kP){
+  public boolean moveToPosition(double target, double kP, double range){
     //pivotMotor.set(ControlMode.PercentOutput, kP*(target-getBoreEncoder()));
+    System.out.println("is running");
     pivotMotor.set(kP*(target-getBoreEncoder()));
-    return (getBoreEncoder() > target - 0.05 && getBoreEncoder() < target + 0.05);
+    return (getBoreEncoder() > target - range && getBoreEncoder() < target + range);
   }
 
   public double getBoreEncoder() {
