@@ -6,9 +6,14 @@ package frc.robot;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +30,9 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+  
+  BooleanLogEntry ArmLog;
+  DoubleLogEntry EncoderLog;
 
   //  PneumaticsControlModule pcm = new PneumaticsControlModule();
    //Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -36,6 +44,16 @@ public class Robot extends TimedRobot {
     // System.out.println("your mom is a: " + pcm.checkSolenoidChannel(0));
     CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
+    
+    //Begin The Data Logger
+    DataLogManager.start();
+    //Create Directories with the Data
+    DataLog log = DataLogManager.getLog();
+    ArmLog = new BooleanLogEntry(log, "/ArmLog");
+    EncoderLog = new DoubleLogEntry(log, "/EncoderLog");
+    
+    //Joystick data logging
+    DriverStation.startDataLog(DataLogManager.getLog());
   }
 
   /**
@@ -89,7 +107,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  //Append Logging data here
+  /*
+  if(){
+    ArmLog.Append(true);
+    EncoderLog.Append(true;
+  }
+  */
 
   @Override
   public void testInit() {
