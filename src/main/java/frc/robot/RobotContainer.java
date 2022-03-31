@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
 import frc.robot.commands.Climb.ClimbOpen;
+import frc.robot.commands.Climb.CompressorOff;
+import frc.robot.commands.Climb.CompressorOn;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.NeutralClimb;
 import frc.robot.commands.Climb.PivotMoveToPosition;
@@ -28,7 +30,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,7 +41,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // Subsystem Declarations
   private final Climb m_climb = Climb.getInstance();
   public final Intake m_intake = Intake.getInstance();
@@ -75,9 +75,6 @@ public class RobotContainer {
     .andThen(new ReleaseAtSpot(m_intake))
   );
 
-  // public void servoInit(){
-  //   m_intake.BottomServoClose();
-  // }
   private void servoInit(){
     m_intake.BottomServoClose();
   }
@@ -102,10 +99,6 @@ public class RobotContainer {
     m_chooser.addOption("Dump get out of tarmac", dumpGetOut);
     m_chooser.addOption("Dump go to ball", dumpGoToBall);
     m_chooser.addOption("Only Dump" , onlyDump);
-    
-    // m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
-    // m_chooser.addOption("auto test", m_outTarmacGetBall);
-    // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
     SmartDashboard.putData(m_chooser);
 
     compButtonBindings();
@@ -119,19 +112,14 @@ public class RobotContainer {
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
-    ControlMap.GUNNER_DDOWN.whileHeld(new PivotMoveToPosition(m_pivotmotor));
 
-    ControlMap.DRIVER_A.toggleWhenPressed(new StartEndCommand(m_climb::compressorOff, m_climb::compressorOn, m_climb));
-    // ControlMap.DRIVER_A.toggleWhenActive(m_climb_compressor::compressorOff, m_climb_compressor::compressorOn, m_climb_compressor);
-    // ControlMap.DRIVER_A.whenPressed();
-    //ControlMap.DRIVER_A.toggleWhenPressed(new CompressorOn(m_climb));
-    //ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
-    // ControlMap.GUNNER_RB.toggleWhenPressed(new
-    // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
-    // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
+    ControlMap.GUNNER_DDOWN.whileHeld(new PivotMoveToPosition(m_pivotmotor));    
+    ControlMap.DRIVER_A.whenPressed(new CompressorOn(m_climb));
+    ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
   }
 
   /*

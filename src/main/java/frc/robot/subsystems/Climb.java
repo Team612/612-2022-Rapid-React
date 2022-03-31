@@ -44,42 +44,42 @@ public class Climb extends SubsystemBase {
   
 
   public void extendArm() {
-    System.out.println("Climb.extendArm() start");
+    // System.out.println("Climb.extendArm() start");
     piston1.set(Value.kForward);
     piston2.set(Value.kForward);
-    System.out.println("Climb.extendArm() end");
+    // System.out.println("Climb.extendArm() end");
   }
 
   // Brings the piston in
   public void retractArm() {
-    System.out.println("Climb.retractArm() start");
+    // System.out.println("Climb.retractArm() start");
     piston1.set(Value.kReverse);
     piston2.set(Value.kReverse);
-    System.out.println("Climb.retractArm() end");
+    // System.out.println("Climb.retractArm() end");
   }
 
   public void setServosNeutral() {
-    System.out.println("Climb.setServosNeutral() start");
+    // System.out.println("Climb.setServosNeutral() start");
     leftServo.setDisabled();
     rightServo.setDisabled();
-    System.out.println("Climb.setServosNeutral() end");
+    // System.out.println("Climb.setServosNeutral() end");
   }
 
 
   // Opens servos
   public void servoClose() {
-    System.out.println("Climb.servoClose() start");
+    // System.out.println("Climb.servoClose() start");
     leftServo.setAngle(180);
     rightServo.setAngle(0);
-    System.out.println("Climb.servoClose() end");
+    // System.out.println("Climb.servoClose() end");
   }
 
   // Closes servos
   public void servoOpen() {
-    System.out.println("Climb.servoOpen() start");
+    // System.out.println("Climb.servoOpen() start");
     leftServo.setAngle(90);
     rightServo.setAngle(90);
-    System.out.println("Climb.servoOpen() end");
+    // System.out.println("Climb.servoOpen() end");
   }
 
   
@@ -89,11 +89,14 @@ public class Climb extends SubsystemBase {
   
   public void compressorOn(){
       compressor.enableDigital();
+      // System.out.println("compressor on");
       toggle_compressor = true;
   }
 
   public void compressorOff(){
       compressor.disable();
+      // System.out.println("compressor off");
+
       toggle_compressor = false;
   }
 

@@ -19,9 +19,9 @@ public class ClimbOpen extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("ClimbOpen.initialize()");    
+    // System.out.println("ClimbOpen.initialize()");    
     m_climb.servoOpen();
-    System.out.println("Neutral Mode: Off");
+    // System.out.println("Neutral Mode: Off");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,7 +31,7 @@ public class ClimbOpen extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("ClimbOpen.end() : " + interrupted);
+    // System.out.println("ClimbOpen.end() : " + interrupted);
   }
 
   // Returns true when the command should end.
