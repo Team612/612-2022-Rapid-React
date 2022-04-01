@@ -11,7 +11,6 @@ import frc.robot.subsystems.PivotMotor;
 public class PivotMoveToPosition extends CommandBase {
   /** Creates a new pivotMoveToPosition. */
   private final PivotMotor m_pivotMotor;
-  private boolean isDestination = false;
   public PivotMoveToPosition(PivotMotor pivotMotor) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_pivotMotor = pivotMotor;
@@ -25,19 +24,18 @@ public class PivotMoveToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isDestination = m_pivotMotor.moveToPosition(Constants.targetPivot, 5, 0);
+    m_pivotMotor.moveToPosition(Constants.targetPivot, 5, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_pivotMotor.pivot(0);
   }
 
   // Returns true when the command should end.
   //
   @Override
   public boolean isFinished() {
-    return isDestination;
+    return false;
   }
 }

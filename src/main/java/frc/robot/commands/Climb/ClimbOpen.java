@@ -19,7 +19,7 @@ public class ClimbOpen extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // System.out.println("ClimbOpen.initialize()");    
+    System.out.println("ClimbOpen.initialize()");    
     m_climb.servoOpen();
     // System.out.println("Neutral Mode: Off");
   }

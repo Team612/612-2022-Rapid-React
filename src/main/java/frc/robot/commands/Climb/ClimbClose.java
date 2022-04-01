@@ -19,7 +19,7 @@ public class ClimbClose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // System.out.println("ClimbClose.initialize()");    
+    System.out.println("ClimbClose.initialize()");    
     m_climb.servoClose();
     // System.out.println("Neutral Mode: Off");
   }

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -19,12 +20,15 @@ public class Intake extends SubsystemBase {
   private final double DEADZONE = 0.1;
 
   private boolean servoOpen = false;
-  
+  private boolean isSearchingInput = false;
+
   private final WPI_TalonSRX shoulder;
   DutyCycleEncoder boreEncoderIntake;
 
   private final Ultrasonic m_ultrasonicOutake; 
-  private final Ultrasonic m_ultrasonicIntake;
+  // private final Ultrasonic m_ultrasonicIntake;
+
+  private final DigitalInput m_intakeButton;
   static Intake instance = null;
 
   
@@ -35,26 +39,32 @@ public class Intake extends SubsystemBase {
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
 
-    m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
-    m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+    // m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
 
+    m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+    m_intakeButton = new DigitalInput(Constants.IntakeButton);
   }
 
-  public double getUltrasonicIntakeInches(){
-    return m_ultrasonicIntake.getRangeInches();
+  public void setSearchingInput(boolean state){
+    isSearchingInput = state;
+  }
+
+  // public double getUltrasonicIntakeInches(){
+  //   return m_ultrasonicIntake.getRangeInches();
+  // }
+
+  public boolean getSearchingInput(){
+    return isSearchingInput;
   }
 
   public double getUltrasonicOutakeInches(){
     return m_ultrasonicOutake.getRangeInches();
   }
 
-
-
   public static Intake getInstance() {
     if (instance == null) {
       instance = new Intake();
     }
-
     return instance;
   }
 
@@ -62,7 +72,6 @@ public class Intake extends SubsystemBase {
     return boreEncoderIntake.getDistance();
   }
 
- 
   public boolean isLimitTriggered(){
     if(shoulder.getSensorCollection().isFwdLimitSwitchClosed() || shoulder.getSensorCollection().isRevLimitSwitchClosed()){
       return true;
@@ -73,7 +82,6 @@ public class Intake extends SubsystemBase {
   public void setArm(double speed) {
     if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
-    // shoulder.setNeutralMode(NeutralMode.Brake);
   }
   
   public boolean bottomlimitGoesOff() {
@@ -108,7 +116,10 @@ public class Intake extends SubsystemBase {
     return bottomRight.getAngle();
   }
   
-  
+  public boolean getButtonVal(){
+    return !m_intakeButton.get();
+  }
+
   @Override
   public void periodic() {
   }

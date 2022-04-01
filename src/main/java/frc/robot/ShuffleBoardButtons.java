@@ -13,36 +13,42 @@ public class ShuffleBoardButtons {
     ShuffleboardTab m_encoderTab;
     ShuffleboardTab m_ultraSonicTab;
     ShuffleboardTab m_compressorTab;
+    ShuffleboardTab m_smartdashboard;
 
     NetworkTableEntry pivotEntry;
     NetworkTableEntry intakeEntry;
-    NetworkTableEntry ultrasonicIntake;
     NetworkTableEntry ultrasonicOutake;
     NetworkTableEntry compressor_state;
     NetworkTableEntry compressor_button;
-
+    NetworkTableEntry searchingInput;
+    NetworkTableEntry servoOpened;
 
 
     public void initButtons(){
         m_encoderTab = Shuffleboard.getTab("encoder");
         m_ultraSonicTab = Shuffleboard.getTab("ultrasonic");
         m_compressorTab = Shuffleboard.getTab("compressor");
+        m_smartdashboard = Shuffleboard.getTab("SmartDashboard");
 
         pivotEntry = m_encoderTab.add("Pivot Encoder", 0.0).getEntry();
         intakeEntry = m_encoderTab.add("Intake Encoder", 0.0).getEntry();
-        ultrasonicIntake = m_ultraSonicTab.add("Ultrasonic Intake", 0.0).getEntry();
         ultrasonicOutake = m_ultraSonicTab.add("Ultrasonic Outake", 0.0).getEntry();
-        compressor_state = m_compressorTab.add("Compressor State", false).getEntry();
-        compressor_button = m_compressorTab.add("Compressor Button", false).getEntry();
+
+        //what driver wants to see
+        compressor_state = m_smartdashboard.add("Compressor State", false).getEntry();
+        compressor_button = m_smartdashboard.add("Compressor Button", false).getEntry();
+        searchingInput = m_smartdashboard.add("searchingInputButton", false).getEntry();
+        servoOpened = m_smartdashboard.add("servo Opened", false).getEntry();
     }
 
     public void updateButtons(){
         pivotEntry.setDouble(PivotMotor.getInstance().getBoreEncoder());
         intakeEntry.setDouble(Intake.getInstance().getBoreEncoder());
-        ultrasonicIntake.setDouble(Intake.getInstance().getUltrasonicIntakeInches());
         ultrasonicOutake.setDouble(Intake.getInstance().getUltrasonicOutakeInches());
         compressor_state.setBoolean(Climb.getInstance().getCompressorState());
         compressor_button.setBoolean(Climb.getInstance().toggleCompressor());
+        searchingInput.setBoolean(Intake.getInstance().getSearchingInput());
+        servoOpened.setBoolean(Intake.getInstance().isServoOpen());
     }
     
 }

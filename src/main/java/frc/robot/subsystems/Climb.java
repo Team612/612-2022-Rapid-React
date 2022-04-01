@@ -19,7 +19,6 @@ public class Climb extends SubsystemBase {
   private final DoubleSolenoid piston2;
   static Climb instance = null;
 
-  // Pushes the piston out
   private Compressor compressor;
   private boolean toggle_compressor = false;
 
@@ -41,13 +40,19 @@ public class Climb extends SubsystemBase {
     return instance;
   }
 
-  
-
   public void extendArm() {
     // System.out.println("Climb.extendArm() start");
     piston1.set(Value.kForward);
     piston2.set(Value.kForward);
     // System.out.println("Climb.extendArm() end");
+  }
+
+  public double getCompressorVoltage(){
+    return compressor.getAnalogVoltage();
+  }
+
+  public double getCompressorCurrent(){
+    return compressor.getCurrent();
   }
 
   // Brings the piston in

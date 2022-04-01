@@ -22,14 +22,17 @@ public class RioLogger {
     private DoubleLogEntry grabberServoRight;
     private DoubleLogEntry grabberServoLeft;
     private DoubleLogEntry ultrasonicOutake;
-    private DoubleLogEntry ultrasonicIntake;
     private DoubleLogEntry getYaw;
     private DoubleLogEntry linearAccelX;
     private DoubleLogEntry linearAccelY;
     private DoubleLogEntry linearAccelZ;
     private DoubleLogEntry getAngularVel;
+    private DoubleLogEntry getCompressorVoltage;
+    private DoubleLogEntry getCompressorAmps;
+
     private BooleanLogEntry compressorState;
     private BooleanLogEntry isCalibrating;
+    
 
     public void initLog(){
         DataLogManager.start();
@@ -45,14 +48,17 @@ public class RioLogger {
         grabberServoRight = new DoubleLogEntry(log, "/my/grabberServoRight");
         grabberServoLeft = new DoubleLogEntry(log, "/my/grabberServoLeft");
         ultrasonicOutake = new DoubleLogEntry(log, "/my/ultrasonicOutake");
-        ultrasonicIntake = new DoubleLogEntry(log, "/my/ultrasonicIntake");     
         getYaw = new DoubleLogEntry(log, "/my/getYaw");
         linearAccelX = new DoubleLogEntry(log, "/my/linearAccelX");
         linearAccelY = new DoubleLogEntry(log, "/my/linearAccelY");
         linearAccelZ = new DoubleLogEntry(log, "/my/linearAccelZ");
         getAngularVel = new DoubleLogEntry(log, "/my/getAngularVel");
+        getCompressorVoltage = new DoubleLogEntry(log, "/my/getCompressorVoltage");
+        getCompressorAmps = new DoubleLogEntry(log, "/my/getCompressorAmps");
+
         isCalibrating = new BooleanLogEntry(log, "/my/isCalibrating");
         compressorState = new BooleanLogEntry(log, "/my/compressorState");
+        
     }
 
     public void executeLogger(){
@@ -68,12 +74,13 @@ public class RioLogger {
         grabberServoLeft.append(Intake.getInstance().getBottomLeftAngle());
         compressorState.append(Climb.getInstance().getCompressorState());
         ultrasonicOutake.append(Intake.getInstance().getUltrasonicOutakeInches());
-        ultrasonicIntake.append(Intake.getInstance().getUltrasonicIntakeInches());
         getYaw.append(Drivetrain.getInstance().getYaw());
         linearAccelX.append(Drivetrain.getInstance().linearAccelX());
         linearAccelY.append(Drivetrain.getInstance().linearAccelY());
         linearAccelZ.append(Drivetrain.getInstance().linearAccelZ());
         getAngularVel.append(Drivetrain.getInstance().getAngularVel());
         isCalibrating.append(Drivetrain.getInstance().isCalibrating());
+        getCompressorVoltage.append(Climb.getInstance().getCompressorVoltage());
+        getCompressorAmps.append(Climb.getInstance().getCompressorCurrent());
     }
 }
