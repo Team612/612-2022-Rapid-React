@@ -15,6 +15,7 @@ public class ShuffleBoardButtons {
     ShuffleboardTab m_compressorTab;
     ShuffleboardTab m_smartdashboard;
 
+
     NetworkTableEntry pivotEntry;
     NetworkTableEntry intakeEntry;
     NetworkTableEntry ultrasonicOutake;
@@ -22,6 +23,7 @@ public class ShuffleBoardButtons {
     NetworkTableEntry compressor_button;
     NetworkTableEntry searchingInput;
     NetworkTableEntry servoOpened;
+
 
 
     public void initButtons(){
@@ -49,6 +51,7 @@ public class ShuffleBoardButtons {
         compressor_button.setBoolean(Climb.getInstance().toggleCompressor());
         searchingInput.setBoolean(Intake.getInstance().getSearchingInput());
         servoOpened.setBoolean(Intake.getInstance().isServoOpen());
+        
     }
     
 }

@@ -24,7 +24,8 @@ public class PivotMoveToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivotMotor.moveToPosition(Constants.targetPivot, 5, 0);
+    // m_pivotMotor.moveToPosition(Constants.targetPivot, 5, 0);
+    m_pivotMotor.moveToPositionPID(Constants.targetPivot);
   }
 
   // Called once the command ends or is interrupted.

@@ -115,8 +115,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_riologger.executeLogger();
     m_BoardButtons.updateButtons();
+    m_riologger.executeLogger();
+
   }
 
   @Override

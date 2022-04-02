@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,6 +19,8 @@ public class PivotMotor extends SubsystemBase {
 
   private double currRotate = 0.0;
   static PivotMotor instance = null;
+
+  private PIDController pid = new PIDController(10, 1.2, 0.8);
 
   private PivotMotor() {
     boreEncoderPivot = new DutyCycleEncoder(Constants.boreEncoderPivot);
@@ -51,9 +55,13 @@ public class PivotMotor extends SubsystemBase {
 
   public boolean moveToPosition(double target, double kP, double range){
     //pivotMotor.set(ControlMode.PercentOutput, kP*(target-getBoreEncoder()));
-    System.out.println("is running");
+    // System.out.println("is running");
     pivotMotor.set(kP*(target-getBoreEncoder()));
     return (getBoreEncoder() > target - range && getBoreEncoder() < target + range);
+  }
+
+  public void moveToPositionPID(double target){
+    pivotMotor.set(pid.calculate(getBoreEncoder(), target));
   }
 
   public double getBoreEncoder() {

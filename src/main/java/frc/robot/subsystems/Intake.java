@@ -30,7 +30,6 @@ public class Intake extends SubsystemBase {
 
   private final DigitalInput m_intakeButton;
   static Intake instance = null;
-
   
   private Intake() {
     boreEncoderIntake = new DutyCycleEncoder(Constants.boreEncoderIntake);
@@ -40,19 +39,18 @@ public class Intake extends SubsystemBase {
     bottomRight = new Servo(Constants.bottom_servos[1]);
 
     // m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
-
     m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
     m_intakeButton = new DigitalInput(Constants.IntakeButton);
   }
-
-  public void setSearchingInput(boolean state){
-    isSearchingInput = state;
-  }
-
   // public double getUltrasonicIntakeInches(){
   //   return m_ultrasonicIntake.getRangeInches();
   // }
 
+  public void setSearchingInput(boolean state){
+    isSearchingInput = state;
+  }
+  
+    
   public boolean getSearchingInput(){
     return isSearchingInput;
   }
