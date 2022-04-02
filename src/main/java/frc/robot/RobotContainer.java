@@ -22,6 +22,7 @@ import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.AutoIntake;
 import frc.robot.commands.Intake.BottomClose;
+import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.ReleaseAtSpot;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
@@ -115,7 +116,7 @@ public class RobotContainer {
     ControlMap.GUNNER_Y.whileHeld(new ReleaseAtSpot(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
     ControlMap.GUNNER_X.whenPressed(new AutoIntake(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    ControlMap.GUNNER_B.whenPressed(new BottomOpen(m_intake));
     //ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
 
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));

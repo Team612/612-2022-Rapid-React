@@ -22,7 +22,7 @@ public class AutoIntake extends CommandBase {
   @Override
   public void execute() {
     System.out.println("waiting for button pressed");
-    m_intake.setSearchingInput(true);
+    if(m_intake.getBoreEncoder() > 0.93) m_intake.setSearchingInput(true);
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +35,6 @@ public class AutoIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intake.getButtonVal() && m_intake.getBoreEncoder() > 0.93;
+    return (m_intake.getButtonVal() && m_intake.getBoreEncoder() > 0.93);
   }
 }

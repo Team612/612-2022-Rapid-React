@@ -18,6 +18,7 @@ public class Climb extends SubsystemBase {
   private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
   static Climb instance = null;
+  private boolean climbOpened = false;
 
   private Compressor compressor;
   private boolean toggle_compressor = false;
@@ -76,6 +77,7 @@ public class Climb extends SubsystemBase {
     // System.out.println("Climb.servoClose() start");
     leftServo.setAngle(180);
     rightServo.setAngle(0);
+    climbOpened = false;
     // System.out.println("Climb.servoClose() end");
   }
 
@@ -84,7 +86,12 @@ public class Climb extends SubsystemBase {
     // System.out.println("Climb.servoOpen() start");
     leftServo.setAngle(90);
     rightServo.setAngle(90);
+    climbOpened = true;
     // System.out.println("Climb.servoOpen() end");
+  }
+
+  public boolean getClimbOpened(){
+    return climbOpened;
   }
 
   
