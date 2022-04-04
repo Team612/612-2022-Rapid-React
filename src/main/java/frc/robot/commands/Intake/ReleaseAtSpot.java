@@ -21,15 +21,18 @@ public class ReleaseAtSpot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    m_intake.BottomServoClose();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      
     m_intake.setArm(-Constants.intakeArmSpeed);
+    if(m_intake.getInputState()){
     if(m_intake.getBoreEncoder() < Constants.upperIntakeLim){
-      m_intake.BottomServoOpen();
+        m_intake.BottomServoOpen();
+      }
     }
   }
 
@@ -42,7 +45,6 @@ public class ReleaseAtSpot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // .588
     if(m_intake.upperLimitGoesOff() || m_intake.getBoreEncoder() <= .6){
       return true;
     }

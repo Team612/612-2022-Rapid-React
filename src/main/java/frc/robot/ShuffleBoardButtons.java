@@ -23,6 +23,7 @@ public class ShuffleBoardButtons {
     NetworkTableEntry compressor_button;
     NetworkTableEntry searchingInput;
     NetworkTableEntry servoOpened;
+    NetworkTableEntry autoState;
 
 
 
@@ -41,6 +42,7 @@ public class ShuffleBoardButtons {
         compressor_button = m_smartdashboard.add("Compressor Button", false).getEntry();
         searchingInput = m_smartdashboard.add("searchingInputButton", false).getEntry();
         servoOpened = m_smartdashboard.add("servo Opened", false).getEntry();
+        autoState = m_smartdashboard.add("autoState", false).getEntry();
     }
 
     public void updateButtons(){
@@ -51,7 +53,7 @@ public class ShuffleBoardButtons {
         compressor_button.setBoolean(Climb.getInstance().toggleCompressor());
         searchingInput.setBoolean(Intake.getInstance().getSearchingInput());
         servoOpened.setBoolean(Intake.getInstance().isServoOpen());
-        
+        autoState.setBoolean(Intake.getInstance().getInputState());
     }
     
 }

@@ -30,6 +30,7 @@ public class Intake extends SubsystemBase {
 
   private final DigitalInput m_intakeButton;
   static Intake instance = null;
+  private boolean buttonstate = false;
   
   private Intake() {
     boreEncoderIntake = new DutyCycleEncoder(Constants.boreEncoderIntake);
@@ -116,6 +117,12 @@ public class Intake extends SubsystemBase {
   
   public boolean getButtonVal(){
     return !m_intakeButton.get();
+  }
+  public void setInputState(boolean b){
+    buttonstate = b;
+  }
+  public boolean getInputState(){
+    return buttonstate;
   }
 
   @Override

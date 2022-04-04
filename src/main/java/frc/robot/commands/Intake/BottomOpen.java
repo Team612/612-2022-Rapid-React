@@ -20,6 +20,7 @@ public class BottomOpen extends CommandBase {
   @Override
   public void initialize() {
    m_intake.BottomServoOpen();
+   System.out.println("servo open?: " + m_intake.isServoOpen());
   }
  
   // Called every time the scheduler runs while the command is scheduled.

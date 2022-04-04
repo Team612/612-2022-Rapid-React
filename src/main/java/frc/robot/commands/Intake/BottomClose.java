@@ -19,16 +19,29 @@ public class BottomClose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.BottomServoClose();
+    
   }
  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(m_intake.getInputState()){
+      System.out.println("inside auto close");
+      if(m_intake.getButtonVal() && m_intake.getBoreEncoder() > 0.93){ //why are we only closing here again????
+        m_intake.BottomServoClose();
+        System.out.println("auto close");
+      }
+    }
+    else{
+      m_intake.BottomServoClose();
+      System.out.println("manual close");
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("bottom close?: " + !m_intake.isServoOpen());
   }
 
   // Returns true when the command should end.
