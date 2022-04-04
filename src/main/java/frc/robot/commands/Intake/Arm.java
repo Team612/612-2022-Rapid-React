@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Intake;
 
 public class Arm extends CommandBase {
@@ -25,7 +26,7 @@ public class Arm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // m_intake.TalonFlex(ControlMap.gunner.getRawAxis(1) * 0.2);
+    // m_intake.setArm(ControlMap.gunner.getRawAxis(1) * 0.2);
   }
 
   // Called once the command ends or is interrupted.

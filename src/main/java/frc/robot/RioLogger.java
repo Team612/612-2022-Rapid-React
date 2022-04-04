@@ -32,6 +32,7 @@ public class RioLogger {
 
     private BooleanLogEntry compressorState;
     private BooleanLogEntry isCalibrating;
+    private BooleanLogEntry isClimbOpened;
     
 
     public void initLog(){
@@ -58,6 +59,7 @@ public class RioLogger {
 
         isCalibrating = new BooleanLogEntry(log, "/my/isCalibrating");
         compressorState = new BooleanLogEntry(log, "/my/compressorState");
+        isClimbOpened = new BooleanLogEntry(log, "/my/isClimbOpened");
         
     }
 
@@ -82,5 +84,6 @@ public class RioLogger {
         isCalibrating.append(Drivetrain.getInstance().isCalibrating());
         getCompressorVoltage.append(Climb.getInstance().getCompressorVoltage());
         getCompressorAmps.append(Climb.getInstance().getCompressorCurrent());
+        isClimbOpened.append(Climb.getInstance().getClimbOpened());
     }
 }

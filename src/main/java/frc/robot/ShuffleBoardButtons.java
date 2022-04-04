@@ -10,12 +10,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 
 public class ShuffleBoardButtons {
+    //Tabs
     ShuffleboardTab m_encoderTab;
     ShuffleboardTab m_ultraSonicTab;
     ShuffleboardTab m_compressorTab;
     ShuffleboardTab m_smartdashboard;
 
-
+    //NetworkTables
     NetworkTableEntry pivotEntry;
     NetworkTableEntry intakeEntry;
     NetworkTableEntry ultrasonicOutake;
@@ -25,6 +26,8 @@ public class ShuffleBoardButtons {
     NetworkTableEntry servoOpened;
     NetworkTableEntry autoState;
 
+    NetworkTableEntry isClimbOpened;
+    NetworkTableEntry intakeButton;
 
 
     public void initButtons(){
@@ -43,6 +46,8 @@ public class ShuffleBoardButtons {
         searchingInput = m_smartdashboard.add("searchingInputButton", false).getEntry();
         servoOpened = m_smartdashboard.add("servo Opened", false).getEntry();
         autoState = m_smartdashboard.add("autoState", false).getEntry();
+        isClimbOpened = m_smartdashboard.add("climb opened", false).getEntry();
+        intakeButton = m_smartdashboard.add("intake button", false).getEntry();
     }
 
     public void updateButtons(){
@@ -54,6 +59,8 @@ public class ShuffleBoardButtons {
         searchingInput.setBoolean(Intake.getInstance().getSearchingInput());
         servoOpened.setBoolean(Intake.getInstance().isServoOpen());
         autoState.setBoolean(Intake.getInstance().getInputState());
+        isClimbOpened.setBoolean(Climb.getInstance().getClimbOpened());
+        intakeButton.setBoolean(Intake.getInstance().getButtonVal());
     }
     
 }
