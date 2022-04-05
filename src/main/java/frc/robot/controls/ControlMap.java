@@ -23,6 +23,7 @@ public class ControlMap{
     public static JoystickButton GUNNER_LJ_BUTTON = new JoystickButton(gunner, 9); //
     public static JoystickButton GUNNER_RJ_BUTTON = new JoystickButton(gunner, 10); //
     public static POVButton GUNNER_DUP = new POVButton(gunner, 0);
+    public static POVButton GUNNER_DDOWN = new POVButton(gunner, 180);
 
     public static JoystickButton DRIVER_A = new JoystickButton(driver, 1); //A
     public static JoystickButton DRIVER_B = new JoystickButton(driver, 2); //B

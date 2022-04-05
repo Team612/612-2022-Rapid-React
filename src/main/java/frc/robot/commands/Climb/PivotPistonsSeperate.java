@@ -23,7 +23,6 @@ public class PivotPistonsSeperate extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("PivotPistonsSeperate.initialize()");    
-    m_climb.servoOpen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

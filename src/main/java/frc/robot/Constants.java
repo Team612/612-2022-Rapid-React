@@ -108,20 +108,26 @@ public final class Constants {
 
     public static int[] bottom_servos = {2,3};
 
-    public static int[] ULTRASONIC_INTAKE =  {1,2};
-    public static int[] ULTRASONIC_OUTAKE =  {3,4};
+    public static int[] ULTRASONIC_INTAKE =  {4,5};
+    public static int[] ULTRASONIC_OUTAKE =  {3,2};
 
-    public static final double ULTRASONIC_INTAKE_THRESH = 2.0, ULTRASONIC_INTAKE_THRESH_RANGE = 0.0;
-    public static final double ULTRASONIC_OUTTAKE_THRESH = 7.58, ULTRASONIC_OUTTAKE_THRESH_RANGE = 0.1;
+    public static final double ULTRASONIC_INTAKE_THRESH = 1.37;//, ULTRASONIC_INTAKE_THRESH_RANGE = 0.0;
+    public static final double ULTRASONIC_OUTTAKE_THRESH = 7.58;//, ULTRASONIC_OUTTAKE_THRESH_RANGE = 0.1;
     //range values???
+    public static final int IntakeButton = 4;
 
     public static double height = 15.375;
     public static double length = 24.0;
     public static double pi = Math.PI;
     public static double ticks = 2048*Math.atan(length/height) * (180/pi)/360;
+    public static double targetPivot = .6999;
 
-    //encoder ports
-    public static int intakeEncoder = 0;
-    public static int climbEncoder = 1;
+    //intake encoder constants
+    public static double bottomIntakeLim = 0.968;
+    public static double upperIntakeLim = 0.65; // possibly increase
+
+    //bore encoer constants
+    public static int boreEncoderIntake = 1;
+    public static int boreEncoderPivot = 0;    
 }
 

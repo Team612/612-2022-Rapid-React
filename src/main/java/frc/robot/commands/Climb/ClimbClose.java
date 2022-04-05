@@ -21,7 +21,7 @@ public class ClimbClose extends CommandBase {
   public void initialize() {
     System.out.println("ClimbClose.initialize()");    
     m_climb.servoClose();
-    System.out.println("Neutral Mode: Off");
+    // System.out.println("Neutral Mode: Off");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,7 +31,7 @@ public class ClimbClose extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("ClimbClose.end() : " + interrupted);
+    // System.out.println("ClimbClose.end() : " + interrupted);
   }
 
   // Returns true when the command should end.

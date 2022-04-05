@@ -6,13 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.controls.ControlMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,11 +22,10 @@ import frc.robot.controls.ControlMap;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
-
+  private final RioLogger m_riologger = new RioLogger();
+  private final ShuffleBoardButtons m_BoardButtons = new ShuffleBoardButtons();
   
-
   UsbCamera front_cam;
 
   /**
@@ -47,6 +43,13 @@ public class Robot extends TimedRobot {
     front_cam.setFPS(20);
     System.out.println("init finished.");
     m_robotContainer = new RobotContainer();
+    Ultrasonic.setAutomaticMode(true);
+
+    m_riologger.initLog();
+    m_BoardButtons.initButtons();
+
+    
+
   }
 
   /**
@@ -69,6 +72,8 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_BoardButtons.updateButtons();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -110,6 +115,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    m_BoardButtons.updateButtons();
+    m_riologger.executeLogger();
+
   }
 
   @Override

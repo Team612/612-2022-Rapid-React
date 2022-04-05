@@ -1,14 +1,12 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,12 +22,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  public final CANSparkMax spark_fl;
-  public final CANSparkMax spark_fr;
-  public final CANSparkMax spark_bl;
-  public final CANSparkMax spark_br;
+  private final CANSparkMax spark_fl;
+  private final CANSparkMax spark_fr;
+  private final CANSparkMax spark_bl;
+  private final CANSparkMax spark_br;
 
   private final double DEADZONE = 0.1;
+
+  static Drivetrain instance = null;
 
   private MecanumDrive drivetrain;
   public double vel = Constants.kEncoderDistancePerPulse / 60;
@@ -39,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
   private Field2d m_field;
 
 
-  public Drivetrain() {
+  private Drivetrain() {
     m_field = new Field2d();
     SmartDashboard.putData("Field", m_field);
 
@@ -47,7 +47,6 @@ public class Drivetrain extends SubsystemBase {
     spark_fr = new CANSparkMax(Constants.SPARK_FR, MotorType.kBrushless);
     spark_bl = new CANSparkMax(Constants.SPARK_BL, MotorType.kBrushless);
     spark_br = new CANSparkMax(Constants.SPARK_BR, MotorType.kBrushless);
-
     navx = new AHRS(I2C.Port.kMXP);
     m_odometry = new MecanumDriveOdometry(Constants.kDriveKinematics, navx.getRotation2d());
 
@@ -67,7 +66,6 @@ public class Drivetrain extends SubsystemBase {
     spark_fl.getEncoder().setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
     spark_br.getEncoder().setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
     spark_bl.getEncoder().setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
-
     spark_fr.getEncoder().setVelocityConversionFactor(vel);
     spark_fl.getEncoder().setVelocityConversionFactor(vel);
     spark_br.getEncoder().setVelocityConversionFactor(vel);
@@ -75,6 +73,28 @@ public class Drivetrain extends SubsystemBase {
 
     drivetrain = new MecanumDrive(spark_fl, spark_bl, spark_fr, spark_br);
   }
+
+  public double getFLEncoderVelocity(){
+    return spark_fl.getEncoder().getVelocity();
+  }
+  public double getFREncoderVelocity(){
+    return spark_fr.getEncoder().getVelocity();
+  }
+  public double getBLEncoderVelocity(){
+    return spark_bl.getEncoder().getVelocity();
+  }
+  public double getBREncoderVelocity(){
+    return spark_br.getEncoder().getVelocity();
+  }
+
+  public static Drivetrain getInstance(){
+    if(instance == null){
+      instance = new Drivetrain();
+    }
+    return instance;
+  }
+
+  
 
   public void driveMecanum(double y, double x, double zRot){
     if(Math.abs(x) < DEADZONE) x = 0;
@@ -148,13 +168,42 @@ public class Drivetrain extends SubsystemBase {
     return new double[]{spark_fl.getBusVoltage(), spark_fr.getBusVoltage(), spark_bl.getBusVoltage(), spark_br.getBusVoltage()};
   }
 
+  //getYaw = Returns the current yaw value (in degrees, from -180 to 180) 
+  //reported by the sensor. Yaw is a measure of rotation around the Z Axis 
+  //(which is perpendicular to the earth).
+
   public static void zeroYaw(){
     navx.zeroYaw();
     System.out.println("******************resetted yaw*********");
   }
 
-
-  public static Rotation2d getNavxAngle(){
+  //Returns the total accumulated yaw angle (Z Axis, in degrees) reported by the sensor.
+  public Rotation2d getNavxAngle(){
     return Rotation2d.fromDegrees(-navx.getAngle());
   }
+
+  public double getYaw(){
+    return navx.getYaw();
+  }
+
+  public double linearAccelX(){
+    return navx.getWorldLinearAccelX();
+  }
+
+  public double linearAccelY(){
+    return navx.getWorldLinearAccelY();
+  }
+
+  public double linearAccelZ(){
+    return navx.getWorldLinearAccelZ();
+  }
+
+  public double getAngularVel(){
+    return navx.getRate();
+  }
+
+  public boolean isCalibrating(){
+    return navx.isCalibrating();
+  }
+
 }

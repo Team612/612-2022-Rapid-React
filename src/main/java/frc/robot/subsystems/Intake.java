@@ -5,73 +5,70 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  
   private final Servo bottomLeft;
   private final Servo bottomRight;
  
-  private final int TOP_POSITION = 0; // --> imo not necessaryx
   private final double DEADZONE = 0.1;
 
-  public boolean servoOpen = false;
-  public boolean servoClose = false;
-  
-  private final int BOTTOM_POSITION = 0; // --> imo not necessary
+  private boolean servoOpen = false;
+  private boolean isSearchingInput = false;
+
   private final WPI_TalonSRX shoulder;
+  DutyCycleEncoder boreEncoderIntake;
 
-  private final int ANGLE_DEADZONE = 100;
-  private DutyCycleEncoder intakeEncoder;
+  private final Ultrasonic m_ultrasonicOutake; 
+  // private final Ultrasonic m_ultrasonicIntake;
 
-  /*
-  - figure out angle
-  - figure out encoder pos based off it 
-  - same method, but after encoder val = ___, open servos 
-
-  */
-
+  private final DigitalInput m_intakeButton;
+  static Intake instance = null;
+  private boolean buttonstate = false;
   
-
-  public Intake() {
+  private Intake() {
+    boreEncoderIntake = new DutyCycleEncoder(Constants.boreEncoderIntake);
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
-    shoulder.getSensorCollection().setQuadraturePosition(0, 10);
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-    intakeEncoder = new DutyCycleEncoder(Constants.intakeEncoder);
-  }
 
-  private int calculate_target(double theta){
-    return (int)(2048 * theta * 5/360);
+    // m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
+    m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
+    m_intakeButton = new DigitalInput(Constants.IntakeButton);
+  }
+  // public double getUltrasonicIntakeInches(){
+  //   return m_ultrasonicIntake.getRangeInches();
+  // }
+
+  public void setSearchingInput(boolean state){
+    isSearchingInput = state;
   }
   
-  public void autoOpen(double theta){
-    System.out.println("autopen!");
-    System.out.println("encoder: " + getEncoder());
-    if(Math.abs(getEncoder() - calculate_target(theta)) <= ANGLE_DEADZONE){
-      BottomServoOpen();
-      System.out.println("grabber open!");
-    }
+    
+  public boolean getSearchingInput(){
+    return isSearchingInput;
   }
 
-  public int getEncoder(){
-    return shoulder.getSensorCollection().getQuadraturePosition();
+  public double getUltrasonicOutakeInches(){
+    return m_ultrasonicOutake.getRangeInches();
   }
 
-  
+  public static Intake getInstance() {
+    if (instance == null) {
+      instance = new Intake();
+    }
+    return instance;
+  }
 
-  public void setEncoder(){ 
-    if (shoulder.getSensorCollection().isFwdLimitSwitchClosed()){ //forward goes to the bottom
-      shoulder.getSensorCollection().setQuadraturePosition(TOP_POSITION, 10);
-    }
-    else if (shoulder.getSensorCollection().isRevLimitSwitchClosed()){ //backwards goes to the top
-      shoulder.getSensorCollection().setQuadraturePosition(BOTTOM_POSITION, 10);
-    }
+  public double getBoreEncoder() {
+    return boreEncoderIntake.getDistance();
   }
 
   public boolean isLimitTriggered(){
@@ -81,7 +78,7 @@ public class Intake extends SubsystemBase {
     return false;
   }
   
-  public void TalonFlex(double speed) {
+  public void setArm(double speed) {
     if(Math.abs(speed) < DEADZONE) speed = 0;
     shoulder.set(speed);
   }
@@ -98,21 +95,37 @@ public class Intake extends SubsystemBase {
     bottomLeft.setAngle(90);
     bottomRight.setAngle(90);
     servoOpen = true;
-    servoClose = false;
   }
 
   public void BottomServoClose(){
     bottomLeft.setAngle(180);
     bottomRight.setAngle(0); 
     servoOpen = false;
-    servoClose = true;
   }
 
+  public boolean isServoOpen(){
+    return servoOpen;
+  }
+
+  public double getBottomLeftAngle(){
+    return bottomLeft.getAngle();
+  }
+
+  public double getBottomRightAngle(){
+    return bottomRight.getAngle();
+  }
   
-  
+  public boolean getButtonVal(){
+    return !m_intakeButton.get();
+  }
+  public void setInputState(boolean b){
+    buttonstate = b;
+  }
+  public boolean getInputState(){
+    return buttonstate;
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    setEncoder();
   }
 }

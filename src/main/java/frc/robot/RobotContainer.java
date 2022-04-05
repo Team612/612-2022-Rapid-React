@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
 import frc.robot.commands.Climb.ClimbOpen;
+import frc.robot.commands.Climb.CompressorOff;
+import frc.robot.commands.Climb.CompressorOn;
 import frc.robot.commands.Climb.ExtendClimb;
 import frc.robot.commands.Climb.NeutralClimb;
+import frc.robot.commands.Climb.PivotMoveToPosition;
 import frc.robot.commands.Climb.PivotPistonsSeperate;
 import frc.robot.commands.Climb.RetractClimb;
 import frc.robot.commands.Drivetrain.DefaultDrive;
@@ -17,9 +20,13 @@ import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
-import frc.robot.commands.Intake.ArmReverse;
+import frc.robot.commands.Intake.AutoClose;
+import frc.robot.commands.Intake.AutoOuttake;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
+import frc.robot.commands.Intake.ButtonOff;
+import frc.robot.commands.Intake.ButtonOn;
+import frc.robot.commands.Intake.ReleaseAtSpot;
 import frc.robot.controls.ControlMap;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -27,7 +34,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PivotMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,12 +45,11 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // Subsystem Declarations
-  private final Climb m_climb = new Climb();
-  private final Intake m_intake = new Intake();
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final PivotMotor m_pivotmotor = new PivotMotor();
+  private final Climb m_climb = Climb.getInstance();
+  public final Intake m_intake = Intake.getInstance();
+  private final Drivetrain m_drivetrain = Drivetrain.getInstance();
+  private final PivotMotor m_pivotmotor = PivotMotor.getInstance();
 
   // configure default commands
   private final DefaultDrive m_default = new DefaultDrive(m_drivetrain);
@@ -56,30 +61,37 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
   );
 
   private final SequentialCommandGroup dumpGoToBall = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ArmReverse(m_intake))
-    .andThen(new BottomOpen(m_intake))
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart1))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
+  );
+
+  private final SequentialCommandGroup onlyDump = new SequentialCommandGroup(
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
   );
 
   private void servoInit(){
     m_intake.BottomServoClose();
   }
 
+  private void openCimb(){
+    m_climb.servoOpen();
+  }
+
   public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
     servoInit();
+    openCimb();
     configureDefaultCommands();
   }
 
@@ -95,10 +107,7 @@ public class RobotContainer {
     m_chooser.addOption("Get out of tarmac", m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac));
     m_chooser.addOption("Dump get out of tarmac", dumpGetOut);
     m_chooser.addOption("Dump go to ball", dumpGoToBall);
-    
-    // m_chooser.addOption("get out of tarmac", m_outTarmacGetBall);
-    // m_chooser.addOption("auto test", m_outTarmacGetBall);
-    // m_chooser.addOption("PathPlanner test", m_follower.generateTrajectory(m_drivetrain, m_traj.path2v3));
+    m_chooser.addOption("Only Dump" , onlyDump);
     SmartDashboard.putData(m_chooser);
 
     compButtonBindings();
@@ -107,19 +116,23 @@ public class RobotContainer {
   private void compButtonBindings() {
     ControlMap.GUNNER_BACK.whenPressed(new ExtendClimb(m_climb));
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
-    ControlMap.GUNNER_Y.whileHeld(new ArmReverse(m_intake));
+    ControlMap.GUNNER_Y.whileHeld(new ReleaseAtSpot(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomClose(m_intake));
+    ControlMap.GUNNER_X.whenPressed(new BottomClose(m_intake));
+    ControlMap.GUNNER_B.whenPressed(new BottomOpen(m_intake));
+    //ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
+
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
     ControlMap.GUNNER_RB.whenPressed(new ClimbOpen(m_climb));
     ControlMap.GUNNER_DUP.whenPressed(new NeutralClimb(m_climb));
-    ControlMap.DRIVER_A.toggleWhenPressed(new StartEndCommand(m_climb::compressorOn, m_climb::compressorOff, m_climb));
-    //ControlMap.DRIVER_A.toggleWhenPressed(new CompressorOn(m_climb));
-    //ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
-    // ControlMap.GUNNER_RB.toggleWhenPressed(new
-    // StartEndCommand(m_climb::servoClose, m_climb::servoOpen, m_climb));
-    // ControlMap.GUNNER_RB.toggleWhenPressed(new ToggleClimbHooks(m_climb));
+
+    ControlMap.GUNNER_DDOWN.whileHeld(new PivotMoveToPosition(m_pivotmotor));    
+    ControlMap.DRIVER_A.whenPressed(new CompressorOn(m_climb));
+    ControlMap.DRIVER_B.whenPressed(new CompressorOff(m_climb));
+
+    //new stuff
+    ControlMap.DRIVER_START.whenPressed(new ButtonOff(m_intake));
+    ControlMap.DRIVER_BACK.whenPressed(new ButtonOn(m_intake));
   }
 
   /*
