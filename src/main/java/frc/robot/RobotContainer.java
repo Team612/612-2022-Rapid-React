@@ -20,7 +20,8 @@ import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
 import frc.robot.commands.Intake.Arm;
 import frc.robot.commands.Intake.ArmForward;
-import frc.robot.commands.Intake.AutoIntake;
+import frc.robot.commands.Intake.AutoClose;
+import frc.robot.commands.Intake.AutoOuttake;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
 import frc.robot.commands.Intake.ButtonOff;
@@ -61,21 +62,21 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ReleaseAtSpot(m_intake))
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
   );
 
   private final SequentialCommandGroup dumpGoToBall = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ReleaseAtSpot(m_intake))
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart1))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.moveToBallPart2))
   );
 
   private final SequentialCommandGroup onlyDump = new SequentialCommandGroup(
-    new BottomClose(m_intake)
-    .andThen(new ReleaseAtSpot(m_intake))
+    new AutoClose(m_intake)
+    .andThen(new AutoOuttake(m_intake))
   );
 
   private void servoInit(){
@@ -117,7 +118,7 @@ public class RobotContainer {
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
     ControlMap.GUNNER_Y.whileHeld(new ReleaseAtSpot(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new AutoIntake(m_intake));
+    ControlMap.GUNNER_X.whenPressed(new BottomClose(m_intake));
     ControlMap.GUNNER_B.whenPressed(new BottomOpen(m_intake));
     //ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
 
