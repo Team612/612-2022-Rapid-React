@@ -22,6 +22,7 @@ public class Climb extends SubsystemBase {
 
   private Compressor compressor;
   private boolean toggle_compressor = false;
+  private boolean isServoNeutral = false;
 
   private Climb() {
     rightServo = new Servo(Constants.climb_servo[1]);
@@ -68,6 +69,7 @@ public class Climb extends SubsystemBase {
     // System.out.println("Climb.setServosNeutral() start");
     leftServo.setDisabled();
     rightServo.setDisabled();
+    isServoNeutral = true;
     // System.out.println("Climb.setServosNeutral() end");
   }
 
@@ -78,6 +80,7 @@ public class Climb extends SubsystemBase {
     leftServo.setAngle(180);
     rightServo.setAngle(0);
     climbOpened = false;
+    isServoNeutral = false;
     // System.out.println("Climb.servoClose() end");
   }
 
@@ -87,7 +90,12 @@ public class Climb extends SubsystemBase {
     leftServo.setAngle(90);
     rightServo.setAngle(90);
     climbOpened = true;
+    isServoNeutral = false;
     // System.out.println("Climb.servoOpen() end");
+  }
+
+  public boolean getServoNeutral(){
+    return isServoNeutral;
   }
 
   public boolean getClimbOpened(){

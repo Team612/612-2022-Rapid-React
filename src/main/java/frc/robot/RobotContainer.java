@@ -87,11 +87,16 @@ public class RobotContainer {
     m_climb.servoOpen();
   }
 
+  public void setButtonStateTrue(){
+    m_intake.setInputState(true);
+  } 
+
   public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
     servoInit();
     openCimb();
+    setButtonStateTrue();
     configureDefaultCommands();
   }
 

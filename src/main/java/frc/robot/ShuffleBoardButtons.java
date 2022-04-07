@@ -28,6 +28,7 @@ public class ShuffleBoardButtons {
 
     NetworkTableEntry isClimbOpened;
     NetworkTableEntry intakeButton;
+    NetworkTableEntry isServoNeutral;
 
 
     public void initButtons(){
@@ -48,6 +49,7 @@ public class ShuffleBoardButtons {
         autoState = m_smartdashboard.add("autoState", false).getEntry();
         isClimbOpened = m_smartdashboard.add("climb opened", false).getEntry();
         intakeButton = m_smartdashboard.add("intake button", false).getEntry();
+        isServoNeutral = m_smartdashboard.add("Is Servo Neutral?", false).getEntry();
     }
 
     public void updateButtons(){
@@ -61,6 +63,7 @@ public class ShuffleBoardButtons {
         autoState.setBoolean(Intake.getInstance().getInputState());
         isClimbOpened.setBoolean(Climb.getInstance().getClimbOpened());
         intakeButton.setBoolean(Intake.getInstance().getButtonVal());
+        isServoNeutral.setBoolean(Climb.getInstance().getServoNeutral());
     }
     
 }
