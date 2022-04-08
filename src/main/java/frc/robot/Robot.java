@@ -36,6 +36,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    
+    m_riologger.initLog();
+    m_BoardButtons.initButtons();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
@@ -45,8 +48,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     Ultrasonic.setAutomaticMode(true);
 
-    m_riologger.initLog();
-    m_BoardButtons.initButtons();
 
     
 

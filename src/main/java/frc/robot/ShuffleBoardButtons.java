@@ -57,6 +57,8 @@ public class ShuffleBoardButtons {
         m_autoDelay  = m_smartdashboard.add("delay amount", 0).getEntry();
     }
 
+    
+
     public void updateButtons(){
         pivotEntry.setDouble(PivotMotor.getInstance().getBoreEncoder());
         intakeEntry.setDouble(Intake.getInstance().getBoreEncoder());
