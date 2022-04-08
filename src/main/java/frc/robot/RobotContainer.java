@@ -66,11 +66,8 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   //Auto Shuffleboard
-  ShuffleboardTab m_autoTab = Shuffleboard.getTab("autonomous");
-  NetworkTableEntry m_autoDelay = m_autoTab.add("delay amount", 0).getEntry();
-
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
-    new AutoDelay(m_autoDelay.getDouble(5.0))
+    new AutoDelay(ShuffleBoardButtons.m_autoDelay.getDouble(0.0))
     .andThen(new AutoClose(m_intake))
     .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
