@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
   }
 
   /** This function is called periodically during operator control. */
@@ -118,7 +119,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_BoardButtons.updateButtons();
     m_riologger.executeLogger();
-
   }
 
   @Override

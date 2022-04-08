@@ -15,6 +15,7 @@ public class ShuffleBoardButtons {
     ShuffleboardTab m_ultraSonicTab;
     ShuffleboardTab m_compressorTab;
     ShuffleboardTab m_smartdashboard;
+    
 
     //NetworkTables
     NetworkTableEntry pivotEntry;
