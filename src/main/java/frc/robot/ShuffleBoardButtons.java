@@ -15,7 +15,7 @@ public class ShuffleBoardButtons {
     ShuffleboardTab m_ultraSonicTab;
     ShuffleboardTab m_compressorTab;
     ShuffleboardTab m_smartdashboard;
-
+    
     //NetworkTables
     NetworkTableEntry pivotEntry;
     NetworkTableEntry intakeEntry;
@@ -25,9 +25,14 @@ public class ShuffleBoardButtons {
     NetworkTableEntry searchingInput;
     NetworkTableEntry servoOpened;
     NetworkTableEntry autoState;
-
     NetworkTableEntry isClimbOpened;
     NetworkTableEntry intakeButton;
+    NetworkTableEntry isServoNeutral;
+
+//     //Auto Shuffleboard
+//   ShuffleboardTab m_autoTab = Shuffleboard.getTab("autonomous");
+    public static NetworkTableEntry m_autoDelay;
+
 
 
     public void initButtons(){
@@ -48,7 +53,11 @@ public class ShuffleBoardButtons {
         autoState = m_smartdashboard.add("autoState", false).getEntry();
         isClimbOpened = m_smartdashboard.add("climb opened", false).getEntry();
         intakeButton = m_smartdashboard.add("intake button", false).getEntry();
+        isServoNeutral = m_smartdashboard.add("Is Servo Neutral?", false).getEntry();
+        m_autoDelay  = m_smartdashboard.add("delay amount", 0).getEntry();
     }
+
+    
 
     public void updateButtons(){
         pivotEntry.setDouble(PivotMotor.getInstance().getBoreEncoder());
@@ -61,6 +70,7 @@ public class ShuffleBoardButtons {
         autoState.setBoolean(Intake.getInstance().getInputState());
         isClimbOpened.setBoolean(Climb.getInstance().getClimbOpened());
         intakeButton.setBoolean(Intake.getInstance().getButtonVal());
+        isServoNeutral.setBoolean(Climb.getInstance().getServoNeutral());
+        
     }
-    
 }
