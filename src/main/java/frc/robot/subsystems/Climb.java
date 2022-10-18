@@ -15,7 +15,7 @@ public class Climb extends SubsystemBase {
   // defines both Talons and Solenoids
   private Servo rightServo;
   private Servo leftServo;
-  private final DoubleSolenoid piston1;
+  //private final DoubleSolenoid piston1;
   private final DoubleSolenoid piston2;
   static Climb instance = null;
   private boolean climbOpened = false;
@@ -30,8 +30,8 @@ public class Climb extends SubsystemBase {
     compressorOff();
     piston2 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.secondSolenoid[1],
         Constants.secondSolenoid[0]);
-    piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
-        Constants.firstSolenoid[0]);
+    // piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
+    //     Constants.firstSolenoid[0]);
   }
 
   public static Climb getInstance(){
@@ -43,7 +43,7 @@ public class Climb extends SubsystemBase {
 
   public void extendArm() {
     // System.out.println("Climb.extendArm() start");
-    piston1.set(Value.kForward);
+    //piston1.set(Value.kForward);
     piston2.set(Value.kForward);
     // System.out.println("Climb.extendArm() end");
   }
@@ -59,7 +59,8 @@ public class Climb extends SubsystemBase {
   // Brings the piston in
   public void retractArm() {
     // System.out.println("Climb.retractArm() start");
-    piston1.set(Value.kReverse);
+    //
+    //piston1.set(Value.kReverse);
     piston2.set(Value.kReverse);
     // System.out.println("Climb.retractArm() end");
   }
