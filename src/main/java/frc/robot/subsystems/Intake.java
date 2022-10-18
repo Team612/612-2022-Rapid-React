@@ -51,7 +51,7 @@ public class Intake extends SubsystemBase {
   }
   // public double getUltrasonicIntakeInches(){
   //   return m_ultrasonicIntake.getRangeInches();
-  // }
+  // } 
 
   public void setSearchingInput(boolean state){
     isSearchingInput = state;
