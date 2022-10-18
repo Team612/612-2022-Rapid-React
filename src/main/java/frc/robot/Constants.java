@@ -94,8 +94,11 @@ public final class Constants {
 
     public static int talon_pivot = 6;
     public static int PCM_2 = 7;
-    public static int[] firstSolenoid = {3, 2}; // rev, fwd
+    //4,5
+    public static int[] firstSolenoid = {5, 4}; // rev, fwd
     public static int[] secondSolenoid = {1, 0};
+    public static int[] thirdSolenoid = {3, 2};
+
     public static PneumaticsModuleType solenoidType = PneumaticsModuleType.CTREPCM;
     //public static PneumaticsModuleType solenoidType = PneumaticsModuleType.REVPH;
     
