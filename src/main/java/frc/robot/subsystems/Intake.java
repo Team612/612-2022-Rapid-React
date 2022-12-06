@@ -6,9 +6,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -24,6 +26,8 @@ public class Intake extends SubsystemBase {
 
   private final WPI_TalonSRX shoulder;
   DutyCycleEncoder boreEncoderIntake;
+  
+  private final DoubleSolenoid piston1;
 
   private final Ultrasonic m_ultrasonicOutake; 
   // private final Ultrasonic m_ultrasonicIntake;
@@ -42,10 +46,12 @@ public class Intake extends SubsystemBase {
     // m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
     m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
     m_intakeButton = new DigitalInput(Constants.IntakeButton);
+    piston1 = new DoubleSolenoid(Constants.PCM_2, Constants.solenoidType, Constants.firstSolenoid[1],
+    Constants.firstSolenoid[0]);
   }
   // public double getUltrasonicIntakeInches(){
   //   return m_ultrasonicIntake.getRangeInches();
-  // }
+  // } 
 
   public void setSearchingInput(boolean state){
     isSearchingInput = state;
@@ -123,6 +129,14 @@ public class Intake extends SubsystemBase {
   }
   public boolean getInputState(){
     return buttonstate;
+  }
+
+  public void open(){
+    piston1.set(Value.kForward);
+  }
+
+  public void close(){
+    piston1.set(Value.kReverse);
   }
 
   @Override

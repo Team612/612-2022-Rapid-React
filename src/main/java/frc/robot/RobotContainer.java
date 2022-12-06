@@ -19,6 +19,8 @@ import frc.robot.commands.Drivetrain.DefaultDrive;
 import frc.robot.commands.Drivetrain.FollowTrajectory;
 import frc.robot.commands.Drivetrain.TrajectoryCreation;
 import frc.robot.commands.Intake.Arm;
+import frc.robot.commands.Intake.GrabberClose;
+import frc.robot.commands.Intake.GrabberOpen;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.AutoClose;
 import frc.robot.commands.Intake.AutoOuttake;
@@ -118,8 +120,10 @@ public class RobotContainer {
     ControlMap.GUNNER_START.whenPressed(new RetractClimb(m_climb));
     ControlMap.GUNNER_Y.whileHeld(new ReleaseAtSpot(m_intake));
     ControlMap.GUNNER_A.whileHeld(new ArmForward(m_intake));
-    ControlMap.GUNNER_X.whenPressed(new BottomClose(m_intake));
-    ControlMap.GUNNER_B.whenPressed(new BottomOpen(m_intake));
+    ControlMap.GUNNER_X.whenPressed(new GrabberOpen(m_intake));
+    ControlMap.GUNNER_B.whenPressed(new GrabberClose(m_intake));
+    //ControlMap.GUNNER_X.whenPressed(new BottomClose(m_intake));
+    //ControlMap.GUNNER_B.whenPressed(new BottomOpen(m_intake));
     //ControlMap.GUNNER_X.whenPressed(new BottomOpen(m_intake));
 
     ControlMap.GUNNER_LB.whenPressed(new ClimbClose(m_climb));
