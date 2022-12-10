@@ -34,15 +34,15 @@ public class Intake extends SubsystemBase {
 
   private final DigitalInput m_intakeButton;
   static Intake instance = null;
-  private boolean buttonstate = false;
-  
+  private boolean buttonstate;
+
   private Intake() {
     boreEncoderIntake = new DutyCycleEncoder(Constants.boreEncoderIntake);
     shoulder = new WPI_TalonSRX(Constants.Talon_arm);
     shoulder.setNeutralMode(NeutralMode.Brake);
     bottomLeft = new Servo(Constants.bottom_servos[0]);
     bottomRight = new Servo(Constants.bottom_servos[1]);
-
+    buttonstate = true;
     // m_ultrasonicIntake = new Ultrasonic(Constants.ULTRASONIC_INTAKE[0], Constants.ULTRASONIC_INTAKE[1]);
     m_ultrasonicOutake = new Ultrasonic(Constants.ULTRASONIC_OUTAKE[0], Constants.ULTRASONIC_OUTAKE[1]);
     m_intakeButton = new DigitalInput(Constants.IntakeButton);

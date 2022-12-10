@@ -36,6 +36,5 @@ public class ControlMap{
     public static JoystickButton DRIVER_LJ_BUTTON = new JoystickButton(driver, 9); //
     public static JoystickButton DRIVER_RJ_BUTTON = new JoystickButton(driver, 10); //
     public static POVButton DRIVER_DUP = new POVButton(driver, 0);
-
     
 }

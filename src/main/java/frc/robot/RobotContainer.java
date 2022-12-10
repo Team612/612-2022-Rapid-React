@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb.ClimbClose;
@@ -23,6 +26,7 @@ import frc.robot.commands.Intake.GrabberClose;
 import frc.robot.commands.Intake.GrabberOpen;
 import frc.robot.commands.Intake.ArmForward;
 import frc.robot.commands.Intake.AutoClose;
+import frc.robot.commands.Intake.AutoDelay;
 import frc.robot.commands.Intake.AutoOuttake;
 import frc.robot.commands.Intake.BottomClose;
 import frc.robot.commands.Intake.BottomOpen;
@@ -63,8 +67,10 @@ public class RobotContainer {
   private final TrajectoryCreation m_traj = new TrajectoryCreation();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  //Auto Shuffleboard
   private final SequentialCommandGroup dumpGetOut = new SequentialCommandGroup(
-    new AutoClose(m_intake)
+    new AutoDelay(ShuffleBoardButtons.m_autoDelay.getDouble(0.0))
+    .andThen(new AutoClose(m_intake))
     .andThen(new AutoOuttake(m_intake))
     .andThen(m_follower.generateTrajectory(m_drivetrain, m_traj.getOutOfTarmac))
   );
@@ -89,11 +95,16 @@ public class RobotContainer {
     m_climb.servoOpen();
   }
 
+  public void setButtonStateTrue(){
+    m_intake.setInputState(true);
+  } 
+
   public RobotContainer() { 
     // Configure the button bindings
     configureButtonBindings();
     servoInit();
     openCimb();
+    setButtonStateTrue();
     configureDefaultCommands();
   }
 
